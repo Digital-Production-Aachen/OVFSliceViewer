@@ -1,0 +1,1559 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {
+      "Google.Protobuf/3.11.4": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.2"
+        },
+        "compile": {
+          "lib/net45/Google.Protobuf.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Google.Protobuf.dll": {}
+        }
+      },
+      "Grpc/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core": "2.28.1"
+        }
+      },
+      "Grpc.Core/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core.Api": "2.28.1",
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "build": {
+          "build/net45/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux/native/libgrpc_csharp_ext.x64.so": {
+            "assetType": "native",
+            "rid": "linux"
+          },
+          "runtimes/linux/native/libgrpc_csharp_ext.x86.so": {
+            "assetType": "native",
+            "rid": "linux"
+          },
+          "runtimes/osx/native/libgrpc_csharp_ext.x64.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          },
+          "runtimes/osx/native/libgrpc_csharp_ext.x86.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          },
+          "runtimes/win/native/grpc_csharp_ext.x64.dll": {
+            "assetType": "native",
+            "rid": "win"
+          },
+          "runtimes/win/native/grpc_csharp_ext.x86.dll": {
+            "assetType": "native",
+            "rid": "win"
+          }
+        }
+      },
+      "Grpc.Core.Api/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        }
+      },
+      "MathNet.Numerics/4.9.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core",
+          "System.Numerics",
+          "System.Runtime.Serialization"
+        ],
+        "compile": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        },
+        "runtime": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        }
+      },
+      "MSTest.TestAdapter/2.1.1": {
+        "type": "package",
+        "build": {
+          "build/net45/_._": {}
+        }
+      },
+      "OpenTK/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net20/OpenTK.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.dll": {}
+        }
+      },
+      "OpenTK.GLControl/3.1.0": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK": "3.1.0"
+        },
+        "compile": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        }
+      },
+      "System.Buffers/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Buffers.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Buffers.dll": {}
+        }
+      },
+      "System.Memory/4.5.3": {
+        "type": "package",
+        "dependencies": {
+          "System.Buffers": "4.4.0",
+          "System.Numerics.Vectors": "4.4.0",
+          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        }
+      },
+      "System.Numerics.Vectors/4.4.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Numerics",
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net46/System.Numerics.Vectors.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Numerics.Vectors.dll": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
+      "AbstractVectorFileHandler/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        }
+      },
+      "ASPFileHandlerAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        }
+      },
+      "FileHandlerFactory/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ASPFileHandlerAdapter": "1.0.0",
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReader": "1.0.0",
+          "ILTFileReaderAdapter": "1.0.0",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        }
+      },
+      "ILTFileReader/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        }
+      },
+      "ILTFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        }
+      },
+      "ILTFileReaderInterfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "compile": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        }
+      },
+      "ModuleFramework/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "ILTFileReaderInterfaces": "1.0.0",
+          "MSTest.TestAdapter": "2.1.1",
+          "MathNet.Numerics": "4.9.0",
+          "SLMFileReaderAdapter": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        }
+      },
+      "OVFLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/OVFLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OVFLib.dll": {}
+        }
+      },
+      "SLMFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win": {
+      "Google.Protobuf/3.11.4": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.2"
+        },
+        "compile": {
+          "lib/net45/Google.Protobuf.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Google.Protobuf.dll": {}
+        }
+      },
+      "Grpc/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core": "2.28.1"
+        }
+      },
+      "Grpc.Core/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core.Api": "2.28.1",
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "native": {
+          "runtimes/win/native/grpc_csharp_ext.x64.dll": {},
+          "runtimes/win/native/grpc_csharp_ext.x86.dll": {}
+        },
+        "build": {
+          "build/net45/_._": {}
+        }
+      },
+      "Grpc.Core.Api/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        }
+      },
+      "MathNet.Numerics/4.9.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core",
+          "System.Numerics",
+          "System.Runtime.Serialization"
+        ],
+        "compile": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        },
+        "runtime": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        }
+      },
+      "MSTest.TestAdapter/2.1.1": {
+        "type": "package",
+        "build": {
+          "build/net45/_._": {}
+        }
+      },
+      "OpenTK/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net20/OpenTK.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.dll": {}
+        }
+      },
+      "OpenTK.GLControl/3.1.0": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK": "3.1.0"
+        },
+        "compile": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        }
+      },
+      "System.Buffers/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Buffers.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Buffers.dll": {}
+        }
+      },
+      "System.Memory/4.5.3": {
+        "type": "package",
+        "dependencies": {
+          "System.Buffers": "4.4.0",
+          "System.Numerics.Vectors": "4.4.0",
+          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        }
+      },
+      "System.Numerics.Vectors/4.4.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Numerics",
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net46/System.Numerics.Vectors.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Numerics.Vectors.dll": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
+      "AbstractVectorFileHandler/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        }
+      },
+      "ASPFileHandlerAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        }
+      },
+      "FileHandlerFactory/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ASPFileHandlerAdapter": "1.0.0",
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReader": "1.0.0",
+          "ILTFileReaderAdapter": "1.0.0",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        }
+      },
+      "ILTFileReader/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        }
+      },
+      "ILTFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        }
+      },
+      "ILTFileReaderInterfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "compile": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        }
+      },
+      "ModuleFramework/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "ILTFileReaderInterfaces": "1.0.0",
+          "MSTest.TestAdapter": "2.1.1",
+          "MathNet.Numerics": "4.9.0",
+          "SLMFileReaderAdapter": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        }
+      },
+      "OVFLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/OVFLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OVFLib.dll": {}
+        }
+      },
+      "SLMFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win-x64": {
+      "Google.Protobuf/3.11.4": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.2"
+        },
+        "compile": {
+          "lib/net45/Google.Protobuf.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Google.Protobuf.dll": {}
+        }
+      },
+      "Grpc/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core": "2.28.1"
+        }
+      },
+      "Grpc.Core/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core.Api": "2.28.1",
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "build": {
+          "build/net45/_._": {}
+        }
+      },
+      "Grpc.Core.Api/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        }
+      },
+      "MathNet.Numerics/4.9.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core",
+          "System.Numerics",
+          "System.Runtime.Serialization"
+        ],
+        "compile": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        },
+        "runtime": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        }
+      },
+      "MSTest.TestAdapter/2.1.1": {
+        "type": "package",
+        "build": {
+          "build/net45/_._": {}
+        }
+      },
+      "OpenTK/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net20/OpenTK.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.dll": {}
+        }
+      },
+      "OpenTK.GLControl/3.1.0": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK": "3.1.0"
+        },
+        "compile": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        }
+      },
+      "System.Buffers/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Buffers.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Buffers.dll": {}
+        }
+      },
+      "System.Memory/4.5.3": {
+        "type": "package",
+        "dependencies": {
+          "System.Buffers": "4.4.0",
+          "System.Numerics.Vectors": "4.4.0",
+          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        }
+      },
+      "System.Numerics.Vectors/4.4.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Numerics",
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net46/System.Numerics.Vectors.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Numerics.Vectors.dll": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
+      "AbstractVectorFileHandler/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        }
+      },
+      "ASPFileHandlerAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        }
+      },
+      "FileHandlerFactory/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ASPFileHandlerAdapter": "1.0.0",
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReader": "1.0.0",
+          "ILTFileReaderAdapter": "1.0.0",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        }
+      },
+      "ILTFileReader/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        }
+      },
+      "ILTFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        }
+      },
+      "ILTFileReaderInterfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "compile": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        }
+      },
+      "ModuleFramework/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "ILTFileReaderInterfaces": "1.0.0",
+          "MSTest.TestAdapter": "2.1.1",
+          "MathNet.Numerics": "4.9.0",
+          "SLMFileReaderAdapter": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        }
+      },
+      "OVFLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/OVFLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OVFLib.dll": {}
+        }
+      },
+      "SLMFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win-x86": {
+      "Google.Protobuf/3.11.4": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.2"
+        },
+        "compile": {
+          "lib/net45/Google.Protobuf.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Google.Protobuf.dll": {}
+        }
+      },
+      "Grpc/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core": "2.28.1"
+        }
+      },
+      "Grpc.Core/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "Grpc.Core.Api": "2.28.1",
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.dll": {}
+        },
+        "build": {
+          "build/net45/_._": {}
+        }
+      },
+      "Grpc.Core.Api/2.28.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.3"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "System"
+        ],
+        "compile": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Grpc.Core.Api.dll": {}
+        }
+      },
+      "MathNet.Numerics/4.9.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core",
+          "System.Numerics",
+          "System.Runtime.Serialization"
+        ],
+        "compile": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        },
+        "runtime": {
+          "lib/net461/MathNet.Numerics.dll": {}
+        }
+      },
+      "MSTest.TestAdapter/2.1.1": {
+        "type": "package",
+        "build": {
+          "build/net45/_._": {}
+        }
+      },
+      "OpenTK/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net20/OpenTK.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.dll": {}
+        }
+      },
+      "OpenTK.GLControl/3.1.0": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK": "3.1.0"
+        },
+        "compile": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        },
+        "runtime": {
+          "lib/net20/OpenTK.GLControl.dll": {}
+        }
+      },
+      "System.Buffers/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Buffers.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Buffers.dll": {}
+        }
+      },
+      "System.Memory/4.5.3": {
+        "type": "package",
+        "dependencies": {
+          "System.Buffers": "4.4.0",
+          "System.Numerics.Vectors": "4.4.0",
+          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        }
+      },
+      "System.Numerics.Vectors/4.4.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Numerics",
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net46/System.Numerics.Vectors.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Numerics.Vectors.dll": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
+      "AbstractVectorFileHandler/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AbstractVectorFileHandler.dll": {}
+        }
+      },
+      "ASPFileHandlerAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ASPFileHandlerAdapter.dll": {}
+        }
+      },
+      "FileHandlerFactory/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ASPFileHandlerAdapter": "1.0.0",
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReader": "1.0.0",
+          "ILTFileReaderAdapter": "1.0.0",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FileHandlerFactory.dll": {}
+        }
+      },
+      "ILTFileReader/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReader.dll": {}
+        }
+      },
+      "ILTFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "ILTFileReaderInterfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderAdapter.dll": {}
+        }
+      },
+      "ILTFileReaderInterfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "compile": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ILTFileReaderInterfaces.dll": {}
+        }
+      },
+      "ModuleFramework/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "ILTFileReaderInterfaces": "1.0.0",
+          "MSTest.TestAdapter": "2.1.1",
+          "MathNet.Numerics": "4.9.0",
+          "SLMFileReaderAdapter": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModuleFramework.dll": {}
+        }
+      },
+      "OVFLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "Grpc": "2.28.1"
+        },
+        "compile": {
+          "bin/placeholder/OVFLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OVFLib.dll": {}
+        }
+      },
+      "SLMFileReaderAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "AbstractVectorFileHandler": "1.0.0",
+          "Google.Protobuf": "3.11.4",
+          "OVFLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SLMFileReaderAdapter.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Google.Protobuf/3.11.4": {
+      "sha512": "dajCxjDCiPyZuqwZCkFJTwhn/0TJ5VesIs4fXvs56ez1VUi68JjhYMMsPjnJ9gcPqJwTMtXMU1WqUdXYiG1x4w==",
+      "type": "package",
+      "path": "google.protobuf/3.11.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "google.protobuf.3.11.4.nupkg.sha512",
+        "google.protobuf.nuspec",
+        "lib/net45/Google.Protobuf.dll",
+        "lib/net45/Google.Protobuf.pdb",
+        "lib/net45/Google.Protobuf.xml",
+        "lib/netstandard1.0/Google.Protobuf.dll",
+        "lib/netstandard1.0/Google.Protobuf.pdb",
+        "lib/netstandard1.0/Google.Protobuf.xml",
+        "lib/netstandard2.0/Google.Protobuf.dll",
+        "lib/netstandard2.0/Google.Protobuf.pdb",
+        "lib/netstandard2.0/Google.Protobuf.xml"
+      ]
+    },
+    "Grpc/2.28.1": {
+      "sha512": "tvRfP8t1Xfg2QNFipT2LmiOlcVLFTYlP/5eEVjGKOzmF794T76RLIJYBPu/Fx1KwWu5GmiXHINKG+QWC3nHNlg==",
+      "type": "package",
+      "path": "grpc/2.28.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "grpc.2.28.1.nupkg.sha512",
+        "grpc.nuspec"
+      ]
+    },
+    "Grpc.Core/2.28.1": {
+      "sha512": "UrNi6xxK6eaTtXsQqm0WpR70ivT+O2LOis6SCLgyok1BTSs/mgZy/fGjABguNT2WB1G4bE46uqAKmXoSBt7jSw==",
+      "type": "package",
+      "path": "grpc.core/2.28.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/MonoAndroid10/Grpc.Core.targets",
+        "build/Xamarin.iOS10/Grpc.Core.targets",
+        "build/net45/Grpc.Core.targets",
+        "grpc.core.2.28.1.nupkg.sha512",
+        "grpc.core.nuspec",
+        "lib/net45/Grpc.Core.dll",
+        "lib/net45/Grpc.Core.pdb",
+        "lib/net45/Grpc.Core.xml",
+        "lib/netstandard1.5/Grpc.Core.dll",
+        "lib/netstandard1.5/Grpc.Core.pdb",
+        "lib/netstandard1.5/Grpc.Core.xml",
+        "lib/netstandard2.0/Grpc.Core.dll",
+        "lib/netstandard2.0/Grpc.Core.pdb",
+        "lib/netstandard2.0/Grpc.Core.xml",
+        "native/android/arm64-v8a/libgrpc_csharp_ext.so",
+        "native/android/armeabi-v7a/libgrpc_csharp_ext.so",
+        "native/android/x86/libgrpc_csharp_ext.so",
+        "native/ios/universal/libgrpc.a",
+        "native/ios/universal/libgrpc_csharp_ext.a",
+        "runtimes/linux/native/libgrpc_csharp_ext.x64.so",
+        "runtimes/linux/native/libgrpc_csharp_ext.x86.so",
+        "runtimes/osx/native/libgrpc_csharp_ext.x64.dylib",
+        "runtimes/osx/native/libgrpc_csharp_ext.x86.dylib",
+        "runtimes/win/native/grpc_csharp_ext.x64.dll",
+        "runtimes/win/native/grpc_csharp_ext.x86.dll"
+      ]
+    },
+    "Grpc.Core.Api/2.28.1": {
+      "sha512": "ho/QAdmZFwxhl0pKVfKuACMHjC/X1/p2r20lv7M58/GD/oU/O8frrzbNjUTg7ZCJoyjHVrF5uW/uVSZVXMjq9w==",
+      "type": "package",
+      "path": "grpc.core.api/2.28.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "grpc.core.api.2.28.1.nupkg.sha512",
+        "grpc.core.api.nuspec",
+        "lib/net45/Grpc.Core.Api.dll",
+        "lib/net45/Grpc.Core.Api.pdb",
+        "lib/net45/Grpc.Core.Api.xml",
+        "lib/netstandard1.5/Grpc.Core.Api.dll",
+        "lib/netstandard1.5/Grpc.Core.Api.pdb",
+        "lib/netstandard1.5/Grpc.Core.Api.xml",
+        "lib/netstandard2.0/Grpc.Core.Api.dll",
+        "lib/netstandard2.0/Grpc.Core.Api.pdb",
+        "lib/netstandard2.0/Grpc.Core.Api.xml"
+      ]
+    },
+    "MathNet.Numerics/4.9.0": {
+      "sha512": "4cYzhuMDq57oC6lwhMmuigdhP+oywmp1bMtFzvzz4wYr5eWbg0JLDPo/L1juqDkIBj+rc3FrxUEX7jcHRmnF+w==",
+      "type": "package",
+      "path": "mathnet.numerics/4.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/MathNet.Numerics.dll",
+        "lib/net40/MathNet.Numerics.xml",
+        "lib/net461/MathNet.Numerics.dll",
+        "lib/net461/MathNet.Numerics.xml",
+        "lib/netstandard1.3/MathNet.Numerics.dll",
+        "lib/netstandard1.3/MathNet.Numerics.xml",
+        "lib/netstandard2.0/MathNet.Numerics.dll",
+        "lib/netstandard2.0/MathNet.Numerics.xml",
+        "mathnet.numerics.4.9.0.nupkg.sha512",
+        "mathnet.numerics.nuspec"
+      ]
+    },
+    "MSTest.TestAdapter/2.1.1": {
+      "sha512": "913cbQHPnGOCCYJKPDqcjI1IbPkugHOiheuSmd5m4LKLdXJbKJX1AxUu7F7uAMxCNdtLA34ZOgFe5WNDcWhY2Q==",
+      "type": "package",
+      "path": "mstest.testadapter/2.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "build/_common/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll",
+        "build/_common/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll",
+        "build/_common/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
+        "build/_common/Microsoft.VisualStudio.TestPlatform.TestFramework.dll",
+        "build/_common/cs/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/cs/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/cs/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/de/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/de/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/de/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/es/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/es/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/es/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/fr/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/fr/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/fr/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/it/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/it/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/it/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/ja/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/ja/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/ja/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/ko/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/ko/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/ko/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/pl/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/pl/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/pl/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/pt/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/pt/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/pt/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/ru/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/ru/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/ru/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/tr/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/tr/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/tr/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/zh-Hans/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/zh-Hans/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/zh-Hans/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/_common/zh-Hant/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll",
+        "build/_common/zh-Hant/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll",
+        "build/_common/zh-Hant/Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll",
+        "build/net45/MSTest.TestAdapter.props",
+        "build/net45/MSTest.TestAdapter.targets",
+        "build/netcoreapp1.0/MSTest.TestAdapter.props",
+        "build/netcoreapp1.0/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
+        "build/uap10.0/MSTest.TestAdapter.props",
+        "build/uap10.0/MSTest.TestAdapter.targets",
+        "build/uap10.0/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
+        "mstest.testadapter.2.1.1.nupkg.sha512",
+        "mstest.testadapter.nuspec"
+      ]
+    },
+    "OpenTK/3.1.0": {
+      "sha512": "xoP5kb81lRSY5RzbntaFA9yXK+aGF5SLShhns55MyZtxtNafIxRH5KvRTFss/N653brTzE+AfepjKsbMexYlBQ==",
+      "type": "package",
+      "path": "opentk/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/OpenTK.dll.config",
+        "lib/net20/OpenTK.dll",
+        "lib/net20/OpenTK.pdb",
+        "lib/net20/OpenTK.xml",
+        "opentk.3.1.0.nupkg.sha512",
+        "opentk.nuspec"
+      ]
+    },
+    "OpenTK.GLControl/3.1.0": {
+      "sha512": "BjDzF+MhJd2LaZYzkXmgkzzXgHAko/Iur4rGy6+DPdZA1Jcc0X6jXZ6QsUsjlLRNzgevO7uAj2h1TqX7sguaYg==",
+      "type": "package",
+      "path": "opentk.glcontrol/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/OpenTK.GLControl.dll",
+        "lib/net20/OpenTK.GLControl.pdb",
+        "lib/net20/OpenTK.GLControl.xml",
+        "opentk.glcontrol.3.1.0.nupkg.sha512",
+        "opentk.glcontrol.nuspec"
+      ]
+    },
+    "System.Buffers/4.4.0": {
+      "sha512": "AwarXzzoDwX6BgrhjoJsk6tUezZEozOT5Y9QKF94Gl4JK91I4PIIBkBco9068Y9/Dra8Dkbie99kXB8+1BaYKw==",
+      "type": "package",
+      "path": "system.buffers/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.1/System.Buffers.dll",
+        "lib/netstandard1.1/System.Buffers.xml",
+        "lib/netstandard2.0/System.Buffers.dll",
+        "lib/netstandard2.0/System.Buffers.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.1/System.Buffers.dll",
+        "ref/netstandard1.1/System.Buffers.xml",
+        "ref/netstandard2.0/System.Buffers.dll",
+        "ref/netstandard2.0/System.Buffers.xml",
+        "system.buffers.4.4.0.nupkg.sha512",
+        "system.buffers.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Memory/4.5.3": {
+      "sha512": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA==",
+      "type": "package",
+      "path": "system.memory/4.5.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.1/_._",
+        "lib/netstandard1.1/System.Memory.dll",
+        "lib/netstandard1.1/System.Memory.xml",
+        "lib/netstandard2.0/System.Memory.dll",
+        "lib/netstandard2.0/System.Memory.xml",
+        "ref/netcoreapp2.1/_._",
+        "system.memory.4.5.3.nupkg.sha512",
+        "system.memory.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Numerics.Vectors/4.4.0": {
+      "sha512": "UiLzLW+Lw6HLed1Hcg+8jSRttrbuXv7DANVj0DkL9g6EnnzbL75EB7EWsw5uRbhxd/4YdG8li5XizGWepmG3PQ==",
+      "type": "package",
+      "path": "system.numerics.vectors/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Numerics.Vectors.dll",
+        "lib/net46/System.Numerics.Vectors.xml",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.Numerics.Vectors.dll",
+        "lib/netstandard1.0/System.Numerics.Vectors.xml",
+        "lib/netstandard2.0/System.Numerics.Vectors.dll",
+        "lib/netstandard2.0/System.Numerics.Vectors.xml",
+        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
+        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Numerics.Vectors.dll",
+        "ref/net46/System.Numerics.Vectors.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.0/System.Numerics.Vectors.dll",
+        "ref/netstandard1.0/System.Numerics.Vectors.xml",
+        "ref/netstandard2.0/System.Numerics.Vectors.dll",
+        "ref/netstandard2.0/System.Numerics.Vectors.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.numerics.vectors.4.4.0.nupkg.sha512",
+        "system.numerics.vectors.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+      "sha512": "wprSFgext8cwqymChhrBLu62LMg/1u92bU+VOwyfBimSPVFXtsNqEWC92Pf9ofzJFlk4IHmJA75EDJn1b2goAQ==",
+      "type": "package",
+      "path": "system.runtime.compilerservices.unsafe/4.5.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+        "system.runtime.compilerservices.unsafe.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "AbstractVectorFileHandler/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/laservectorformat/_FileReaderWriter/AbstractVectorFileHandler/AbstractVectorFileHandler.csproj",
+      "msbuildProject": "../FileReader/laservectorformat/_FileReaderWriter/AbstractVectorFileHandler/AbstractVectorFileHandler.csproj"
+    },
+    "ASPFileHandlerAdapter/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/laservectorformat/ASP/ASPFileHandlerAdapter/ASPFileHandlerAdapter.csproj",
+      "msbuildProject": "../FileReader/laservectorformat/ASP/ASPFileHandlerAdapter/ASPFileHandlerAdapter.csproj"
+    },
+    "FileHandlerFactory/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/laservectorformat/_FileReaderWriter/FileHandlerFactory/FileHandlerFactory.csproj",
+      "msbuildProject": "../FileReader/laservectorformat/_FileReaderWriter/FileHandlerFactory/FileHandlerFactory.csproj"
+    },
+    "ILTFileReader/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/laservectorformat/CLI_ILT/iltFileReader/ILTFileReader/ILTFileReader.csproj",
+      "msbuildProject": "../FileReader/laservectorformat/CLI_ILT/iltFileReader/ILTFileReader/ILTFileReader.csproj"
+    },
+    "ILTFileReaderAdapter/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/laservectorformat/CLI_ILT/ILTFileReaderAdapter/ILTFileReaderAdapter.csproj",
+      "msbuildProject": "../FileReader/laservectorformat/CLI_ILT/ILTFileReaderAdapter/ILTFileReaderAdapter.csproj"
+    },
+    "ILTFileReaderInterfaces/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/laservectorformat/CLI_ILT/iltFileReader/ILTFileReaderInterfaces/ILTFileReaderInterfaces.csproj",
+      "msbuildProject": "../FileReader/laservectorformat/CLI_ILT/iltFileReader/ILTFileReaderInterfaces/ILTFileReaderInterfaces.csproj"
+    },
+    "ModuleFramework/1.0.0": {
+      "type": "project",
+      "path": "../ModuleFramework/ModuleFramework/ModuleFramework.csproj",
+      "msbuildProject": "../ModuleFramework/ModuleFramework/ModuleFramework.csproj"
+    },
+    "OVFLib/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/laservectorformat/OVF/OVFLib/OVFLib.csproj",
+      "msbuildProject": "../FileReader/laservectorformat/OVF/OVFLib/OVFLib.csproj"
+    },
+    "SLMFileReaderAdapter/1.0.0": {
+      "type": "project",
+      "path": "../FileReader/FileReader/SLMFileReaderAdapter/SLMFileReaderAdapter.csproj",
+      "msbuildProject": "../FileReader/FileReader/SLMFileReaderAdapter/SLMFileReaderAdapter.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "AbstractVectorFileHandler >= 1.0.0",
+      "FileHandlerFactory >= 1.0.0",
+      "ModuleFramework >= 1.0.0",
+      "OpenTK >= 3.1.0",
+      "OpenTK.GLControl >= 3.1.0",
+      "SLMFileReaderAdapter >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Wanja\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\LayerViewer\\LayerViewer.csproj",
+      "projectName": "LayerViewer",
+      "projectPath": "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\LayerViewer\\LayerViewer.csproj",
+      "packagesPath": "C:\\Users\\Wanja\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\LayerViewer\\obj\\",
+      "projectStyle": "PackageReference",
+      "skipContentFileWrite": true,
+      "configFilePaths": [
+        "C:\\Users\\Wanja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net472"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "http://nuget.org": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net472": {
+          "projectReferences": {
+            "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\FileReader\\FileReader\\SLMFileReaderAdapter\\SLMFileReaderAdapter.csproj": {
+              "projectPath": "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\FileReader\\FileReader\\SLMFileReaderAdapter\\SLMFileReaderAdapter.csproj"
+            },
+            "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\FileReader\\laservectorformat\\_FileReaderWriter\\AbstractVectorFileHandler\\AbstractVectorFileHandler.csproj": {
+              "projectPath": "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\FileReader\\laservectorformat\\_FileReaderWriter\\AbstractVectorFileHandler\\AbstractVectorFileHandler.csproj"
+            },
+            "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\FileReader\\laservectorformat\\_FileReaderWriter\\FileHandlerFactory\\FileHandlerFactory.csproj": {
+              "projectPath": "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\FileReader\\laservectorformat\\_FileReaderWriter\\FileHandlerFactory\\FileHandlerFactory.csproj"
+            },
+            "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\ModuleFramework\\ModuleFramework\\ModuleFramework.csproj": {
+              "projectPath": "C:\\Users\\Wanja\\Documents\\RWTH Repo\\modularLPBFSimulator\\ModuleFramework\\ModuleFramework\\ModuleFramework.csproj"
+            }
+          }
+        }
+      }
+    },
+    "frameworks": {
+      "net472": {
+        "dependencies": {
+          "OpenTK": {
+            "target": "Package",
+            "version": "[3.1.0, )"
+          },
+          "OpenTK.GLControl": {
+            "target": "Package",
+            "version": "[3.1.0, )"
+          }
+        }
+      }
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}
