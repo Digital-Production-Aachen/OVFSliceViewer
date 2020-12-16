@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LayerViewer.Classes
+namespace OVFSliceViewer.Classes
 {
     public class FileHandlerProgress : IFileHandlerProgress
     {

@@ -1,4 +1,4 @@
-﻿using LayerViewer.Classes;
+﻿using OVFSliceViewer.Classes;
 using OpenTK;
 using OpenVectorFormat;
 using ProceduralControl;
@@ -31,11 +31,11 @@ namespace OVFSliceViewer
         {
             if (e.Delta > 0)
             {
-                _painter.Scale(true);
+                _painter.Camera.Zoom(true);
             }
             else
             {
-                _painter.Scale(false);
+                _painter.Camera.Zoom(false);
             }
             _painter.Draw();
         }
@@ -44,17 +44,17 @@ namespace OVFSliceViewer
         {
             int layernumber = layerTrackBar.Value;
             var mapper = new VectorblockToLineMapper();
-            var height = 0f;
+            int fromLayer;
 
-            for (int j = layernumber; j < layernumber+1; j++)
+            fromLayer = true ? layernumber : 0;
+
+            for (int j = fromLayer; j < layernumber+1; j++)
             {
                 if (_currentFile != null && _currentFile.FileLoadingFinished)
                 {
                     var workplane = _currentFile.GetWorkPlane(j);
                     var blocks = workplane.VectorBlocks;
                     var numBlocks = blocks.Count();
-                    height = workplane.ZPosInMm;
-                    //_currentFile.
 
                     for (int i = 0; i < numBlocks; i++)
                     {
@@ -112,6 +112,8 @@ namespace OVFSliceViewer
 
             Console.WriteLine(_viewerJob.Center.ToString());
             _painter.Camera.MoveToPosition2D(_viewerJob.Center);
+
+            DrawWorkplane();
         }
         
         public void LoadJob(FileReader fileReader)

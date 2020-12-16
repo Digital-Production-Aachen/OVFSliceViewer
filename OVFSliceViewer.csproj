@@ -82,6 +82,7 @@
     <Compile Include="Classes\FileHandlerProgress.cs" />
     <Compile Include="Classes\MotionTracker.cs" />
     <Compile Include="Classes\JobViewer.cs" />
+    <Compile Include="Classes\Shader\Shader.cs" />
     <Compile Include="Interfaces\IRotateable.cs" />
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Classes\VectorWithColorFactory.cs" />
@@ -112,6 +113,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Classes\Shader\shader.frag" />
+    <None Include="Classes\Shader\shader.vert" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

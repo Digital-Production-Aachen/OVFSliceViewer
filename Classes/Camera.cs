@@ -31,14 +31,15 @@ namespace OVFSliceViewer
                 (RotationMatrixYaw * _cameraTarget),
                 RotationMatrixYaw * RotationMatrixPitch * Vector3.UnitY
                 );
+
+        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, 0.1f, 100f);
         public Camera(float canvasWidth, float canvasHeight)
         {
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
-
             _fieldOfView = ((float)Math.PI / 180) * 80;
+            
             _aspectRatio = Convert.ToSingle(_canvasWidth) / Convert.ToSingle(_canvasHeight);
-
             _position = new Vector3(0, 0, 50f);
             _cameraTarget = Vector3.Zero;
         }
@@ -104,8 +105,6 @@ namespace OVFSliceViewer
 
         public void ChangeHeight(float deltaZ)
         {
-            //var deltaZ = newZ - ObjectHeight;
-
             ObjectHeight += deltaZ;
             _position.Z += deltaZ;
         }
