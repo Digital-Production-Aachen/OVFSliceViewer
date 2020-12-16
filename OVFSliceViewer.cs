@@ -68,8 +68,7 @@ namespace OVFSliceViewer
 
             var vertices = mapper.GetVertices();
             _numberOfLines = vertices.Count() / 2;
-            _painter.SetLinesToDraw(vertices, _numberOfLines+1);
-            _painter.Camera.ChangeHeight(height);
+            _painter.SetLinesAndDraw(vertices, _numberOfLines+1);
 
             mapper.Dispose();
             mapper = null;

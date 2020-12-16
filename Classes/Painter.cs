@@ -81,13 +81,16 @@ namespace OVFSliceViewer
 
             Camera.MoveToPosition2D(center);
         }
-
-        public void SetLinesToDraw(Vertex[] vertices, int numberOfLinesToDraw = 0)
+        public void SetLines(Vertex[] vertices, int numberOfLinesToDraw = 0)
         {
             _vertices = null;
             _vertices = vertices;
-            SetNumberOfLinesToDraw(numberOfLinesToDraw);
-            //TargetCenter();
+
+            _numberOfLinesToDraw = numberOfLinesToDraw;
+        }
+        public void SetLinesAndDraw(Vertex[] vertices, int numberOfLinesToDraw = 0)
+        {
+            SetLines(vertices, numberOfLinesToDraw);
 
             var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
