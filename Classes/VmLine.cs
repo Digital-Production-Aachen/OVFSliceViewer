@@ -1,4 +1,4 @@
-﻿namespace LayerViewer
+﻿namespace OVFSliceViewer
 {
     public class VmLine
     {

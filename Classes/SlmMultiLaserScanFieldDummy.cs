@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LayerViewer
+namespace OVFSliceViewer
 {
     public class SlmMultiLaserScanFieldDummy : ISlmMultiLaserScanFieldSettings
     {

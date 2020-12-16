@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LayerViewer.Classes
+namespace OVFSliceViewer.Classes
 {
     public class ColorDictionary
     {
@@ -33,16 +33,16 @@ namespace LayerViewer.Classes
 
             _colors = new Dictionary<VectorBlock.Types.PartArea, Vector4>()
             {
-                { VectorBlock.Types.PartArea.Contour, _rWTHColors[0] },
-                { VectorBlock.Types.PartArea.TransitionContour, _rWTHColors[1] },
+                { VectorBlock.Types.PartArea.Contour, _rWTHColors[1] },
+                { VectorBlock.Types.PartArea.TransitionContour, _rWTHColors[2] },
                 { VectorBlock.Types.PartArea.Volume, new Vector4(1f,0f,0f,0f) }
             };
 
             _colorsSkinType = new Dictionary<VectorBlock.Types.LPBFMetadata.Types.SkinType, Vector4>()
             {
-                { VectorBlock.Types.LPBFMetadata.Types.SkinType.DownSkin, _rWTHColors[2] },
-                { VectorBlock.Types.LPBFMetadata.Types.SkinType.InSkin, _rWTHColors[3] },
-                { VectorBlock.Types.LPBFMetadata.Types.SkinType.UpSkin, _rWTHColors[4] }
+                { VectorBlock.Types.LPBFMetadata.Types.SkinType.DownSkin, _rWTHColors[3] },
+                { VectorBlock.Types.LPBFMetadata.Types.SkinType.InSkin, _rWTHColors[4] },
+                { VectorBlock.Types.LPBFMetadata.Types.SkinType.UpSkin, _rWTHColors[5] }
             };
         }
 

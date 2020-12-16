@@ -1,6 +1,6 @@
-﻿namespace LayerViewer
+﻿namespace OVFSliceViewer
 {
-    partial class LayerViewer
+    partial class OVFSliceViewer
     {
         /// <summary>
         /// Required designer variable.

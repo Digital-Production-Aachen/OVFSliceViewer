@@ -1,5 +1,5 @@
 ﻿using Google.Protobuf.Collections;
-using LayerViewer.Classes;
+using OVFSliceViewer.Classes;
 using OpenTK;
 using OpenVectorFormat;
 using System;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static OpenVectorFormat.VectorBlock.Types;
 
-namespace LayerViewer
+namespace OVFSliceViewer
 {
     public class VectorblockToLineMapper
     {
@@ -33,26 +33,49 @@ namespace LayerViewer
             VectorBlockToViewModel();
         }
 
-        public List<Vertex> GetVertices()
+        public Vertex[] GetVertices()
         {
-            var list = new List<Vertex>();
+            //var grid = Grid().ToList();
+            //var gridcount = grid.Count();
+            var gridcount = 0;
+            var linecount = _lines.Count();
+            var vertices = new Vertex[gridcount + linecount*2];
+            //new List<Vertex>();
 
-            foreach (var item in _lines)
+            //for (int i = 0; i < gridcount; i++)
+            //{
+            //    vertices[i] = grid[i];
+            //}
+            for (int i = 0; i < linecount; i++)
             {
-                list.Add(new Vertex
+                vertices[2*i+gridcount] = new Vertex
                 {
-                    Color = item.Start.Color,
-                    Position = item.Start.Position
-                });
-
-                list.Add(new Vertex
+                    Color = _lines[i].Start.Color,
+                    Position = _lines[i].Start.Position
+                };
+                vertices[2*i+1 + gridcount] = new Vertex
                 {
-                    Color = item.Ende.Color,
-                    Position = item.Ende.Position
-                });
+                    Color = _lines[i].Ende.Color,
+                    Position = _lines[i].Ende.Position
+                };
             }
 
-            return list;
+            //foreach (var item in _lines)
+            //{
+            //    list.Add(new Vertex
+            //    {
+            //        Color = item.Start.Color,
+            //        Position = item.Start.Position
+            //    });
+
+            //    list.Add(new Vertex
+            //    {
+            //        Color = item.Ende.Color,
+            //        Position = item.Ende.Position
+            //    });
+            //}
+
+            return vertices;
         }
 
 
@@ -99,7 +122,7 @@ namespace LayerViewer
             var points = _vectorBlock.LineSequence.Points;
             var list = new List<VmLine>();
 
-            for (int i = 3; i < points.Count(); i += 2)
+            for (int i = 3; i <= points.Count(); i += 2)
             {
                 var positionStart = new Vector3(points[i - 3], points[i - 2], _height);
                 var positionEnd = new Vector3(points[i - 1], points[i], _height);
@@ -117,7 +140,7 @@ namespace LayerViewer
             var points = lineSequenceParaAdapt.PointsWithParas;
             var list = new List<VmLine>();
 
-            for (int i = 5; i < points.Count(); i += 3)
+            for (int i = 5; i <= points.Count(); i += 3)
             {
                 var positionStart = new Vector3(points[i - 5], points[i - 4], _height);
                 var positionEnd = new Vector3(points[i - 2], points[i - 1], _height);
@@ -135,7 +158,7 @@ namespace LayerViewer
         {
             var points = _vectorBlock.Hatches.Points;
             var list = new List<VmLine>();
-            for (int i = 3; i < points.Count; i += 4)
+            for (int i = 3; i <= points.Count; i += 4)
             {
                 var positionStart = new Vector3(points[i - 3], points[i - 2], _height);
                 var positionEnd = new Vector3(points[i - 1], points[i - 0], _height);
@@ -162,5 +185,49 @@ namespace LayerViewer
             return list;
         }
 
+
+        private Vertex[] Grid()
+        {
+            int gridDistance = 10;
+            int gridSize = 100;
+
+            var numberOfLines = gridSize / gridDistance;
+            ColorDictionary colorDictionary = new ColorDictionary();
+
+            var grid = new Vertex[4 * numberOfLines + 8];
+
+            for (int i = 0; i < 2 * numberOfLines + 2; i += 2)
+            {
+                grid[i] = new Vertex
+                {
+                    Color = new Vector4(0f, 84f / 255f, 159f / 255f, 0f),
+                    Position = new Vector3((-gridSize / 2) + i / 2 * gridDistance, -gridSize / 2, 0)
+                };
+                grid[i + 1] = new Vertex
+                {
+                    Color = new Vector4(0f, 84f / 255f, 159f / 255f, 0f),
+                    Position = new Vector3((-gridSize / 2) + i / 2 * gridDistance, gridSize / 2, 0)
+                };
+
+                grid[i + 2 * numberOfLines + 4] = new Vertex
+                {
+                    Color = new Vector4(0f, 84f / 255f, 159f / 255f, 0f),
+                    Position = new Vector3((-gridSize / 2), (-gridSize / 2) + i / 2 * gridDistance, 0)
+                };
+                grid[i + 2 * numberOfLines + +1 + 4] = new Vertex
+                {
+                    Color = new Vector4(0f, 84f / 255f, 159f / 255f, 0f),
+                    Position = new Vector3((gridSize / 2), (-gridSize / 2) + i / 2 * gridDistance, 0)
+                };
+            }
+
+            return grid;
+
+        }
+
+        public void Dispose()
+        {
+            _lines = null;
+        }
     }
 }

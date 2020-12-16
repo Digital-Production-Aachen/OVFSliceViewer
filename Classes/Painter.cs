@@ -12,9 +12,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LayerViewer
+namespace OVFSliceViewer
 {
-    public class Painter: IMoveable
+    public class Painter
     {
         protected GLControl _gl;
         protected Form _parent;
@@ -23,7 +23,6 @@ namespace LayerViewer
         protected float _deltaX;
         protected float _deltaY;
         protected Matrix4 _view;
-        //protected Matrix4 _scale;
         protected Matrix4 _projection;
         protected Matrix4 _translate;
         protected float _fieldOfView;
@@ -32,8 +31,8 @@ namespace LayerViewer
         protected bool _is2D = true;
         protected float _zHeight;
         protected Thread _thread;
-        int _numberOfRuns = 0;
-        int _numberOfStops = 0;
+        public Camera Camera { get; set; }
+        public IRotateable Rotation => Camera;
         int _mvp;
         PaintEventHandler _test;
         public Painter(GLControl gl, Form parent)
@@ -52,8 +51,10 @@ namespace LayerViewer
             _test = new System.Windows.Forms.PaintEventHandler(this.GLControl_Paint);
             _gl.Paint += _test;
             //_gl.Resize += new EventHandler(glControl_Resize);
-            
-            InitCamera();
+
+            Camera = new Camera(_gl.Width, _gl.Height);
+
+            //_camera123.InitCamera();
             _fieldOfView = ((float)Math.PI / 180) * 80;
             _aspectRatio = Convert.ToSingle(_gl.Width) / Convert.ToSingle(_gl.Height);
             _projection = Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio /*640.0f / 480.0f*/, 0.1f, 100f);
@@ -73,71 +74,12 @@ namespace LayerViewer
             //GL.MatrixMode(MatrixMode.Projection);
             //GL.LoadMatrix(ref perpective);
         }
-        public void test()
-        {
-            _isDrawing = false;
-            Console.WriteLine("test");
-        }
 
         protected float Scalefactor = 1.25f;
-        public void Scale(float scalefactor)
+        public void Scale(bool scalefactor) 
         {
-            var zObject = _vertices[0].Position.Z;
-            Scalefactor *= scalefactor;
-            _camera.Z = zObject + scalefactor;
-            _camera.Z = _camera.Z - zObject < 0.1f ? zObject + 0.11f : _camera.Z;
-            _camera.Z = _camera.Z - zObject > 100f ? zObject + 99f : _camera.Z;
-            InitCamera();
+            Camera.Zoom(scalefactor);
         }
-
-        protected void InitCamera()
-        {
-            var target = _camera;
-            target.Z = 0;
-            _view = Matrix4.LookAt(_camera, target, OpenTK.Vector3.UnitY);
-        }
-
-        protected Vector3 _camera = new Vector3(0f, 0, 1.25f);
-        protected Vector3 _unmovedCamera = new Vector3(0, 0, 1f);
-        public void Move(System.Numerics.Vector2 delta)
-        {
-            //var temp = _translate.ExtractTranslation();
-
-            //_camera.X -= deltaX/_gl.Width;
-            //_camera.Y -= deltaY/_gl.Height;
-            var test = new Vector4(2f * delta.X / 1.678f / 1564f, 2f * delta.Y / 1.678f / 825f, 0, 1);
-            //test = test * _projection ;
-
-            if (_isMoving)
-            {
-                var deltaZ = _camera.Z - _vertices[0].Position.Z;
-                var deltaXInPicture = (2 * delta.X / _gl.Width) * Math.Tan(_fieldOfView / 2) * deltaZ * _aspectRatio;
-                var deltaYInPicture = (2 * delta.Y / _gl.Height) * Math.Tan(_fieldOfView / 2) * deltaZ;
-                _camera.X = _unmovedCamera.X - Convert.ToSingle(deltaXInPicture);
-                _camera.Y = _unmovedCamera.Y + Convert.ToSingle(deltaYInPicture);
-            }
-            else
-            {
-                _camera.X -= test.X;
-                _camera.Y -= test.Y;
-            }
-
-            InitCamera();
-
-            //_translate = Matrix4.CreateTranslation(temp.X+deltaX, temp.Y+deltaY, temp.Z);
-        }
-        public void StartMove()
-        {
-            _isMoving = true;
-            _unmovedCamera = _camera;
-        }
-        public void StopMove()
-        {
-            _isMoving = false;
-        }
-        protected bool _isMoving = false;
-
-        Vector3 _targetCenter = new Vector3();
         protected void TargetCenter()
         {
             var minX = _vertices.Min(x => x.Position.X);
@@ -148,12 +90,13 @@ namespace LayerViewer
 
             var activeTranslation = _translate.ExtractTranslation();
 
-            _targetCenter.X = minX + (maxX - minX) / 2;
-            _targetCenter.Y = minY + (maxY - minY) / 2;
+            //_targetCenter.X = minX + (maxX - minX) / 2;
+            //_targetCenter.Y = minY + (maxY - minY) / 2;
         }
 
         public void SetLinesToDraw(Vertex[] vertices, int numberOfLinesToDraw = 0)
         {
+            _vertices = null;
             _vertices = vertices;
             SetNumberOfLinesToDraw(numberOfLinesToDraw);
             //TargetCenter();
@@ -163,16 +106,14 @@ namespace LayerViewer
             GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            if (_is2D)
+            if (_vertices.Any())
             {
                 var zHeight = _vertices[0].Position.Z;
-
                 if (zHeight != _zHeight)
                 {
                     //MoveCamera(zHeight - _zHeight);
-                    _camera.Z += (zHeight - _zHeight);
+                    Camera.ChangeHeight(zHeight- _zHeight);
                     _zHeight = zHeight;
-                    InitCamera();
                 }
             }
         }
@@ -209,8 +150,6 @@ namespace LayerViewer
                 "#version 150 core\n" +
                 "uniform mat4 Mvp; in vec4 color; in vec3 position; out vec4 fragcolor; void main() { gl_Position = Mvp * vec4(position, 1); fragcolor = color; }";
 
-            // The most basic of fragment shaders.
-            //const string fragmentShaderCode = "in vec4 fragcolor; out vec4 FragColor; void main() { FragColor = fragcolor; }";
             const string fragmentShaderCode = "#version 150 core\n" +
                 "in vec4 fragcolor; out vec4 FragColor; void main() { FragColor = fragcolor; }";
 
@@ -253,9 +192,9 @@ namespace LayerViewer
                 // Clear color and depth buffers
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-                var model = Matrix4.CreateFromAxisAngle(OpenTK.Vector3.UnitY, 0);   // Create rotation matrix
-                //Matrix4 modelViewProjection = _scale * _translate * model * _view * _projection;
-                Matrix4 modelViewProjection = _translate * model * _view * _projection;
+                //var rotate = Matrix4.CreateFromAxisAngle(OpenTK.Vector3.UnitY, 0);   // Create rotation matrix
+                //Matrix4 modelViewProjection = _scale * _translate * rotate * _view * _projection;
+                Matrix4 modelViewProjection = _translate * Camera.TransformationMatrix * _projection;
                 GL.UniformMatrix4(_mvp, false, ref modelViewProjection);
 
                 GL.BindVertexArray(_vertexArray);
@@ -269,12 +208,12 @@ namespace LayerViewer
         int _vertexBuffer;
         int _vertexArray;
         Vertex[] _vertices = new Vertex[6]{
-                new Vertex { Color = new OpenTK.Vector4(255,1,1,0), Position = new OpenTK.Vector3(0.0f, 1f, 0)},
-                new Vertex { Color = new OpenTK.Vector4(255,220,0,0), Position = new OpenTK.Vector3(0.0f, -1f, 0)},
-                new Vertex { Color = new OpenTK.Vector4(255,0,0,0), Position = new OpenTK.Vector3(0.0f, -1f, 0)},
-                new Vertex { Color = new OpenTK.Vector4(255,1,1,0), Position = new OpenTK.Vector3(-1f, 0.0f, 0)},
-                new Vertex { Color = new OpenTK.Vector4(255,1,1,0), Position = new OpenTK.Vector3(-1f, 0.0f, 0)},
-                new Vertex { Color = new OpenTK.Vector4(255,1,1,0), Position = new OpenTK.Vector3(0.0f, 1f, 0)}
+                new Vertex { Color = new OpenTK.Vector4(1,0,0,0), Position = new OpenTK.Vector3(0, 0, 0)},
+                new Vertex { Color = new OpenTK.Vector4(1,0,0,0), Position = new OpenTK.Vector3(20f, 0, 0)},
+                new Vertex { Color = new OpenTK.Vector4(0,1,0,0), Position = new OpenTK.Vector3(0, 0, 0)},
+                new Vertex { Color = new OpenTK.Vector4(0,1,0,0), Position = new OpenTK.Vector3(0, 20f, 0)},
+                new Vertex { Color = new OpenTK.Vector4(0,0,1,0), Position = new OpenTK.Vector3(0, 0, 0)},
+                new Vertex { Color = new OpenTK.Vector4(0,0,1,0), Position = new OpenTK.Vector3(0, 0, 20f)}
         };
         private void CreateVertexBuffer()
         {
@@ -293,7 +232,6 @@ namespace LayerViewer
             }
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
         }
-
 
         private int CreateVertexShader(string code)
         {

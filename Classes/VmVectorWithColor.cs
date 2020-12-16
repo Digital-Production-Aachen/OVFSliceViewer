@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 
-namespace LayerViewer
+namespace OVFSliceViewer
 {
     public class VmVectorWithColor
     {

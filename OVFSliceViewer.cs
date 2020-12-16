@@ -1,43 +1,33 @@
-﻿using Google.Protobuf.Collections;
-using modularEmulator.FileReader.SLMFileReaderAdapter;
-using ModuleFramework.Classes;
-using ModuleFramework.Classes.DynamicAllocation;
+﻿using LayerViewer.Classes;
+using ModularEmulator.ProductView;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 using OpenVectorFormat;
 using ProceduralControl;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LayerViewer
+namespace OVFSliceViewer
 {
-    public partial class LayerViewer : Form
+    public partial class OVFSliceViewer : Form
     {
         Painter _painter;
-        Mover _mover;
+        //Mover _mover;
+        //Rotater _rotater;
+        MotionTracker _motionTracker;
         VectorblockToLineMapper _mapper;
-        public LayerViewer()
+        public OVFSliceViewer()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
             this.glCanvas.MouseWheel += new MouseEventHandler(this.MouseWheelZoom);
 
             _painter = new Painter(glCanvas, this);
-            _mover = new Mover(_painter);
+            _motionTracker = new MotionTracker();
+
+            var size = new Vector2(glCanvas.Width, glCanvas.Height);
+            
             _mapper = new VectorblockToLineMapper();
         }
                 
@@ -46,18 +36,20 @@ namespace LayerViewer
         {
             if (e.Delta > 0)
             {
-                ZoomFaktor -= 0.5f;
-                if (ZoomFaktor <= 0.5f)
-                {
-                    ZoomFaktor = 0.5f;
-                }
+                //ZoomFaktor -= 0.5f;
+                //if (ZoomFaktor <= 0.5f)
+                //{
+                //    ZoomFaktor = 0.5f;
+                //}
+                _painter.Scale(true);
             }
             else
             {
+                _painter.Scale(false);
                 ZoomFaktor += 0.5f;
             }
 
-            _painter.Scale(ZoomFaktor);
+            //_painter.Scale(ZoomFaktor);
         }
 
         int _numberOfLines = 3;
@@ -65,22 +57,34 @@ namespace LayerViewer
         {
             int layernumber = layerTrackBar.Value;
             _mapper = new VectorblockToLineMapper();
+            var height = 0f;
 
-            if (CurrentFile != null && CurrentFile.FileLoadingFinished)
+            for (int j = layernumber; j < layernumber+1; j++)
             {
-                var workplane = CurrentFile.GetWorkPlane(layernumber);
-                var blocks = workplane.VectorBlocks;
-                var numBlocks = blocks.Count();
-
-                for (int i = 0; i < numBlocks; i++)
+                if (CurrentFile != null && CurrentFile.FileLoadingFinished)
                 {
-                    _mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
-                }
+                    var workplane = CurrentFile.GetWorkPlane(j);
+                    var blocks = workplane.VectorBlocks;
+                    var numBlocks = blocks.Count();
+                    height = workplane.ZPosInMm;
 
-                var vertices = _mapper.GetVertices();
-                _numberOfLines = vertices.Count() / 2;
-                _painter.SetLinesToDraw(vertices.ToArray(), _numberOfLines);
+                    for (int i = 0; i < numBlocks; i++)
+                    {
+                        if (blocks[i].LPbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour || j == layernumber)
+                        {
+                            _mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
+                        }
+                    }
+                }
             }
+
+            var vertices = _mapper.GetVertices();
+            _numberOfLines = vertices.Count() / 2;
+            _painter.SetLinesToDraw(vertices, _numberOfLines+1);
+            _painter.Camera.ChangeHeight(height);
+
+            _mapper.Dispose();
+            _mapper = null;
         }
         private void SetTimeTrackBar(int numberOfLines)
         {
@@ -138,15 +142,33 @@ namespace LayerViewer
 
         private void canvasMouseDown(object sender, MouseEventArgs e)
         {
-            _mover.StartMovement(new System.Numerics.Vector2(MousePosition.X, MousePosition.Y));
+            var position = new Vector2(MousePosition.X, MousePosition.Y);
+
+            if (e.Button == MouseButtons.Middle/* || e.Button == MouseButtons.Left*/)
+            {
+                _motionTracker.Start(position);
+            }
         }
         private void CameraMoveMouseUp(object sender, MouseEventArgs e)
         {
-            _mover.StopMovement(new System.Numerics.Vector2(MousePosition.X, MousePosition.Y));
+            var position = new Vector2(MousePosition.X, MousePosition.Y);
+            if (e.Button == MouseButtons.Middle /*|| e.Button == MouseButtons.Left*/)
+            {
+                _motionTracker.Stop();
+            }
         }
         private void CameraMoveMouseMove(object sender, MouseEventArgs e)
         {
-            _mover.Move(new System.Numerics.Vector2(MousePosition.X, MousePosition.Y));
+            var position = new Vector2(MousePosition.X, MousePosition.Y);
+
+            if (e.Button == MouseButtons.Middle)
+            {
+                _motionTracker.Move(position, _painter.Camera.Move);
+            }
+            //else if (e.Button == MouseButtons.Left)
+            //{
+            //    _motionTracker.Move(position, _painter.Camera.Rotate);
+            //}
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LayerViewer.Properties
+namespace OVFSliceViewer.Properties
 {
 
 

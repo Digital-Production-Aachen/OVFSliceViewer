@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LayerViewer
+namespace OVFSliceViewer
 {
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Vertex
