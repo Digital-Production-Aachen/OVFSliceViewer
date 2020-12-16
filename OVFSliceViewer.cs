@@ -1,5 +1,4 @@
 ﻿using LayerViewer.Classes;
-using ModularEmulator.ProductView;
 using OpenTK;
 using OpenVectorFormat;
 using ProceduralControl;
@@ -12,11 +11,12 @@ namespace OVFSliceViewer
 {
     public partial class OVFSliceViewer : Form
     {
+        JobViewer _viewerJob;
         Painter _painter;
-        //Mover _mover;
-        //Rotater _rotater;
         MotionTracker _motionTracker;
-        VectorblockToLineMapper _mapper;
+        //VectorblockToLineMapper _mapper;
+        int _numberOfLines = 3;
+        FileReader _currentFile { get; set; }
         public OVFSliceViewer()
         {
             InitializeComponent();
@@ -25,74 +25,62 @@ namespace OVFSliceViewer
 
             _painter = new Painter(glCanvas, this);
             _motionTracker = new MotionTracker();
-
-            var size = new Vector2(glCanvas.Width, glCanvas.Height);
-            
-            _mapper = new VectorblockToLineMapper();
         }
-                
-        public float ZoomFaktor { get; set; } = 1.25f;
+
         private void MouseWheelZoom(object sender, MouseEventArgs e)
         {
             if (e.Delta > 0)
             {
-                //ZoomFaktor -= 0.5f;
-                //if (ZoomFaktor <= 0.5f)
-                //{
-                //    ZoomFaktor = 0.5f;
-                //}
                 _painter.Scale(true);
             }
             else
             {
                 _painter.Scale(false);
-                ZoomFaktor += 0.5f;
             }
-
-            //_painter.Scale(ZoomFaktor);
+            _painter.Draw();
         }
 
-        int _numberOfLines = 3;
-        private void DrawWorkplane(bool resetNumDrawBlocks = false)
+        private void DrawWorkplane()
         {
             int layernumber = layerTrackBar.Value;
-            _mapper = new VectorblockToLineMapper();
+            var mapper = new VectorblockToLineMapper();
             var height = 0f;
 
             for (int j = layernumber; j < layernumber+1; j++)
             {
-                if (CurrentFile != null && CurrentFile.FileLoadingFinished)
+                if (_currentFile != null && _currentFile.FileLoadingFinished)
                 {
-                    var workplane = CurrentFile.GetWorkPlane(j);
+                    var workplane = _currentFile.GetWorkPlane(j);
                     var blocks = workplane.VectorBlocks;
                     var numBlocks = blocks.Count();
                     height = workplane.ZPosInMm;
+                    //_currentFile.
 
                     for (int i = 0; i < numBlocks; i++)
                     {
                         if (blocks[i].LPbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour || j == layernumber)
                         {
-                            _mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
+                            mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
                         }
                     }
                 }
             }
 
-            var vertices = _mapper.GetVertices();
+            var vertices = mapper.GetVertices();
             _numberOfLines = vertices.Count() / 2;
             _painter.SetLinesToDraw(vertices, _numberOfLines+1);
             _painter.Camera.ChangeHeight(height);
 
-            _mapper.Dispose();
-            _mapper = null;
+            mapper.Dispose();
+            mapper = null;
         }
+        
         private void SetTimeTrackBar(int numberOfLines)
         {
             timeTrackBar.Maximum = numberOfLines;
             timeTrackBar.Value = numberOfLines;
         }
-
-        FileReader CurrentFile { get; set; }
+        
         private void LoadJobButtonClick(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "ovf files (*.ovf)|*.ovf|All files (*.*)|*.*";
@@ -105,32 +93,40 @@ namespace OVFSliceViewer
                 LoadJob(filename);
             }
         }
+        
         public async void LoadJob(string filename)
         {
-            CurrentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
+            _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
 
             var command = new JobExecutionCommand
             {
-                FileReader = CurrentFile,
+                FileReader = _currentFile,
                 FilePath = openFileDialog1.FileNames[0],
             };
 
-            await CurrentFile.OpenJobAsync(filename, command);
+            await _currentFile.OpenJobAsync(filename, command);
 
-            layerTrackBar.Maximum = CurrentFile.Job.NumWorkPlanes - 1;
+            _viewerJob = new JobViewer(_currentFile);
+
+            layerTrackBar.Maximum = _currentFile.Job.NumWorkPlanes - 1;
             layerTrackBar.Value = 0;
+
+            Console.WriteLine(_viewerJob.Center.ToString());
+            _painter.Camera.MoveToPosition2D(_viewerJob.Center);
         }
+        
         public void LoadJob(FileReader fileReader)
         {
-            CurrentFile = fileReader;
+            _currentFile = fileReader;
         }
 
         private void layerTrackBarScroll(object sender, EventArgs e)
         {
-            DrawWorkplane(true);
+            DrawWorkplane();
 
             label2.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }
+        
         private void timeTrackBarScroll(object sender, EventArgs e)
         {
             if (timeTrackBar.Maximum != _numberOfLines)
@@ -144,20 +140,22 @@ namespace OVFSliceViewer
         {
             var position = new Vector2(MousePosition.X, MousePosition.Y);
 
-            if (e.Button == MouseButtons.Middle/* || e.Button == MouseButtons.Left*/)
+            if (e.Button == MouseButtons.Middle || e.Button == MouseButtons.Left)
             {
                 _motionTracker.Start(position);
             }
         }
-        private void CameraMoveMouseUp(object sender, MouseEventArgs e)
+        
+        private void canvasMoveMouseUp(object sender, MouseEventArgs e)
         {
             var position = new Vector2(MousePosition.X, MousePosition.Y);
-            if (e.Button == MouseButtons.Middle /*|| e.Button == MouseButtons.Left*/)
+            if (e.Button == MouseButtons.Middle || e.Button == MouseButtons.Left)
             {
                 _motionTracker.Stop();
             }
         }
-        private void CameraMoveMouseMove(object sender, MouseEventArgs e)
+        
+        private void canvasMouseMove(object sender, MouseEventArgs e)
         {
             var position = new Vector2(MousePosition.X, MousePosition.Y);
 
@@ -165,14 +163,23 @@ namespace OVFSliceViewer
             {
                 _motionTracker.Move(position, _painter.Camera.Move);
             }
-            //else if (e.Button == MouseButtons.Left)
-            //{
-            //    _motionTracker.Move(position, _painter.Camera.Rotate);
-            //}
+            else if (e.Button == MouseButtons.Left)
+            {
+                _motionTracker.Move(position, _painter.Camera.Rotate);
+            }
+            _painter.Draw();
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {
             SetTimeTrackBar(_numberOfLines);
+        }
+
+        private void canvasMouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                _painter.TargetCenter();
+            }
         }
     }
 }

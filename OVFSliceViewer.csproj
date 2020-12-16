@@ -79,7 +79,9 @@
   <ItemGroup>
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\ColorDictionary.cs" />
+    <Compile Include="Classes\FileHandlerProgress.cs" />
     <Compile Include="Classes\MotionTracker.cs" />
+    <Compile Include="Classes\JobViewer.cs" />
     <Compile Include="Interfaces\IRotateable.cs" />
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Classes\VectorWithColorFactory.cs" />

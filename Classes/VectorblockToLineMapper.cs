@@ -28,6 +28,7 @@ namespace OVFSliceViewer
 
         public void CalculateVectorBlock(VectorBlock vectorBlock, float height)
         {
+            _vectorBlock = null;
             _vectorBlock = vectorBlock;
             _height = height;
             VectorBlockToViewModel();

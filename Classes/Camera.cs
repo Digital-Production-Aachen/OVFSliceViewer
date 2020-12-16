@@ -22,15 +22,11 @@ namespace OVFSliceViewer
         protected float _aspectRatio;
         protected float _canvasWidth;
         protected float _canvasHeight;
-        protected float _zoomfactor = 0.5f;
+        protected float _zoomfactor = 1f;
         float _yaw = 0;
         float _pitch = 0;
         Vector2 _sensitivity = new Vector2(1, 1);
         readonly float _baseSensitivity = 0.01f;
-
-
-        Vector3 _firstRotationAxis = Vector3.UnitZ;
-        Vector3 _secondRotationAxis = Vector3.UnitX;
 
         public float ObjectHeight { get; set; }
         public Matrix4 TransformationMatrix =>
@@ -40,13 +36,6 @@ namespace OVFSliceViewer
                 (RotationMatrix * _cameraTarget),
                 RotationMatrix * RotationMatrix2 * _upAxis
                 );
-        //public Matrix4 TransformationMatrix =>
-        //    Matrix4.LookAt
-        //    (
-        //        _position,
-        //        _cameraTarget,
-        //        _upAxis
-        //        );
         public Matrix3 RotationMatrix { get; protected set; } = Matrix3.Identity;
         public Matrix3 RotationMatrix2 { get; protected set; } = Matrix3.Identity;
 
@@ -78,17 +67,34 @@ namespace OVFSliceViewer
             _upAxis = Vector3.UnitY;
         }
 
+        public void MoveToPosition2D(Vector2 position)
+        {
+            var deltaX = position.X - _position.X;
+            var deltaY = position.Y - _position.Y;
+
+            if (RotationMatrix != Matrix3.Identity || RotationMatrix2 != Matrix3.Identity)
+            {
+                RotationMatrix = Matrix3.Identity;
+                RotationMatrix2 = Matrix3.Identity;
+                //_position.Z = 25f;
+                //_cameraTarget.Z = 0f;
+            }
+
+            _position.X = position.X;
+            _position.Y = position.Y;
+            
+            _cameraTarget.X += deltaX;
+            _cameraTarget.Y += deltaY;
+
+            
+        }
         public void Move(Vector2 delta) // Basically it moves Camera and focus (target)
         {
-            var test = new Vector4(2f * delta.X / 1.678f / 1564f, 2f * delta.Y / 1.678f / 825f, 0, 1);
             var delta3 = new Vector3(delta);
-
-            //var deltaZ = _position.Z - ObjectHeight;
             delta3 = ConvertToCanvasCoordinates(delta3);
 
             _position = _position + delta3;
             _cameraTarget = _cameraTarget + delta3;
-            //Console.WriteLine(delta3);
         }
 
         protected Vector3 ConvertToCanvasCoordinates(Vector3 delta)
@@ -127,7 +133,6 @@ namespace OVFSliceViewer
         public void ChangeHeight(float newZ)
         {
             ObjectHeight = newZ;
-            //_position.Z += (newZ - _cameraTarget.Z);
         }
 
         public void Rotate(Vector2 delta)
@@ -137,14 +142,8 @@ namespace OVFSliceViewer
             var delta3 = new Vector3(delta.X * sensitivity.X, delta.Y * sensitivity.Y, 0);
             delta3 = (_rotationStartYawAndPitch - delta3);
 
-            Console.WriteLine(delta3.ToString());
-
-            //_yaw = delta.X;
-            //_pitch = delta.Y;
-
             _yaw += MathHelper.DegreesToRadians(delta.X);
             _pitch += MathHelper.DegreesToRadians(delta.Y);
-
             _yaw = Convert.ToSingle(_yaw % Math.PI);
             _pitch = Convert.ToSingle(_pitch % Math.PI);
 
@@ -159,9 +158,6 @@ namespace OVFSliceViewer
 
             RotationMatrix = Matrix3.CreateFromAxisAngle(Vector3.UnitZ, _yaw);
             RotationMatrix2 = Matrix3.CreateFromAxisAngle(Vector3.UnitX, _pitch);
-
-            //Console.WriteLine((RotationMatrix*_position).ToString());
-            var secondVector = Matrix3.CreateFromAxisAngle(_firstRotationAxis, -_yaw) * _secondRotationAxis;
         }
     }
 }

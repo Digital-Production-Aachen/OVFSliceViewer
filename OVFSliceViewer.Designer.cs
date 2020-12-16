@@ -54,27 +54,27 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // trackBar1
+            // layerTrackBar
             // 
             this.layerTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.layerTrackBar.Location = new System.Drawing.Point(1612, 12);
             this.layerTrackBar.Maximum = 0;
-            this.layerTrackBar.Name = "trackBar1";
+            this.layerTrackBar.Name = "layerTrackBar";
             this.layerTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.layerTrackBar.Size = new System.Drawing.Size(45, 658);
             this.layerTrackBar.TabIndex = 2;
             this.layerTrackBar.Scroll += new System.EventHandler(this.layerTrackBarScroll);
             this.layerTrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.layerTrackBarMouseUp);
             // 
-            // trackBar2
+            // timeTrackBar
             // 
             this.timeTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.timeTrackBar.Location = new System.Drawing.Point(1561, 12);
             this.timeTrackBar.Maximum = 1;
             this.timeTrackBar.Minimum = 1;
-            this.timeTrackBar.Name = "trackBar2";
+            this.timeTrackBar.Name = "timeTrackBar";
             this.timeTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.timeTrackBar.Size = new System.Drawing.Size(45, 658);
             this.timeTrackBar.TabIndex = 5;
@@ -98,22 +98,23 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Layer: 0 von 0";
             // 
-            // glControl1
+            // glCanvas
             // 
             this.glCanvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.glCanvas.BackColor = System.Drawing.Color.Black;
             this.glCanvas.Location = new System.Drawing.Point(12, 12);
-            this.glCanvas.Name = "glControl1";
+            this.glCanvas.Name = "glCanvas";
             this.glCanvas.Size = new System.Drawing.Size(1402, 692);
             this.glCanvas.TabIndex = 9;
             this.glCanvas.VSync = false;
+            this.glCanvas.MouseClick += new System.Windows.Forms.MouseEventHandler(this.canvasMouseClick);
             this.glCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvasMouseDown);
-            this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CameraMoveMouseMove);
-            this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CameraMoveMouseUp);
+            this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvasMouseMove);
+            this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvasMoveMouseUp);
             // 
-            // LayerViewer
+            // OVFSliceViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -126,7 +127,7 @@
             this.Controls.Add(this.timeTrackBar);
             this.Controls.Add(this.layerTrackBar);
             this.Controls.Add(this.button1);
-            this.Name = "LayerViewer";
+            this.Name = "OVFSliceViewer";
             this.Text = "Layer Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).EndInit();

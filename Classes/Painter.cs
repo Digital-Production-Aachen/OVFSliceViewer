@@ -1,15 +1,11 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Platform.Windows;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OVFSliceViewer
@@ -24,7 +20,6 @@ namespace OVFSliceViewer
         protected float _deltaY;
         protected Matrix4 _view;
         protected Matrix4 _projection;
-        protected Matrix4 _translate;
         protected float _fieldOfView;
         protected float _aspectRatio;
         protected int _numberOfLinesToDraw = 6;
@@ -46,19 +41,14 @@ namespace OVFSliceViewer
         protected void Init()
         {
             _parent.FormClosing += (sender2, e2) => _isDrawing = false;
-            //_gl.Invalidated += (sender2, e2) => test();//_isDrawing = false;
-            //_gl.Move += (sender2, e2) => _isDrawing = false;
-            _test = new System.Windows.Forms.PaintEventHandler(this.GLControl_Paint);
+            _test = new PaintEventHandler(this.GLControl_Paint);
             _gl.Paint += _test;
-            //_gl.Resize += new EventHandler(glControl_Resize);
 
             Camera = new Camera(_gl.Width, _gl.Height);
 
-            //_camera123.InitCamera();
             _fieldOfView = ((float)Math.PI / 180) * 80;
             _aspectRatio = Convert.ToSingle(_gl.Width) / Convert.ToSingle(_gl.Height);
             _projection = Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio /*640.0f / 480.0f*/, 0.1f, 100f);
-            _translate = Matrix4.CreateTranslation(0, 0, 0);
         }
         void glControl_Resize(object sender, EventArgs e)
         {
@@ -75,12 +65,11 @@ namespace OVFSliceViewer
             //GL.LoadMatrix(ref perpective);
         }
 
-        protected float Scalefactor = 1.25f;
         public void Scale(bool scalefactor) 
         {
             Camera.Zoom(scalefactor);
         }
-        protected void TargetCenter()
+        public void TargetCenter()
         {
             var minX = _vertices.Min(x => x.Position.X);
             var maxX = _vertices.Max(x => x.Position.X);
@@ -88,10 +77,9 @@ namespace OVFSliceViewer
             var minY = _vertices.Min(x => x.Position.Y);
             var maxY = _vertices.Max(x => x.Position.Y);
 
-            var activeTranslation = _translate.ExtractTranslation();
+            var center = new Vector2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
 
-            //_targetCenter.X = minX + (maxX - minX) / 2;
-            //_targetCenter.Y = minY + (maxY - minY) / 2;
+            Camera.MoveToPosition2D(center);
         }
 
         public void SetLinesToDraw(Vertex[] vertices, int numberOfLinesToDraw = 0)
@@ -116,6 +104,8 @@ namespace OVFSliceViewer
                     _zHeight = zHeight;
                 }
             }
+
+            Draw();
         }
         public void SetNumberOfLinesToDraw(int numberOfLinesToDraw)
         {
@@ -124,6 +114,7 @@ namespace OVFSliceViewer
                 _numberOfLinesToDraw = _vertices.Count();
             }
             else _numberOfLinesToDraw = numberOfLinesToDraw;
+            Draw();
         }
 
         private void GLControl_Paint(object sender, PaintEventArgs e)
@@ -181,20 +172,17 @@ namespace OVFSliceViewer
             //var lastTimestamp = Stopwatch.GetTimestamp();
             //var freq = Stopwatch.Frequency;
         }
-        private void Draw()
+        public void Draw()
         {
-            float angle = 0;
-            do
-            {
-                var timeStamp = Stopwatch.GetTimestamp();
+            //float angle = 0;
+            //do
+            //{
+                //var timeStamp = Stopwatch.GetTimestamp();
                 //var angle += 0;//(float)((timeStamp - lastTimestamp) / (double)freq / 2);
                 //lastTimestamp = timeStamp;
                 // Clear color and depth buffers
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-                //var rotate = Matrix4.CreateFromAxisAngle(OpenTK.Vector3.UnitY, 0);   // Create rotation matrix
-                //Matrix4 modelViewProjection = _scale * _translate * rotate * _view * _projection;
-                Matrix4 modelViewProjection = _translate * Camera.TransformationMatrix * _projection;
+                Matrix4 modelViewProjection = Camera.TransformationMatrix * _projection;
                 GL.UniformMatrix4(_mvp, false, ref modelViewProjection);
 
                 GL.BindVertexArray(_vertexArray);
@@ -202,7 +190,7 @@ namespace OVFSliceViewer
                 GL.DrawArrays(PrimitiveType.Lines, 0, _numberOfLinesToDraw * 2);
                 _gl.SwapBuffers();
                 Application.DoEvents();
-            } while (_isDrawing);
+            //} while (_isDrawing);
         }
 
         int _vertexBuffer;
