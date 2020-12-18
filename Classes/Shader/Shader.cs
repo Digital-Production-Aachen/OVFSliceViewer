@@ -1,46 +1,125 @@
 ﻿using OpenTK.Graphics.OpenGL;
+using System;
 using System.IO;
 using System.Text;
 
-namespace OVFSliceViewer.Classes.Shader
+namespace OVFSliceViewer.Classes.ShaderNamespace
 {
-    public class Shader
-    {
-        string _vertexShaderSource;
-        string _fragmentShaderSource;
-        public Shader(string vertexPath, string fragmentPath)
+    public class Shader: IDisposable
+    {      
+        int Handle;
+        private bool disposedValue = false;
+        int _vertexShader;
+        int _fragmentShader;
+        int _mvp;
+
+        public Shader(string vertexPath = @"Classes/Shader/shader.vert", string fragmentPath = @"Classes/Shader/shader.frag")
         {
+            string vertexShaderSource;
+            string fragmentShaderSource;
+
+            //vertexShaderSource = File.ReadAllText(vertexPath);
+
             using (StreamReader reader = new StreamReader(vertexPath, Encoding.UTF8))
             {
-                _vertexShaderSource = reader.ReadToEnd();
+                vertexShaderSource = reader.ReadToEnd();
             }
-
             using (StreamReader reader = new StreamReader(fragmentPath, Encoding.UTF8))
             {
-                _fragmentShaderSource = reader.ReadToEnd();
+                fragmentShaderSource = reader.ReadToEnd();
+            }
+
+            CreateProgram(vertexShaderSource, fragmentShaderSource);
+        }
+
+        private void CreateProgram(string vertexShaderSource, string fragmentShaderSource)
+        {
+            CreateVertexShader(vertexShaderSource);
+            CreateFragmentShader(fragmentShaderSource);
+
+            Handle = GL.CreateProgram();
+
+            CombineShader();
+
+            
+        }
+
+        public int GetUniformLocation()
+        {
+            return _mvp;
+        }
+
+        private int CreateVertexShader(string vertexShaderSource)
+        {
+            _vertexShader = GL.CreateShader(ShaderType.VertexShader);
+
+            GL.ShaderSource(_vertexShader, vertexShaderSource);
+            GL.CompileShader(_vertexShader);
+            string infoLogVert = GL.GetShaderInfoLog(_vertexShader); // use for debug
+            Console.WriteLine(infoLogVert);
+
+            return _vertexShader;
+        }
+
+        private int CreateFragmentShader(string fragmentShaderSource)
+        {
+            _fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+
+            GL.ShaderSource(_fragmentShader, fragmentShaderSource);
+            GL.CompileShader(_fragmentShader);
+            string infoLogVert = GL.GetShaderInfoLog(_fragmentShader);
+            Console.WriteLine(infoLogVert);
+
+            return _fragmentShader;
+        }
+
+        private void CombineShader()
+        {
+            GL.AttachShader(Handle, _vertexShader);
+            GL.AttachShader(Handle, _fragmentShader);
+            
+            GL.BindFragDataLocation(Handle, 0, "FragColor");
+            GL.BindAttribLocation(Handle, 0, "position");
+            GL.BindAttribLocation(Handle, 1, "color");
+
+            GL.LinkProgram(Handle);
+            GL.ValidateProgram(Handle);
+            //GL.UseProgram(Handle);
+
+            _mvp = GL.GetUniformLocation(Handle, "Mvp");
+
+            GL.DetachShader(Handle, _vertexShader);
+            GL.DetachShader(Handle, _fragmentShader);
+            GL.DeleteShader(_fragmentShader);
+            GL.DeleteShader(_vertexShader);
+        }
+
+        public void Use()
+        {
+            
+            GL.UseProgram(Handle);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                GL.DeleteProgram(Handle);
+
+                disposedValue = true;
             }
         }
-        public int CreateVertexShader()
+
+        ~Shader()
         {
-            var shader = GL.CreateShader(ShaderType.VertexShader);
-
-            GL.ShaderSource(shader, _vertexShaderSource);
-            GL.CompileShader(shader);
-            //string infoLogVert = GL.GetShaderInfoLog(shader); // use for debug
-
-            return shader;
+            GL.DeleteProgram(Handle);
         }
 
-        public int CreateFragmentShader()
+
+        public void Dispose()
         {
-            var shader = GL.CreateShader(ShaderType.FragmentShader);
-
-            GL.ShaderSource(shader, _fragmentShaderSource);
-            GL.CompileShader(shader);
-            string infoLogVert = GL.GetShaderInfoLog(shader);
-
-            return shader;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
-
     }
 }

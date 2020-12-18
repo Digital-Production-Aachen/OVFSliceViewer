@@ -21,6 +21,7 @@ namespace OVFSliceViewer
         protected float _zoomfactor = 1f;
         float _yaw = 0;
         float _pitch = 0;
+        public bool Is2D => RotationMatrixYaw == Matrix3.Identity && RotationMatrixPitch == Matrix3.Identity;
         public float ObjectHeight { get; set; }
         public Matrix3 RotationMatrixYaw { get; protected set; } = Matrix3.Identity;
         public Matrix3 RotationMatrixPitch { get; protected set; } = Matrix3.Identity;
@@ -32,7 +33,7 @@ namespace OVFSliceViewer
                 RotationMatrixYaw * RotationMatrixPitch * Vector3.UnitY
                 );
 
-        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, 0.1f, 100f);
+        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, 0.1f, 200f);
         public Camera(float canvasWidth, float canvasHeight)
         {
             _canvasWidth = canvasWidth;
@@ -43,7 +44,7 @@ namespace OVFSliceViewer
             _position = new Vector3(0, 0, 50f);
             _cameraTarget = Vector3.Zero;
         }
-
+        
         public void MoveToPosition2D(Vector2 position)
         {
             var deltaX = position.X - _position.X;
@@ -113,7 +114,7 @@ namespace OVFSliceViewer
         {
             _yaw += MathHelper.DegreesToRadians(delta.X);
             _pitch += MathHelper.DegreesToRadians(delta.Y);
-            _yaw = Convert.ToSingle(_yaw % Math.PI);
+            _yaw = Convert.ToSingle(_yaw % (2*Math.PI));
             _pitch = Convert.ToSingle(_pitch % Math.PI);
 
             if (_pitch > Math.PI / 2)

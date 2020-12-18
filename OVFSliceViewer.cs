@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace OVFSliceViewer
 {
@@ -25,6 +26,16 @@ namespace OVFSliceViewer
 
             _painter = new Painter(glCanvas, this);
             _motionTracker = new MotionTracker();
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            _painter.Dispose();
+            base.OnClosing(e);
+        }
+
+        private void DisposeShader(CancelEventArgs e)
+        {
+
         }
 
         private void MouseWheelZoom(object sender, MouseEventArgs e)

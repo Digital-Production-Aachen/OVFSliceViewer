@@ -79,10 +79,14 @@
   <ItemGroup>
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\ColorDictionary.cs" />
+    <Compile Include="Classes\Drawing.cs" />
     <Compile Include="Classes\FileHandlerProgress.cs" />
+    <Compile Include="Classes\Grid.cs" />
     <Compile Include="Classes\MotionTracker.cs" />
     <Compile Include="Classes\JobViewer.cs" />
     <Compile Include="Classes\Shader\Shader.cs" />
+    <Compile Include="Classes\VertexArrayObject.cs" />
+    <Compile Include="Classes\VertexBufferObject.cs" />
     <Compile Include="Interfaces\IRotateable.cs" />
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Classes\VectorWithColorFactory.cs" />
@@ -113,8 +117,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="Classes\Shader\shader.frag" />
-    <None Include="Classes\Shader\shader.vert" />
+    <None Include="Classes\Shader\shader.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Classes\Shader\shader.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
