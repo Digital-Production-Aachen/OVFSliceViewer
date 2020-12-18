@@ -78,7 +78,7 @@ namespace OVFSliceViewer
             //GC.Collect();
             var vertices = mapper.GetVertices();
             _numberOfLines = vertices.Count() / 2;
-            _painter.SetLinesAndDraw(vertices, _numberOfLines+1);
+            _painter.SetLinesAndDraw(vertices, _numberOfLines);
 
             mapper.Dispose();
             mapper = null;

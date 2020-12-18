@@ -94,7 +94,7 @@ namespace OVFSliceViewer.Classes
         public void SetLines(Vertex[] vertices, int numberOfLinesToDraw = 0)
         {
             _vertices = null;
-            _vertices = new Vertex[_grid.Length + vertices.Length+1];
+            _vertices = new Vertex[_grid.Length + vertices.Length];
             _grid.GetGrid().CopyTo(_vertices, 0);
             vertices.CopyTo(_vertices, _grid.Length);
 
@@ -189,7 +189,7 @@ namespace OVFSliceViewer.Classes
             }
             else
             {
-                GL.DrawArrays(PrimitiveType.Lines, 0, _numberOfLinesToDraw * 2 + _grid.Length * 2);
+                GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
             }
             
             _gl.SwapBuffers();

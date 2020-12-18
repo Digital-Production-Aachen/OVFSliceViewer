@@ -19,7 +19,7 @@ namespace OVFSliceViewer.Classes
             var numberOfLines = gridSize / gridDistance;
             ColorDictionary colorDictionary = new ColorDictionary();
 
-            var grid = new Vertex[4 * numberOfLines + 8];
+            var grid = new Vertex[4 * numberOfLines + 4];
 
             for (int i = 0; i < 2 * numberOfLines + 2; i += 2)
             {
@@ -34,12 +34,12 @@ namespace OVFSliceViewer.Classes
                     Position = new Vector3((-gridSize / 2) + i / 2 * gridDistance, gridSize / 2, 0)
                 };
 
-                grid[i + 2 * numberOfLines + 4] = new Vertex
+                grid[i + 2 * numberOfLines + 2] = new Vertex
                 {
                     Color = new Vector4(0f, 84f / 255f, 159f / 255f, 0f),
                     Position = new Vector3((-gridSize / 2), (-gridSize / 2) + i / 2 * gridDistance, 0)
                 };
-                grid[i + 2 * numberOfLines + +1 + 4] = new Vertex
+                grid[i + 2 * numberOfLines + +2 + 1] = new Vertex
                 {
                     Color = new Vector4(0f, 84f / 255f, 159f / 255f, 0f),
                     Position = new Vector3((gridSize / 2), (-gridSize / 2) + i / 2 * gridDistance, 0)
