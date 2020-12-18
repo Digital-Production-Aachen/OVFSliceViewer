@@ -114,10 +114,20 @@ namespace OVFSliceViewer.Classes
         }
         private void RebindBufferObject()
         {
+            //GCHandle()
             var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            try
+            {
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
+                GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            }
+            finally
+            {
+                handle.Free();
+            }
+
         }
         public void SetNumberOfLinesToDraw(int numberOfLinesToDraw)
         {
@@ -248,7 +258,7 @@ namespace OVFSliceViewer.Classes
             GL.BindVertexArray(_vertexArray);
         }
 
-        public void Dispose()
+        public void DisposeShader()
         {
             _shader.Dispose();
         }

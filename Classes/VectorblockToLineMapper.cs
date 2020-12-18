@@ -190,6 +190,7 @@ namespace OVFSliceViewer
         public void Dispose()
         {
             _lines = null;
+            _vectorBlock = null;
         }
     }
 }

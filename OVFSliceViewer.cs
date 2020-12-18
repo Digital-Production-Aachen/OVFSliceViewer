@@ -15,7 +15,6 @@ namespace OVFSliceViewer
         JobViewer _viewerJob;
         Painter _painter;
         MotionTracker _motionTracker;
-        //VectorblockToLineMapper _mapper;
         int _numberOfLines = 3;
         FileReader _currentFile { get; set; }
         public OVFSliceViewer()
@@ -29,7 +28,7 @@ namespace OVFSliceViewer
         }
         protected override void OnClosing(CancelEventArgs e)
         {
-            _painter.Dispose();
+            _painter.DisposeShader();
             base.OnClosing(e);
         }
 
@@ -57,7 +56,7 @@ namespace OVFSliceViewer
             var mapper = new VectorblockToLineMapper();
             int fromLayer;
 
-            fromLayer = true ? layernumber : 0;
+            fromLayer = false ? layernumber : 0;
 
             for (int j = fromLayer; j < layernumber+1; j++)
             {
@@ -76,7 +75,7 @@ namespace OVFSliceViewer
                     }
                 }
             }
-
+            //GC.Collect();
             var vertices = mapper.GetVertices();
             _numberOfLines = vertices.Count() / 2;
             _painter.SetLinesAndDraw(vertices, _numberOfLines+1);

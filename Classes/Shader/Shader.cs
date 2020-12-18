@@ -109,17 +109,15 @@ namespace OVFSliceViewer.Classes.ShaderNamespace
                 disposedValue = true;
             }
         }
-
-        ~Shader()
-        {
-            GL.DeleteProgram(Handle);
-        }
-
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        ~Shader()
+        {
+            GL.DeleteProgram(Handle);
         }
     }
 }
