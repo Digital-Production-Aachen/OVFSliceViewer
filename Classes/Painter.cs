@@ -9,6 +9,8 @@ using System.Windows.Forms;
 
 namespace OVFSliceViewer.Classes
 {
+
+    // https://gist.github.com/GeirGrusom/347f30e981f33972c934 <- code source
     public class Painter
     {
         protected GLControl _gl;
@@ -175,7 +177,7 @@ namespace OVFSliceViewer.Classes
             // Clear color and depth buffers
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            Matrix4 modelViewProjection = Camera.TransformationMatrix * Camera.ProjectionMatrix;
+            Matrix4 modelViewProjection = Camera.TranslationMatrix * Camera.LookAtTransformationMatrix * Camera.ProjectionMatrix;
 
             GL.UniformMatrix4(_mvp, false, ref modelViewProjection);
 

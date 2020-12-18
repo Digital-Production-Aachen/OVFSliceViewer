@@ -13,6 +13,7 @@ namespace OVFSliceViewer
     {
         Vector3 _position;    
         Vector3 _cameraTarget;
+        Vector3 _translation = new Vector3();
 
         protected float _fieldOfView;
         protected float _aspectRatio;
@@ -21,19 +22,21 @@ namespace OVFSliceViewer
         protected float _zoomfactor = 1f;
         float _yaw = 0;
         float _pitch = 0;
-        public bool Is2D => RotationMatrixYaw == Matrix3.Identity && RotationMatrixPitch == Matrix3.Identity;
+        public bool Is2D => RotationMatrixYaw == Matrix4.Identity && RotationMatrixPitch == Matrix4.Identity;
         public float ObjectHeight { get; set; }
-        public Matrix3 RotationMatrixYaw { get; protected set; } = Matrix3.Identity;
-        public Matrix3 RotationMatrixPitch { get; protected set; } = Matrix3.Identity;
-        public Matrix4 TransformationMatrix =>
+        public Matrix4 RotationMatrixYaw { get; protected set; } = Matrix4.Identity;
+        public Matrix4 RotationMatrixPitch { get; protected set; } = Matrix4.Identity;
+        public Matrix4 LookAtTransformationMatrix =>
             Matrix4.LookAt
             (
-                (RotationMatrixYaw * RotationMatrixPitch * _position),
-                (RotationMatrixYaw * _cameraTarget),
-                RotationMatrixYaw * RotationMatrixPitch * Vector3.UnitY
+                (RotationMatrixYaw * RotationMatrixPitch * new Vector4(_position,1)).Xyz,
+                (RotationMatrixYaw * new Vector4(_cameraTarget,1)).Xyz,
+                (RotationMatrixYaw * RotationMatrixPitch * new Vector4(Vector3.UnitY, 1)).Xyz
                 );
 
         public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, 0.1f, 200f);
+
+        public Matrix4 TranslationMatrix { get; protected set; } = Matrix4.Identity;
         public Camera(float canvasWidth, float canvasHeight)
         {
             _canvasWidth = canvasWidth;
@@ -50,10 +53,13 @@ namespace OVFSliceViewer
             var deltaX = position.X - _position.X;
             var deltaY = position.Y - _position.Y;
 
-            if (RotationMatrixYaw != Matrix3.Identity || RotationMatrixPitch != Matrix3.Identity)
+            if (RotationMatrixYaw != Matrix4.Identity || RotationMatrixPitch != Matrix4.Identity)
             {
-                RotationMatrixYaw = Matrix3.Identity;
-                RotationMatrixPitch = Matrix3.Identity;
+                RotationMatrixYaw = Matrix4.Identity;
+                RotationMatrixPitch = Matrix4.Identity;
+
+                _yaw = 0;
+                _pitch = 0;
             }
 
             _position.X = position.X;
@@ -64,11 +70,12 @@ namespace OVFSliceViewer
         }
         public void Move(Vector2 delta) // Basically it moves Camera and focus (target)
         {
-            var delta3 = new Vector3(delta);
+            var delta3 = new Vector3(-delta);
             delta3 = ConvertToCanvasCoordinates(delta3);
 
-            _position = _position + delta3;
-            _cameraTarget = _cameraTarget + delta3;
+            _translation += delta3;
+
+            TranslationMatrix = Matrix4.CreateTranslation((RotationMatrixYaw * new Vector4(_translation)).Xyz);
         }
 
         protected Vector3 ConvertToCanvasCoordinates(Vector3 delta)
@@ -126,8 +133,8 @@ namespace OVFSliceViewer
                 _pitch = -Convert.ToSingle(Math.PI / 2) + 0.01f;
             }
 
-            RotationMatrixYaw = Matrix3.CreateFromAxisAngle(Vector3.UnitZ, _yaw);
-            RotationMatrixPitch = Matrix3.CreateFromAxisAngle(Vector3.UnitX, _pitch);
+            RotationMatrixYaw = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, _yaw);
+            RotationMatrixPitch = Matrix4.CreateFromAxisAngle(Vector3.UnitX, _pitch);
         }
     }
 }
