@@ -21,10 +21,14 @@ namespace OVFSliceViewer
         {
             InitializeComponent();
             this.DoubleBuffered = true;
+            highlightCheckedListBox.SetItemChecked(0, true);//always start with highlighted  contours
             this.glCanvas.MouseWheel += new MouseEventHandler(this.MouseWheelZoom);
-
             _painter = new Painter(glCanvas, this);
             _motionTracker = new MotionTracker();
+        }
+        public OVFSliceViewer(bool showLoadButton): this()
+        {          
+            this.loadFileButton.Visible = showLoadButton;
         }
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -56,9 +60,9 @@ namespace OVFSliceViewer
             var mapper = new VectorblockToLineMapper();
             int fromLayer;
 
-            fromLayer = false ? layernumber : 0;
+            fromLayer = threeDCheckbox.Checked ? 0 : layernumber;
 
-            for (int j = fromLayer; j < layernumber+1; j++)
+            for (int j = fromLayer; j < layernumber + 1; j++)
             {
                 if (_currentFile != null && _currentFile.FileLoadingFinished)
                 {
@@ -83,13 +87,13 @@ namespace OVFSliceViewer
             mapper.Dispose();
             mapper = null;
         }
-        
+
         private void SetTimeTrackBar(int numberOfLines)
         {
             timeTrackBar.Maximum = numberOfLines;
             timeTrackBar.Value = numberOfLines;
         }
-        
+
         private void LoadJobButtonClick(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "ovf files (*.ovf)|*.ovf|All files (*.*)|*.*";
@@ -102,7 +106,7 @@ namespace OVFSliceViewer
                 LoadJob(filename);
             }
         }
-        
+
         public async void LoadJob(string filename)
         {
             _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
@@ -125,19 +129,23 @@ namespace OVFSliceViewer
 
             DrawWorkplane();
         }
-        
+
         public void LoadJob(FileReader fileReader)
         {
             _currentFile = fileReader;
+            layerTrackBar.Value = 0;
+            layerTrackBar.Maximum = _currentFile.Job.NumWorkPlanes - 1;
+           // DrawWorkplaneBeforePaint(true);
+            layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }
 
         private void layerTrackBarScroll(object sender, EventArgs e)
         {
             DrawWorkplane();
 
-            label2.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
+            layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }
-        
+
         private void timeTrackBarScroll(object sender, EventArgs e)
         {
             if (timeTrackBar.Maximum != _numberOfLines)
@@ -156,7 +164,7 @@ namespace OVFSliceViewer
                 _motionTracker.Start(position);
             }
         }
-        
+
         private void canvasMoveMouseUp(object sender, MouseEventArgs e)
         {
             var position = new Vector2(MousePosition.X, MousePosition.Y);
@@ -165,7 +173,7 @@ namespace OVFSliceViewer
                 _motionTracker.Stop();
             }
         }
-        
+
         private void canvasMouseMove(object sender, MouseEventArgs e)
         {
             var position = new Vector2(MousePosition.X, MousePosition.Y);
@@ -191,6 +199,28 @@ namespace OVFSliceViewer
             {
                 _painter.TargetCenter();
             }
+        }
+
+        private void threeDCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            DrawWorkplane();
+        }
+
+        private void highlightCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            var c = sender as CheckedListBox;
+            if (e.NewValue == CheckState.Checked && c.CheckedItems.Count > 0)
+            {
+                c.ItemCheck -= highlightCheckedListBox_ItemCheck;
+                c.SetItemChecked(c.CheckedIndices[0], false);
+                c.ItemCheck += highlightCheckedListBox_ItemCheck;
+            }
+        }
+
+        private void gridCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            _painter.ShowGrid = gridCheckbox.Checked;
+            DrawWorkplane();
         }
     }
 }

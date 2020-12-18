@@ -22,7 +22,6 @@ namespace OVFSliceViewer
         protected float _zoomfactor = 1f;
         float _yaw = 0;
         float _pitch = 0;
-        public bool Is2D => RotationMatrixYaw == Matrix4.Identity && RotationMatrixPitch == Matrix4.Identity;
         public float ObjectHeight { get; set; }
         public Matrix4 RotationMatrixYaw { get; protected set; } = Matrix4.Identity;
         public Matrix4 RotationMatrixPitch { get; protected set; } = Matrix4.Identity;
@@ -50,23 +49,15 @@ namespace OVFSliceViewer
         
         public void MoveToPosition2D(Vector2 position)
         {
-            var deltaX = position.X - _position.X;
-            var deltaY = position.Y - _position.Y;
-
             if (RotationMatrixYaw != Matrix4.Identity || RotationMatrixPitch != Matrix4.Identity)
             {
                 RotationMatrixYaw = Matrix4.Identity;
                 RotationMatrixPitch = Matrix4.Identity;
-
                 _yaw = 0;
                 _pitch = 0;
             }
-
-            _position.X = position.X;
-            _position.Y = position.Y;
-            
-            _cameraTarget.X += deltaX;
-            _cameraTarget.Y += deltaY;
+            _translation = new Vector3(-position);
+            TranslationMatrix = Matrix4.CreateTranslation(_translation);
         }
         public void Move(Vector2 delta) // Basically it moves Camera and focus (target)
         {

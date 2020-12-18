@@ -19,13 +19,13 @@ namespace OVFSliceViewer.Classes
         protected bool _eventRemoved = false;
         protected Matrix4 _view;
         protected int _numberOfLinesToDraw = 6;
-        protected bool _is2D => Camera.Is2D;
+        private bool _showGrid = true;
         protected float _zHeight;
         protected int _vertexBuffer;
         protected int _vertexArray;
         protected Shader _shader;
         protected Grid _grid = new Grid();
-        
+
 
         Vertex[] _vertices = new Vertex[6]{
                 new Vertex { Color = new Vector4(1,0,0,0), Position = new Vector3(0, 0, 0)},
@@ -38,6 +38,9 @@ namespace OVFSliceViewer.Classes
 
         public Camera Camera { get; set; }
         public IRotateable Rotation => Camera;
+
+        public bool ShowGrid { get => _showGrid; set => _showGrid = value; }
+
         int _mvp;
         PaintEventHandler _test;
         public Painter(GLControl gl, Form parent)
@@ -52,10 +55,9 @@ namespace OVFSliceViewer.Classes
             _parent.FormClosing += (sender2, e2) => _isDrawing = false;
             _test = new PaintEventHandler(GLControlPaint);
             _gl.Paint += _test;
-
             _gl.Resize += CanvasResizeEvent;
-
             ResetCamera(_gl);
+            SetLines(new Vertex[0], _grid.Length);
         }
         void CanvasResizeEvent(object sender, EventArgs e)
         {
@@ -75,14 +77,44 @@ namespace OVFSliceViewer.Classes
 
         public void TargetCenter()
         {
-            var minX = _vertices.Min(x => x.Position.X);
-            var maxX = _vertices.Max(x => x.Position.X);
-            var minY = _vertices.Min(x => x.Position.Y);
-            var maxY = _vertices.Max(x => x.Position.Y);
+            if (_vertices.Length > _grid.Length)
+            {
+                float minX = _vertices[_grid.Length].Position.X;
+                float maxX = _vertices[_grid.Length].Position.X;
+                float minY = _vertices[_grid.Length].Position.Y;
+                float maxY = _vertices[_grid.Length].Position.Y;
 
-            var center = new Vector2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
+                for (int i = _grid.Length + 1; i < _vertices.Length; i++)
+                {
+                    var x = _vertices[i].Position.X;
+                    var y = _vertices[i].Position.Y;
+                    if (x < minX)
+                    {
+                        minX = x;
+                    }
+                    else if (x > maxX)
+                    {
+                        maxX = x;
+                    }
 
-            Camera.MoveToPosition2D(center);
+                    if (y < minY)
+                    {
+                        minY = y;
+                    }
+                    else if (y > maxY)
+                    {
+                        maxY = y;
+                    }
+
+                }
+                var center = new Vector2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
+                Camera.MoveToPosition2D(center);
+            }
+            else
+            {
+                Camera.MoveToPosition2D(new Vector2(0, 0));
+            }
+            //Draw();
         }
 
         public void SetLinesAndDraw(Vertex[] vertices, int numberOfLinesToDraw = 0)
@@ -106,7 +138,7 @@ namespace OVFSliceViewer.Classes
         {
             if (_vertices.Length > _grid.Length)
             {
-                var zHeight = _vertices[_grid.Length].Position.Z;
+                var zHeight = _vertices[_vertices.Length-1].Position.Z;
                 if (zHeight != _zHeight)
                 {
                     Camera.ChangeHeight(zHeight - _zHeight);
@@ -183,15 +215,16 @@ namespace OVFSliceViewer.Classes
 
             GL.BindVertexArray(_vertexArray);
             GL.LineWidth(5f);
-            if (_is2D)
+            if (ShowGrid)
             {
-                GL.DrawArrays(PrimitiveType.Lines, _grid.Length, _numberOfLinesToDraw * 2);
+                GL.DrawArrays(PrimitiveType.Lines, 0, _numberOfLinesToDraw*2 + _grid.Length);
+
             }
             else
             {
-                GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
+                GL.DrawArrays(PrimitiveType.Lines, _grid.Length, _numberOfLinesToDraw * 2);
             }
-            
+
             _gl.SwapBuffers();
             Application.DoEvents();
         }

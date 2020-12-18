@@ -33,7 +33,7 @@ namespace OVFSliceViewer.Classes
 
             _colors = new Dictionary<VectorBlock.Types.PartArea, Vector4>()
             {
-                { VectorBlock.Types.PartArea.Contour, _rWTHColors[1] },
+                { VectorBlock.Types.PartArea.Contour, _rWTHColors[5] },
                 { VectorBlock.Types.PartArea.TransitionContour, _rWTHColors[2] },
                 { VectorBlock.Types.PartArea.Volume, new Vector4(1f,0f,0f,0f) }
             };
