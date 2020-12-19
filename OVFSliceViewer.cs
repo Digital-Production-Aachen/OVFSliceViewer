@@ -16,12 +16,13 @@ namespace OVFSliceViewer
         Painter _painter;
         MotionTracker _motionTracker;
         int _numberOfLines = 3;
+        private int checkHighlightIndex = 0;
         FileReader _currentFile { get; set; }
         public OVFSliceViewer()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-            highlightCheckedListBox.SetItemChecked(0, true);//always start with highlighted  contours
+            //highlightCheckedListBox.SetItemChecked(0, true);//always start with highlighted  contours
             this.glCanvas.MouseWheel += new MouseEventHandler(this.MouseWheelZoom);
             _painter = new Painter(glCanvas, this);
             _motionTracker = new MotionTracker();
@@ -58,6 +59,8 @@ namespace OVFSliceViewer
         {
             int layernumber = layerTrackBar.Value;
             var mapper = new VectorblockToLineMapper();
+            mapper.HightlightIndex = checkHighlightIndex;
+            //mapper.HightlightIndex = 
             int fromLayer;
 
             fromLayer = threeDCheckbox.Checked ? 0 : layernumber;
@@ -215,8 +218,17 @@ namespace OVFSliceViewer
                 c.SetItemChecked(c.CheckedIndices[0], false);
                 c.ItemCheck += highlightCheckedListBox_ItemCheck;
             }
+            if(e.NewValue == CheckState.Checked)
+            {
+                checkHighlightIndex = e.Index+1;
+            }
+            else
+            {
+                checkHighlightIndex = 0;
+            }
+            DrawWorkplane();
+            
         }
-
         private void gridCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             _painter.ShowGrid = gridCheckbox.Checked;

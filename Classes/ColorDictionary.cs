@@ -10,8 +10,9 @@ namespace OVFSliceViewer.Classes
 {
     public class ColorDictionary
     {
-        readonly Dictionary<VectorBlock.Types.PartArea, Vector4> _colors;
+        readonly Dictionary<VectorBlock.Types.PartArea, Vector4> _contourColors;
         readonly Dictionary<VectorBlock.Types.LPBFMetadata.Types.SkinType, Vector4> _colorsSkinType;
+        readonly Dictionary<VectorBlock.Types.StructureType, Vector4> _structureColors;
 
         public ColorDictionary()
         {
@@ -31,7 +32,7 @@ namespace OVFSliceViewer.Classes
                 new Vector4(131f / 255f, 78f / 255f, 117f / 255f, 0f)
             };
 
-            _colors = new Dictionary<VectorBlock.Types.PartArea, Vector4>()
+            _contourColors = new Dictionary<VectorBlock.Types.PartArea, Vector4>()
             {
                 { VectorBlock.Types.PartArea.Contour, _rWTHColors[5] },
                 { VectorBlock.Types.PartArea.TransitionContour, _rWTHColors[2] },
@@ -42,14 +43,22 @@ namespace OVFSliceViewer.Classes
             {
                 { VectorBlock.Types.LPBFMetadata.Types.SkinType.DownSkin, _rWTHColors[3] },
                 { VectorBlock.Types.LPBFMetadata.Types.SkinType.InSkin, _rWTHColors[4] },
-                { VectorBlock.Types.LPBFMetadata.Types.SkinType.UpSkin, _rWTHColors[5] }
+                { VectorBlock.Types.LPBFMetadata.Types.SkinType.UpSkin, _rWTHColors[6] }
+            };
+
+            _structureColors = new Dictionary<VectorBlock.Types.StructureType, Vector4>()
+            {
+                { VectorBlock.Types.StructureType.Support, _rWTHColors[7] },
+                { VectorBlock.Types.StructureType.Points, _rWTHColors[8] },
+                { VectorBlock.Types.StructureType.Part, _rWTHColors[9] },
+                { VectorBlock.Types.StructureType.Wirestructure, _rWTHColors[10] }
             };
         }
 
         public Vector4 TryGetColor(VectorBlock.Types.PartArea type)
         {
             Vector4 color;
-            _colors.TryGetValue(type, out color);
+            _contourColors.TryGetValue(type, out color);
 
             if (color == null)
             {
@@ -69,6 +78,18 @@ namespace OVFSliceViewer.Classes
                 color = new Vector4(1f, 0f, 0f, 0f);
             }
 
+            return color;
+        }
+
+        public Vector4 TryGetColor(VectorBlock.Types.StructureType type)
+        {
+            Vector4 color;
+            _structureColors.TryGetValue(type, out color);
+
+            if (color == null)
+            {
+                color = new Vector4(1f, 0f, 0f, 0f);
+            }
             return color;
         }
 

@@ -7,3 +7,11 @@
 *.ide
 *.ide-shm
 *.ide-wal
+*.dll
+*.pdb
+*.frag
+*.vert
+*.exe
+*.config
+*.dylib
+*.so

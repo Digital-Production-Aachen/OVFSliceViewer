@@ -21,6 +21,7 @@ namespace OVFSliceViewer
         VectorWithColorFactory _vectorFactory;
         float _power = 350;
         ColorDictionary _colorDictionary = new ColorDictionary();
+        public int HightlightIndex { get; set; } = 0;
 
         public VectorblockToLineMapper()
         {
@@ -90,14 +91,18 @@ namespace OVFSliceViewer
         {
             List<VmLine> list = new List<VmLine>();
             var points = new RepeatedField<float>();
-            _vectorFactory.SetColor(new Vector4(1f, 0f, 0f, 0f));
+            var color = new Vector4(1f, 0f, 0f, 0f);
+            switch(HightlightIndex)
+            {
+                case 0: break;//0 = nothing
+                case 1: if (_vectorBlock.LPbfMetadata.PartArea == PartArea.Contour)  color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //1 = Contour 
+                    break;
+                case 2: if (_vectorBlock.LPbfMetadata.StructureType == StructureType.Support)  color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //2 = Support
+                    break;
+                default: break;
+            }
 
-            var partareaColor = _colorDictionary.TryGetColor(_vectorBlock.LPbfMetadata.PartArea);
-            var skintypeColor = _colorDictionary.TryGetColor(_vectorBlock.LPbfMetadata.SkinType);
-
-            _vectorFactory.SetColor(partareaColor);
-            //_vectorFactory.SetColor(skintypeColor);
-
+            _vectorFactory.SetColor(color);
             switch (_vectorBlock.VectorDataCase)
             {
                 case VectorBlock.VectorDataOneofCase.LineSequence:
@@ -115,7 +120,6 @@ namespace OVFSliceViewer
                 default:
                     break;
             }
-
             _lines.AddRange(list);
         }
 

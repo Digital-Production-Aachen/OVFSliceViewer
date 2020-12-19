@@ -146,8 +146,7 @@
             this.highlightCheckedListBox.FormattingEnabled = true;
             this.highlightCheckedListBox.Items.AddRange(new object[] {
             "Contour",
-            "Support",
-            "Build"});
+            "Support"});
             this.highlightCheckedListBox.Location = new System.Drawing.Point(6, 41);
             this.highlightCheckedListBox.Name = "highlightCheckedListBox";
             this.highlightCheckedListBox.Size = new System.Drawing.Size(86, 45);
