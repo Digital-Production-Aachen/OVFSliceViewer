@@ -143,13 +143,17 @@
       <Project>{55B96A6A-D631-4F84-BC8A-7BCEEE69DAAA}</Project>
       <Name>SLMFileReaderAdapter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FileReader\laservectorformat\_FileReaderWriter\AbstractVectorFileHandler\AbstractVectorFileHandler.csproj">
-      <Project>{0A422EB5-E26C-4725-A409-B5510FF8DABA}</Project>
-      <Name>AbstractVectorFileHandler</Name>
+    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj">
+      <Project>{3cbb4d12-0ce6-494b-b629-42a0b9808d96}</Project>
+      <Name>AbstractReaderWriter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FileReader\laservectorformat\_FileReaderWriter\FileHandlerFactory\FileHandlerFactory.csproj">
-      <Project>{815C230B-7043-4D3A-AE95-1117BF96FFEC}</Project>
-      <Name>FileHandlerFactory</Name>
+    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj">
+      <Project>{158c4d36-22bf-4b63-9e12-4852917b9c9a}</Project>
+      <Name>FileReaderWriterFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\ProtoDefinitionCompileDummy\OVFDefinition.csproj">
+      <Project>{380cbf8d-e0f9-4b86-8f68-228a067cd626}</Project>
+      <Name>OVFDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\ModuleFramework\ModuleFramework\ModuleFramework.csproj">
       <Project>{D84067BA-D822-466B-B6D3-D7652317BE5C}</Project>
@@ -158,7 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">
-      <Version>3.11.4</Version>
+      <Version>3.14.0</Version>
     </PackageReference>
     <PackageReference Include="OpenTK">
       <Version>3.1.0</Version>

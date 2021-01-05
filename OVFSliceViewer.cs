@@ -1,12 +1,14 @@
 ﻿using OVFSliceViewer.Classes;
 using OpenTK;
 using OpenVectorFormat;
+using OpenVectorFormat.AbstractReaderWriter;
 using ProceduralControl;
 using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
+using OpenVectorFormat.FileReaderWriterFactory;
 
 namespace OVFSliceViewer
 {
@@ -55,7 +57,7 @@ namespace OVFSliceViewer
             _painter.Draw();
         }
 
-        private void DrawWorkplane()
+        private async void DrawWorkplane()
         {
             int layernumber = layerTrackBar.Value;
             var mapper = new VectorblockToLineMapper();
@@ -67,10 +69,10 @@ namespace OVFSliceViewer
 
             for (int j = fromLayer; j < layernumber + 1; j++)
             {
-                if (_currentFile != null && _currentFile.FileLoadingFinished)
+                if (_currentFile != null)
                 {
-                    var workplane = _currentFile.GetWorkPlane(j);
-                    var blocks = workplane.VectorBlocks;
+                    var workplane = await _currentFile.GetWorkPlaneAsync(j);
+                    var blocks = await workplane.VectorBlocks;
                     var numBlocks = blocks.Count();
 
                     for (int i = 0; i < numBlocks; i++)
@@ -124,7 +126,7 @@ namespace OVFSliceViewer
 
             _viewerJob = new JobViewer(_currentFile);
 
-            layerTrackBar.Maximum = _currentFile.Job.NumWorkPlanes - 1;
+            layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
             layerTrackBar.Value = 0;
 
             Console.WriteLine(_viewerJob.Center.ToString());
@@ -137,7 +139,7 @@ namespace OVFSliceViewer
         {
             _currentFile = fileReader;
             layerTrackBar.Value = 0;
-            layerTrackBar.Maximum = _currentFile.Job.NumWorkPlanes - 1;
+            layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
            // DrawWorkplaneBeforePaint(true);
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }

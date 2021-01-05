@@ -1,4 +1,5 @@
 ﻿using OpenVectorFormat;
+using OpenVectorFormat.AbstractReaderWriter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OVFSliceViewer.Classes
 {
-    public class FileHandlerProgress : IFileHandlerProgress
+    public class FileHandlerProgress : IFileReaderWriterProgress
     {
         public bool IsCancelled { get; set; }
         public bool IsFinished { get; set; }

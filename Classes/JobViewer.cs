@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenVectorFormat.AbstractReaderWriter;
+using OpenVectorFormat.FileReaderWriterFactory;
 
 namespace OVFSliceViewer.Classes
 {
@@ -21,7 +23,7 @@ namespace OVFSliceViewer.Classes
         public JobViewer(FileReader fileReader)
         {
             _currentFile = fileReader;
-            NumberOfWorkplanes = _currentFile.Job.NumWorkPlanes - 1;
+            NumberOfWorkplanes = _currentFile.JobShell.NumWorkPlanes - 1;
             GetBoundingBox();
         }
 
@@ -31,7 +33,7 @@ namespace OVFSliceViewer.Classes
             _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
             _currentFile.OpenJobAsync(filename, _progress);
 
-            NumberOfWorkplanes = _currentFile.Job.NumWorkPlanes - 1;
+            NumberOfWorkplanes = _currentFile.JobShell.NumWorkPlanes - 1;
         }
 
         private void GetBoundingBox()
@@ -50,9 +52,9 @@ namespace OVFSliceViewer.Classes
 
             Center = min + (max - min) * 0.5f;
         }
-        private void GetWorkplaneBoundingBox(int workplaneIndex)
+        private async void GetWorkplaneBoundingBox(int workplaneIndex)
         {
-            WorkPlane workPlane = _currentFile.GetWorkPlane(workplaneIndex);
+            WorkPlane workPlane = await _currentFile.GetWorkPlaneAsync(workplaneIndex);
             var temp = new List<float>();
 
             foreach (var vectorblock in workPlane.VectorBlocks)
