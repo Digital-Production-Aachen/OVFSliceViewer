@@ -72,12 +72,12 @@ namespace OVFSliceViewer
                 if (_currentFile != null)
                 {
                     var workplane = await _currentFile.GetWorkPlaneAsync(j);
-                    var blocks = await workplane.VectorBlocks;
+                    var blocks = workplane.VectorBlocks;
                     var numBlocks = blocks.Count();
 
                     for (int i = 0; i < numBlocks; i++)
                     {
-                        if (blocks[i].LPbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour || j == layernumber)
+                        if (blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour || j == layernumber)
                         {
                             mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
                         }

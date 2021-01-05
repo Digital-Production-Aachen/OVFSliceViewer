@@ -95,9 +95,9 @@ namespace OVFSliceViewer
             switch(HightlightIndex)
             {
                 case 0: break;//0 = nothing
-                case 1: if (_vectorBlock.LPbfMetadata.PartArea == PartArea.Contour)  color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //1 = Contour 
+                case 1: if (_vectorBlock.LpbfMetadata.PartArea == PartArea.Contour)  color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //1 = Contour 
                     break;
-                case 2: if (_vectorBlock.LPbfMetadata.StructureType == StructureType.Support)  color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //2 = Support
+                case 2: if (_vectorBlock.LpbfMetadata.StructureType == StructureType.Support)  color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //2 = Support
                     break;
                 default: break;
             }
