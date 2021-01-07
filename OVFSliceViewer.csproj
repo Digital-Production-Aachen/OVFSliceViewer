@@ -151,7 +151,7 @@
       <Project>{158c4d36-22bf-4b63-9e12-4852917b9c9a}</Project>
       <Name>FileReaderWriterFactory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\ProtoDefinitionCompileDummy\OVFDefinition.csproj">
+    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\OVFDefinition\OVFDefinition.csproj">
       <Project>{380cbf8d-e0f9-4b86-8f68-228a067cd626}</Project>
       <Name>OVFDefinition</Name>
     </ProjectReference>
