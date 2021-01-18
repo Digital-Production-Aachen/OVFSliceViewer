@@ -15,7 +15,7 @@ namespace OVFSliceViewer.Classes
 
         public void Update(string message, int progressPerCent)
         {
-            
+                    
         }
     }
 }

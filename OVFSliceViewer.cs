@@ -9,12 +9,14 @@ using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
 using OpenVectorFormat.FileReaderWriterFactory;
+using LayerViewer;
 
 namespace OVFSliceViewer
 {
     public partial class OVFSliceViewer : Form
     {
         JobViewer _viewerJob;
+        ProgressStatus statusForm;
         Painter _painter;
         MotionTracker _motionTracker;
         int _numberOfLines = 3;
@@ -135,11 +137,15 @@ namespace OVFSliceViewer
             DrawWorkplane();
         }
 
-        public void LoadJob(FileReader fileReader, string filePath)
+        public async void LoadJob(FileReader fileReader, string filePath)
         {
             if (fileReader.CacheState == CacheState.NotCached)
             {
-                var task = fileReader.OpenJobAsync(filePath, new Classes.FileHandlerProgress());
+                //var task = fileReader.OpenJobAsync(filePath, new Classes.FileHandlerProgress());
+                var task = fileReader.CacheJobToMemoryAsync();
+                //ToDO: show a progressbar
+                //statusForm.Show();
+               //var temp = task.Result;
                 task.Wait();
             }
             _currentFile = fileReader;
