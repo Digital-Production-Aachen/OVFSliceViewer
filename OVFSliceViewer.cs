@@ -135,8 +135,13 @@ namespace OVFSliceViewer
             DrawWorkplane();
         }
 
-        public void LoadJob(FileReader fileReader)
+        public void LoadJob(FileReader fileReader, string filePath)
         {
+            if (fileReader.CacheState == CacheState.NotCached)
+            {
+                var task = fileReader.OpenJobAsync(filePath, new Classes.FileHandlerProgress());
+                task.Wait();
+            }
             _currentFile = fileReader;
             layerTrackBar.Value = 0;
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
