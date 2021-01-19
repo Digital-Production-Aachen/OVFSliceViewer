@@ -56,9 +56,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CustomControls">
-      <HintPath>..\CustomControls\bin\Release\CustomControls.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System">
@@ -151,6 +148,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+      <Project>{d7ba560a-ff69-4ac1-97d4-43bb9680c779}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileReader\FileReader\SLMFileReaderAdapter\SLMFileReaderAdapter.csproj">
       <Project>{55B96A6A-D631-4F84-BC8A-7BCEEE69DAAA}</Project>
       <Name>SLMFileReaderAdapter</Name>
