@@ -80,7 +80,7 @@
   <ItemGroup>
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\ColorDictionary.cs" />
-    <Compile Include="Classes\Drawing.cs" />
+    <Compile Include="Classes\DrawableObject.cs" />
     <Compile Include="Classes\FileHandlerProgress.cs" />
     <Compile Include="Classes\Grid.cs" />
     <Compile Include="Classes\MotionTracker.cs" />

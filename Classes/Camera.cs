@@ -20,6 +20,8 @@ namespace OVFSliceViewer
         protected float _canvasWidth;
         protected float _canvasHeight;
         protected float _zoomfactor = 1f;
+        protected float _zNear = 0.1f;
+        protected float _zFar = 500f;
         float _yaw = 0;
         float _pitch = 0;
         public float ObjectHeight { get; set; }
@@ -33,7 +35,7 @@ namespace OVFSliceViewer
                 (RotationMatrixYaw * RotationMatrixPitch * new Vector4(Vector3.UnitY, 1)).Xyz
                 );
 
-        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, 0.1f, 200f);
+        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, _zNear, _zFar);
 
         public Matrix4 TranslationMatrix { get; protected set; } = Matrix4.Identity;
         public Camera(float canvasWidth, float canvasHeight)
@@ -90,13 +92,13 @@ namespace OVFSliceViewer
                 newPosition = _cameraTarget + (delta + _zoomfactor) * ((_position - _cameraTarget).Normalized());
             }
 
-            if ((newPosition - _cameraTarget).Length < 0.1f)
+            if ((newPosition - _cameraTarget).Length < _zNear)
             {
-                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * 0.11f;
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zNear + 0.1f);
             }
-            else if ((newPosition - _cameraTarget).Length > 100f)
+            else if ((newPosition - _cameraTarget).Length > _zFar)
             {
-                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * 99f;
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zFar - 0.1f);
             }
 
             _position = newPosition;

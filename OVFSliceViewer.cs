@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using OpenVectorFormat.FileReaderWriterFactory;
 using LayerViewer;
+using System.Collections.Generic;
+using ModularEmulator.ProductView;
 
 namespace OVFSliceViewer
 {
@@ -68,20 +70,32 @@ namespace OVFSliceViewer
             int fromLayer;
 
             fromLayer = threeDCheckbox.Checked ? 0 : layernumber;
+            _painter.DrawableParts.ToList().ForEach(x => { x.Value.RemoveVolume(); x.Value.SetRangeToDraw(layernumber, fromLayer); });
+            _painter.Draw();
+            if (layernumber != layerTrackBar.Value)
+            {
+                return;
+            }
 
-            for (int j = fromLayer; j < layernumber + 1; j++)
+
+            for (int j = layernumber; j < layernumber + 1; j++)
             {
                 if (_currentFile != null)
                 {
                     var workplane = await _currentFile.GetWorkPlaneAsync(j);
+                    if (layernumber != layerTrackBar.Value)
+                    {
+                        return;
+                    }
                     var blocks = workplane.VectorBlocks;
                     var numBlocks = blocks.Count();
 
                     for (int i = 0; i < numBlocks; i++)
                     {
-                        if (blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour || j == layernumber)
+                        if (blocks[i].LpbfMetadata.PartArea != VectorBlock.Types.PartArea.Contour && j == layernumber)
                         {
-                            mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
+                            _painter.DrawableParts[blocks[i].MetaData.PartKey].AddVectorBlock(blocks[i], workplane.WorkPlaneNumber, workplane.ZPosInMm);
+                            //mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
                         }
                     }
                 }
@@ -89,6 +103,7 @@ namespace OVFSliceViewer
             //GC.Collect();
             var vertices = mapper.GetVertices();
             _numberOfLines = vertices.Count() / 2;
+            _painter.DrawableParts.ToList().ForEach(x => { x.Value.SetRangeToDraw(layernumber, fromLayer); x.Value.UpdateVolume(); });
             _painter.SetLinesAndDraw(vertices, _numberOfLines);
 
             mapper.Dispose();
@@ -126,6 +141,16 @@ namespace OVFSliceViewer
 
             await _currentFile.OpenJobAsync(filename, command);
 
+            _painter.DrawableParts = new Dictionary<int, DrawablePart>();
+            var shader = _painter.GetShader();
+            int i = 1;
+            var buffer = _painter.GetBufferPointer(_currentFile.JobShell.PartsMap.Count * 2);
+            foreach (var item in _currentFile.JobShell.PartsMap.Keys)
+            {
+                _painter.DrawableParts.Add(item, new DrawablePart(shader, buffer[i], buffer[i + 1], _currentFile.JobShell.NumWorkPlanes));
+                i += 2;
+            }
+
             _viewerJob = new JobViewer(_currentFile);
 
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
@@ -134,7 +159,34 @@ namespace OVFSliceViewer
             Console.WriteLine(_viewerJob.Center.ToString());
             _painter.Camera.MoveToPosition2D(_viewerJob.Center);
 
-            DrawWorkplane();
+            LoadContours();
+        }
+
+        private async void LoadContours()
+        {
+            int layernumber = layerTrackBar.Value;
+            //mapper.HightlightIndex = 
+            int fromLayer = 0;
+
+            for (int j = fromLayer; j < _currentFile.JobShell.NumWorkPlanes; j++)
+            {
+                if (_currentFile != null)
+                {
+                    var workplane = await _currentFile.GetWorkPlaneAsync(j);
+                    var blocks = workplane.VectorBlocks;
+                    var numBlocks = blocks.Count();
+
+                    for (int i = 0; i < numBlocks; i++)
+                    {
+                        if (blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour)
+                        {
+                            _painter.DrawableParts[blocks[i].MetaData.PartKey].AddContour(blocks[i], workplane.WorkPlaneNumber , workplane.ZPosInMm);
+                        }
+                    }
+                }
+            }
+            //GC.Collect();
+            _painter.DrawableParts.ToList().ForEach(x => x.Value.UpdateContour());
         }
 
         public async void LoadJob(FileReader fileReader, string filePath)

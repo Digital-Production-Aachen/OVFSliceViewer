@@ -3,6 +3,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OVFSliceViewer.Classes.ShaderNamespace;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -25,7 +26,9 @@ namespace OVFSliceViewer.Classes
         protected int _vertexArray;
         protected Shader _shader;
         protected Grid _grid = new Grid();
-
+        //protected DrawableObject _drawableGrid;
+        private int[] _buffers;
+        public Dictionary<int, DrawablePart> DrawableParts { get; set; }
 
         Vertex[] _vertices = new Vertex[6]{
                 new Vertex { Color = new Vector4(1,0,0,0), Position = new Vector3(0, 0, 0)},
@@ -50,6 +53,24 @@ namespace OVFSliceViewer.Classes
             Init();
         }
 
+        public int[] GetBufferPointer(int numberOfBuffers)
+        {
+            if (_buffers != null)
+            {
+                GL.DeleteBuffers(_buffers.Length, _buffers);
+            }
+            
+            _buffers = new int[numberOfBuffers+1];
+            
+            GL.GenBuffers(numberOfBuffers+1, _buffers);
+
+            return _buffers;
+        }
+        public Shader GetShader()
+        {
+            return _shader;
+        }
+
         protected void Init()
         {
             _parent.FormClosing += (sender2, e2) => _isDrawing = false;
@@ -58,6 +79,8 @@ namespace OVFSliceViewer.Classes
             _gl.Resize += CanvasResizeEvent;
             ResetCamera(_gl);
             SetLines(new Vertex[0], _grid.Length);
+
+            //_drawableGrid = new DrawableObject(_shader, _buffers[1]);
         }
         void CanvasResizeEvent(object sender, EventArgs e)
         {
@@ -119,8 +142,8 @@ namespace OVFSliceViewer.Classes
 
         public void SetLinesAndDraw(Vertex[] vertices, int numberOfLinesToDraw = 0)
         {
-            SetLines(vertices, numberOfLinesToDraw);
-            RebindBufferObject();
+            //SetLines(vertices, numberOfLinesToDraw);
+            //RebindBufferObject();
             Draw();
         }
         public void SetLines(Vertex[] vertices, int numberOfLinesToDraw = 0)
@@ -192,6 +215,8 @@ namespace OVFSliceViewer.Classes
 
             GL.ClearColor(Color4.LightGray);
             CreateVertexBuffer();
+            //_drawableGrid = new DrawableObject(_shader, _buffers[1]);
+            //_drawableGrid.ChangePicture(_grid.GetGrid());
             CreateVertexArray(_vertexBuffer);
 
             _shader.Use();
@@ -217,68 +242,54 @@ namespace OVFSliceViewer.Classes
             GL.LineWidth(5f);
             if (ShowGrid)
             {
-                GL.DrawArrays(PrimitiveType.Lines, 0, _numberOfLinesToDraw*2 + _grid.Length);
-
+                //GL.DrawArrays(PrimitiveType.Lines, 0, _numberOfLinesToDraw*2/* + _grid.Length*/);
+                //if (_drawableGrid != null)
+                //{
+                //    _drawableGrid.Draw(modelViewProjection);
+                //}
+                if (DrawableParts != null)
+                {
+                    //for (int i = 5; i < 6; i++)
+                    //{
+                    //    DrawableParts[i].DrawAll(modelViewProjection);
+                    //}
+                    foreach (var part in DrawableParts.Values)
+                    {
+                        part.DrawAll(modelViewProjection);
+                    }
+                }
             }
             else
             {
-                GL.DrawArrays(PrimitiveType.Lines, _grid.Length, _numberOfLinesToDraw * 2);
+                //GL.DrawArrays(PrimitiveType.Lines, _grid.Length, _numberOfLinesToDraw * 2);
             }
 
             _gl.SwapBuffers();
             Application.DoEvents();
         }
 
-        //private Matrix4 Rotate()
-        //{
-        //    float angle = 0;
-        //    var timeStamp = Stopwatch.GetTimestamp();
-        //    var angle += 0;//(float)((timeStamp - lastTimestamp) / (double)freq / 2);
-        //    lastTimestamp = timeStamp;
-        //}
-
         private void CreateVertexBuffer()
         {
-            _vertexBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
+            //_vertexBuffer = GL.GenBuffer();
+            //_buffers = new int[2];
+            //GL.GenBuffers(2, _buffers);
+            //GL.DeleteBuffers()
+            //_vertexBuffer = _buffers[0];
 
-            var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-            try
-            {
-                GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(),
-                    BufferUsageHint.StaticDraw);
-            }
-            finally
-            {
-                handle.Free();
-            }
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
+            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
+
+            //var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
+            //try
+            //{
+            //    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(),
+            //        BufferUsageHint.StaticDraw);
+            //}
+            //finally
+            //{
+            //    handle.Free();
+            //}
+            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
         }
-
-        //private int CreateVertexShader(string code)
-        //{
-        //    var shader = GL.CreateShader(ShaderType.VertexShader);
-
-        //    GL.ShaderSource(shader, code);
-        //    GL.CompileShader(shader);
-        //    string infoLogVert = GL.GetShaderInfoLog(shader);
-        //    //Console.WriteLine(infoLogVert);
-
-        //    return shader;
-        //}
-
-        //private int CreateFragmentShader(string code)
-        //{
-        //    var shader = GL.CreateShader(ShaderType.FragmentShader);
-
-        //    GL.ShaderSource(shader, code);
-
-        //    GL.CompileShader(shader);
-        //    string infoLogVert = GL.GetShaderInfoLog(shader);
-        //    //Console.WriteLine(infoLogVert);
-
-        //    return shader;
-        //}
 
         private void CreateVertexArray(int vertexBuffer)
         {
