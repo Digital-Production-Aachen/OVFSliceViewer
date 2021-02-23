@@ -35,11 +35,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.layerNumberLabel = new System.Windows.Forms.Label();
             this.glCanvas = new OpenTK.GLControl();
-            this.threeDCheckbox = new System.Windows.Forms.CheckBox();
-            this.highlightCheckedListBox = new System.Windows.Forms.CheckedListBox();
-            this.gridCheckbox = new System.Windows.Forms.CheckBox();
-            this.checkboxPanel = new System.Windows.Forms.Panel();
             this.timeLayerLabel = new System.Windows.Forms.Label();
+            this.checkboxPanel = new System.Windows.Forms.Panel();
+            this.threeDCheckbox = new System.Windows.Forms.CheckBox();
+            this.gridCheckbox = new System.Windows.Forms.CheckBox();
+            this.highlightCheckedListBox = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).BeginInit();
             this.checkboxPanel.SuspendLayout();
@@ -115,7 +115,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.glCanvas.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.glCanvas.BackColor = System.Drawing.Color.Black;
-            this.glCanvas.Location = new System.Drawing.Point(12, 12);
+            this.glCanvas.Location = new System.Drawing.Point(106, 12);
             this.glCanvas.Name = "glCanvas";
             this.glCanvas.Size = new System.Drawing.Size(1418, 833);
             this.glCanvas.TabIndex = 9;
@@ -124,6 +124,27 @@
             this.glCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvasMouseDown);
             this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvasMouseMove);
             this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvasMoveMouseUp);
+            // 
+            // timeLayerLabel
+            // 
+            this.timeLayerLabel.AccessibleName = "timeLayerLabel";
+            this.timeLayerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timeLayerLabel.Location = new System.Drawing.Point(1558, 12);
+            this.timeLayerLabel.Name = "timeLayerLabel";
+            this.timeLayerLabel.Size = new System.Drawing.Size(99, 22);
+            this.timeLayerLabel.TabIndex = 20;
+            this.timeLayerLabel.Text = "Time         Layer";
+            // 
+            // checkboxPanel
+            // 
+            this.checkboxPanel.AccessibleName = "checkboxPanel";
+            this.checkboxPanel.Controls.Add(this.threeDCheckbox);
+            this.checkboxPanel.Controls.Add(this.gridCheckbox);
+            this.checkboxPanel.Controls.Add(this.highlightCheckedListBox);
+            this.checkboxPanel.Location = new System.Drawing.Point(1, 12);
+            this.checkboxPanel.Name = "checkboxPanel";
+            this.checkboxPanel.Size = new System.Drawing.Size(99, 93);
+            this.checkboxPanel.TabIndex = 21;
             // 
             // threeDCheckbox
             // 
@@ -136,6 +157,21 @@
             this.threeDCheckbox.Text = "3D View ";
             this.threeDCheckbox.UseVisualStyleBackColor = true;
             this.threeDCheckbox.CheckedChanged += new System.EventHandler(this.threeDCheckbox_CheckedChanged);
+            // 
+            // gridCheckbox
+            // 
+            this.gridCheckbox.AccessibleName = "gridCheckbox";
+            this.gridCheckbox.AutoSize = true;
+            this.gridCheckbox.Checked = true;
+            this.gridCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.gridCheckbox.Location = new System.Drawing.Point(7, 23);
+            this.gridCheckbox.Margin = new System.Windows.Forms.Padding(1);
+            this.gridCheckbox.Name = "gridCheckbox";
+            this.gridCheckbox.Size = new System.Drawing.Size(45, 17);
+            this.gridCheckbox.TabIndex = 18;
+            this.gridCheckbox.Text = "Grid";
+            this.gridCheckbox.UseVisualStyleBackColor = true;
+            this.gridCheckbox.CheckedChanged += new System.EventHandler(this.gridCheckbox_CheckedChanged);
             // 
             // highlightCheckedListBox
             // 
@@ -153,43 +189,6 @@
             this.highlightCheckedListBox.TabIndex = 17;
             this.highlightCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.highlightCheckedListBox_ItemCheck);
             // 
-            // gridCheckbox
-            // 
-            this.gridCheckbox.AccessibleName = "gridCheckbox";
-            this.gridCheckbox.AutoSize = true;
-            this.gridCheckbox.Checked = true;
-            this.gridCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gridCheckbox.Location = new System.Drawing.Point(7, 23);
-            this.gridCheckbox.Margin = new System.Windows.Forms.Padding(1);
-            this.gridCheckbox.Name = "gridCheckbox";
-            this.gridCheckbox.Size = new System.Drawing.Size(45, 17);
-            this.gridCheckbox.TabIndex = 18;
-            this.gridCheckbox.Text = "Grid";
-            this.gridCheckbox.UseVisualStyleBackColor = true;
-            this.gridCheckbox.CheckedChanged += new System.EventHandler(this.gridCheckbox_CheckedChanged);
-            // 
-            // checkboxPanel
-            // 
-            this.checkboxPanel.AccessibleName = "checkboxPanel";
-            this.checkboxPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkboxPanel.Controls.Add(this.threeDCheckbox);
-            this.checkboxPanel.Controls.Add(this.gridCheckbox);
-            this.checkboxPanel.Controls.Add(this.highlightCheckedListBox);
-            this.checkboxPanel.Location = new System.Drawing.Point(1547, 698);
-            this.checkboxPanel.Name = "checkboxPanel";
-            this.checkboxPanel.Size = new System.Drawing.Size(99, 93);
-            this.checkboxPanel.TabIndex = 19;
-            // 
-            // timeLayerLabel
-            // 
-            this.timeLayerLabel.AccessibleName = "timeLayerLabel";
-            this.timeLayerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.timeLayerLabel.Location = new System.Drawing.Point(1558, 12);
-            this.timeLayerLabel.Name = "timeLayerLabel";
-            this.timeLayerLabel.Size = new System.Drawing.Size(99, 22);
-            this.timeLayerLabel.TabIndex = 20;
-            this.timeLayerLabel.Text = "Time         Layer";
-            // 
             // OVFSliceViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -197,8 +196,8 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1671, 847);
-            this.Controls.Add(this.timeLayerLabel);
             this.Controls.Add(this.checkboxPanel);
+            this.Controls.Add(this.timeLayerLabel);
             this.Controls.Add(this.glCanvas);
             this.Controls.Add(this.layerNumberLabel);
             this.Controls.Add(this.label1);
@@ -224,11 +223,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label layerNumberLabel;
         private OpenTK.GLControl glCanvas;
-        private System.Windows.Forms.CheckBox threeDCheckbox;
-        private System.Windows.Forms.CheckedListBox highlightCheckedListBox;
-        private System.Windows.Forms.CheckBox gridCheckbox;
-        private System.Windows.Forms.Panel checkboxPanel;
         private System.Windows.Forms.Label timeLayerLabel;
+        private System.Windows.Forms.Panel checkboxPanel;
+        private System.Windows.Forms.CheckBox threeDCheckbox;
+        private System.Windows.Forms.CheckBox gridCheckbox;
+        private System.Windows.Forms.CheckedListBox highlightCheckedListBox;
     }
 }
 
