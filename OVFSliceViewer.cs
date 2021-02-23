@@ -149,8 +149,8 @@ namespace OVFSliceViewer
                 task.Wait();
             }
             _currentFile = fileReader;
-            layerTrackBar.Value = 0;
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
+            layerTrackBar.Value = 0;
            // DrawWorkplaneBeforePaint(true);
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }
@@ -158,7 +158,6 @@ namespace OVFSliceViewer
         private void layerTrackBarScroll(object sender, EventArgs e)
         {
             DrawWorkplane();
-
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }
 
