@@ -133,7 +133,8 @@ namespace OVFSliceViewer
 
             Console.WriteLine(_viewerJob.Center.ToString());
             _painter.Camera.MoveToPosition2D(_viewerJob.Center);
-
+            LoadPartNames();
+            layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
             DrawWorkplane();
         }
 
@@ -153,6 +154,19 @@ namespace OVFSliceViewer
             layerTrackBar.Value = 0;
            // DrawWorkplaneBeforePaint(true);
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
+            LoadPartNames();
+        }
+
+        private void LoadPartNames()
+        {
+            if(_currentFile.CacheState != CacheState.NotCached)
+            {
+                partsCheckedListBox.Items.Clear();
+                foreach (var part in _currentFile.JobShell.PartsMap.Values)
+                {
+                    partsCheckedListBox.Items.Add(part.Name);
+                }
+            }
         }
 
         private void layerTrackBarScroll(object sender, EventArgs e)

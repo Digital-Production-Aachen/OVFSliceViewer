@@ -204,9 +204,8 @@
             this.partPanel.Controls.Add(this.partsCheckedListBox);
             this.partPanel.Location = new System.Drawing.Point(1, 147);
             this.partPanel.Name = "partPanel";
-            this.partPanel.Size = new System.Drawing.Size(112, 93);
+            this.partPanel.Size = new System.Drawing.Size(112, 207);
             this.partPanel.TabIndex = 22;
-            this.partPanel.Visible = false;
             // 
             // partsCheckedListBox
             // 
@@ -221,7 +220,7 @@
             "part3"});
             this.partsCheckedListBox.Location = new System.Drawing.Point(3, 30);
             this.partsCheckedListBox.Name = "partsCheckedListBox";
-            this.partsCheckedListBox.Size = new System.Drawing.Size(86, 45);
+            this.partsCheckedListBox.Size = new System.Drawing.Size(106, 150);
             this.partsCheckedListBox.TabIndex = 17;
             // 
             // viewSelectionLabel
