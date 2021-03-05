@@ -37,13 +37,18 @@
             this.glCanvas = new OpenTK.GLControl();
             this.timeLayerLabel = new System.Windows.Forms.Label();
             this.checkboxPanel = new System.Windows.Forms.Panel();
+            this.viewSelectionLabel = new System.Windows.Forms.Label();
             this.threeDCheckbox = new System.Windows.Forms.CheckBox();
             this.gridCheckbox = new System.Windows.Forms.CheckBox();
             this.highlightCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.partPanel = new System.Windows.Forms.Panel();
-            this.partsCheckedListBox = new System.Windows.Forms.CheckedListBox();
-            this.viewSelectionLabel = new System.Windows.Forms.Label();
             this.partSelectionLabel = new System.Windows.Forms.Label();
+            this.partsCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.xTextBox = new System.Windows.Forms.TextBox();
+            this.yTextBox = new System.Windows.Forms.TextBox();
+            this.moveButton = new System.Windows.Forms.Button();
+            this.xLabel = new System.Windows.Forms.Label();
+            this.yLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).BeginInit();
             this.checkboxPanel.SuspendLayout();
@@ -153,6 +158,17 @@
             this.checkboxPanel.Size = new System.Drawing.Size(109, 113);
             this.checkboxPanel.TabIndex = 21;
             // 
+            // viewSelectionLabel
+            // 
+            this.viewSelectionLabel.AccessibleName = "viewSelectionLabel";
+            this.viewSelectionLabel.AutoSize = true;
+            this.viewSelectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.viewSelectionLabel.Location = new System.Drawing.Point(-2, 0);
+            this.viewSelectionLabel.Name = "viewSelectionLabel";
+            this.viewSelectionLabel.Size = new System.Drawing.Size(113, 20);
+            this.viewSelectionLabel.TabIndex = 23;
+            this.viewSelectionLabel.Text = "View Selection";
+            // 
             // threeDCheckbox
             // 
             this.threeDCheckbox.AccessibleName = "threeDCheckbox";
@@ -207,6 +223,17 @@
             this.partPanel.Size = new System.Drawing.Size(112, 207);
             this.partPanel.TabIndex = 22;
             // 
+            // partSelectionLabel
+            // 
+            this.partSelectionLabel.AccessibleName = "partSelectionLabel";
+            this.partSelectionLabel.AutoSize = true;
+            this.partSelectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.partSelectionLabel.Location = new System.Drawing.Point(1, 7);
+            this.partSelectionLabel.Name = "partSelectionLabel";
+            this.partSelectionLabel.Size = new System.Drawing.Size(108, 20);
+            this.partSelectionLabel.TabIndex = 24;
+            this.partSelectionLabel.Text = "Part Selection";
+            // 
             // partsCheckedListBox
             // 
             this.partsCheckedListBox.AccessibleName = "partsCheckedListBox";
@@ -223,27 +250,61 @@
             this.partsCheckedListBox.Size = new System.Drawing.Size(106, 150);
             this.partsCheckedListBox.TabIndex = 17;
             // 
-            // viewSelectionLabel
+            // xTextBox
             // 
-            this.viewSelectionLabel.AccessibleName = "viewSelectionLabel";
-            this.viewSelectionLabel.AutoSize = true;
-            this.viewSelectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.viewSelectionLabel.Location = new System.Drawing.Point(-2, 0);
-            this.viewSelectionLabel.Name = "viewSelectionLabel";
-            this.viewSelectionLabel.Size = new System.Drawing.Size(113, 20);
-            this.viewSelectionLabel.TabIndex = 23;
-            this.viewSelectionLabel.Text = "View Selection";
+            this.xTextBox.AccessibleName = "xTextBox";
+            this.xTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.xTextBox.Location = new System.Drawing.Point(1600, 742);
+            this.xTextBox.Name = "xTextBox";
+            this.xTextBox.Size = new System.Drawing.Size(59, 20);
+            this.xTextBox.TabIndex = 23;
+            this.xTextBox.TextChanged += new System.EventHandler(this.numBoxTextChanged);
+            this.xTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numBoxKeyDown);
             // 
-            // partSelectionLabel
+            // yTextBox
             // 
-            this.partSelectionLabel.AccessibleName = "partSelectionLabel";
-            this.partSelectionLabel.AutoSize = true;
-            this.partSelectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.partSelectionLabel.Location = new System.Drawing.Point(1, 7);
-            this.partSelectionLabel.Name = "partSelectionLabel";
-            this.partSelectionLabel.Size = new System.Drawing.Size(108, 20);
-            this.partSelectionLabel.TabIndex = 24;
-            this.partSelectionLabel.Text = "Part Selection";
+            this.yTextBox.AccessibleName = "yTextBox";
+            this.yTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.yTextBox.Location = new System.Drawing.Point(1600, 768);
+            this.yTextBox.Name = "yTextBox";
+            this.yTextBox.Size = new System.Drawing.Size(59, 20);
+            this.yTextBox.TabIndex = 24;
+            this.yTextBox.TextChanged += new System.EventHandler(this.numBoxTextChanged);
+            this.yTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numBoxKeyDown);
+            // 
+            // moveButton
+            // 
+            this.moveButton.AccessibleName = "moveButton";
+            this.moveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.moveButton.Location = new System.Drawing.Point(1530, 754);
+            this.moveButton.Name = "moveButton";
+            this.moveButton.Size = new System.Drawing.Size(47, 22);
+            this.moveButton.TabIndex = 25;
+            this.moveButton.Text = "Go to";
+            this.moveButton.UseVisualStyleBackColor = true;
+            this.moveButton.Click += new System.EventHandler(this.moveButton_Click);
+            // 
+            // xLabel
+            // 
+            this.xLabel.AccessibleName = "xLabel";
+            this.xLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.xLabel.AutoSize = true;
+            this.xLabel.Location = new System.Drawing.Point(1582, 743);
+            this.xLabel.Name = "xLabel";
+            this.xLabel.Size = new System.Drawing.Size(15, 13);
+            this.xLabel.TabIndex = 26;
+            this.xLabel.Text = "x:";
+            // 
+            // yLabel
+            // 
+            this.yLabel.AccessibleName = "yLabel";
+            this.yLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.yLabel.AutoSize = true;
+            this.yLabel.Location = new System.Drawing.Point(1583, 768);
+            this.yLabel.Name = "yLabel";
+            this.yLabel.Size = new System.Drawing.Size(15, 13);
+            this.yLabel.TabIndex = 27;
+            this.yLabel.Text = "y:";
             // 
             // OVFSliceViewer
             // 
@@ -251,6 +312,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1671, 847);
+            this.Controls.Add(this.yLabel);
+            this.Controls.Add(this.xLabel);
+            this.Controls.Add(this.moveButton);
+            this.Controls.Add(this.yTextBox);
+            this.Controls.Add(this.xTextBox);
             this.Controls.Add(this.partPanel);
             this.Controls.Add(this.checkboxPanel);
             this.Controls.Add(this.timeLayerLabel);
@@ -290,6 +356,11 @@
         private System.Windows.Forms.CheckedListBox partsCheckedListBox;
         private System.Windows.Forms.Label viewSelectionLabel;
         private System.Windows.Forms.Label partSelectionLabel;
+        private System.Windows.Forms.TextBox xTextBox;
+        private System.Windows.Forms.TextBox yTextBox;
+        private System.Windows.Forms.Button moveButton;
+        private System.Windows.Forms.Label xLabel;
+        private System.Windows.Forms.Label yLabel;
     }
 }
 

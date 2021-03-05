@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using OpenVectorFormat.FileReaderWriterFactory;
 using LayerViewer;
+using System.Drawing;
 
 namespace OVFSliceViewer
 {
@@ -259,6 +260,41 @@ namespace OVFSliceViewer
         {
             _painter.ShowGrid = gridCheckbox.Checked;
             DrawWorkplane();
+        }
+
+        private void moveButton_Click(object sender, EventArgs e)
+        {
+            if (Double.TryParse(xTextBox.Text, out double valX) && Double.TryParse(yTextBox.Text, out double valY))
+            {
+                _painter.Camera.MoveToPosition2D(new Vector2((float)valX, (float)valY));
+                _painter.Draw();
+            }
+        }
+        private int oldFloatIndex = 0;
+        private string oldFloatText = String.Empty;
+
+        private void numBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            oldFloatIndex = ((TextBox)sender).SelectionStart;
+            oldFloatText = ((TextBox)sender).Text;
+        }
+
+        private void numBoxTextChanged(object sender, EventArgs e)
+        {
+            var tb = sender as TextBox;
+            double val;
+            if (!Double.TryParse(tb.Text, out val))
+            {
+                tb.TextChanged -= numBoxTextChanged;
+                tb.Text = oldFloatText;
+                tb.SelectionStart = oldFloatIndex;
+                tb.TextChanged += numBoxTextChanged;
+                tb.BackColor = Color.Red;
+            }
+            else
+            {
+                tb.BackColor = Color.White;
+            }
         }
     }
 }
