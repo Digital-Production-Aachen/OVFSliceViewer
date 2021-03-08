@@ -28,7 +28,9 @@ namespace OVFSliceViewer.Classes
         protected Grid _grid = new Grid();
         //protected DrawableObject _drawableGrid;
         private int[] _buffers;
+        public bool Is3d { get; set; } = false;
         public Dictionary<int, DrawablePart> DrawableParts { get; set; }
+        public Dictionary<int, PointOrderManagement> LayerPointManager { get; set; } = new Dictionary<int, PointOrderManagement>(); // he gets great cash!
 
         Vertex[] _vertices = new Vertex[6]{
                 new Vertex { Color = new Vector4(1,0,0,0), Position = new Vector3(0, 0, 0)},
@@ -193,7 +195,6 @@ namespace OVFSliceViewer.Classes
                 _numberOfLinesToDraw = _vertices.Count();
             }
             else _numberOfLinesToDraw = numberOfLinesToDraw;
-            Draw();
         }
 
         private void GLControlPaint(object sender, PaintEventArgs e)
@@ -203,7 +204,7 @@ namespace OVFSliceViewer.Classes
                 _gl.Paint -= _test;
             }
             PrepareDrawing();
-            Draw();
+            Draw(0);
         }
         private void PrepareDrawing()
         {
@@ -229,7 +230,7 @@ namespace OVFSliceViewer.Classes
             //var lastTimestamp = Stopwatch.GetTimestamp();
             //var freq = Stopwatch.Frequency;
         }
-        public void Draw()
+        public void Draw(int layernumber = 0)
         {
             // Clear color and depth buffers
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -253,8 +254,32 @@ namespace OVFSliceViewer.Classes
                     //{
                     //    DrawableParts[i].DrawAll(modelViewProjection);
                     //}
+
+                    var pointsPerPart = LayerPointManager[layernumber].GetPointNumbersToDraw(null, _numberOfLinesToDraw);
+
                     foreach (var part in DrawableParts.Values)
                     {
+                        int numberOfPolylines = 0;
+
+                        if (Is3d)
+                        {
+
+                            for (int i = 0; i < layernumber-1; i++)
+                            {
+                                numberOfPolylines += LayerPointManager[i].GetPointNumbersToDraw(null)[part.Partnumber].ContourNumberOfPoints;
+                            }
+                            numberOfPolylines += pointsPerPart[part.Partnumber].ContourNumberOfPoints;
+                            part.SetContourRangeToDraw3d(layernumber, 0);
+
+                        }
+                        else
+                        {
+                            numberOfPolylines += pointsPerPart[part.Partnumber].ContourNumberOfPoints;
+                            part.SetContourRangeToDraw2d(numberOfPolylines, layernumber);
+
+                        }
+
+                        part.SetVolumeRangeToDraw(pointsPerPart[part.Partnumber].HatchNumberOfPoints);
                         part.DrawAll(modelViewProjection);
                     }
                 }

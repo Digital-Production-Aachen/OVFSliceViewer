@@ -21,7 +21,7 @@ namespace OVFSliceViewer
         protected float _canvasHeight;
         protected float _zoomfactor = 1f;
         protected float _zNear = 0.1f;
-        protected float _zFar = 500f;
+        protected float _zFar = 200f;
         float _yaw = 0;
         float _pitch = 0;
         public float ObjectHeight { get; set; }

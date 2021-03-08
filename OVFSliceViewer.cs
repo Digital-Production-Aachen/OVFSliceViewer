@@ -33,8 +33,8 @@ namespace OVFSliceViewer
             _painter = new Painter(glCanvas, this);
             _motionTracker = new MotionTracker();
         }
-        public OVFSliceViewer(bool showLoadButton): this()
-        {          
+        public OVFSliceViewer(bool showLoadButton) : this()
+        {
             this.loadFileButton.Visible = showLoadButton;
         }
         protected override void OnClosing(CancelEventArgs e)
@@ -58,20 +58,21 @@ namespace OVFSliceViewer
             {
                 _painter.Camera.Zoom(false);
             }
-            _painter.Draw();
+            _painter.Draw(layerTrackBar.Value);
         }
 
         private async void DrawWorkplane()
         {
             int layernumber = layerTrackBar.Value;
-            var mapper = new VectorblockToLineMapper();
-            mapper.HightlightIndex = checkHighlightIndex;
-            //mapper.HightlightIndex = 
             int fromLayer;
 
             fromLayer = threeDCheckbox.Checked ? 0 : layernumber;
-            _painter.DrawableParts.ToList().ForEach(x => { x.Value.RemoveVolume(); x.Value.SetRangeToDraw(layernumber, fromLayer); });
-            _painter.Draw();
+            _painter.DrawableParts.ToList().ForEach(x => { x.Value.RemoveVolume(); x.Value.SetContourRangeToDraw3d(layernumber, fromLayer); });
+            if (threeDCheckbox.Checked)
+            {
+                _painter.Draw(layernumber);
+            }
+            
             if (layernumber != layerTrackBar.Value)
             {
                 return;
@@ -101,13 +102,20 @@ namespace OVFSliceViewer
                 }
             }
             //GC.Collect();
-            var vertices = mapper.GetVertices();
-            _numberOfLines = vertices.Count() / 2;
-            _painter.DrawableParts.ToList().ForEach(x => { x.Value.SetRangeToDraw(layernumber, fromLayer); x.Value.UpdateVolume(); });
-            _painter.SetLinesAndDraw(vertices, _numberOfLines);
+            _numberOfLines = _painter.LayerPointManager[layernumber].GetPointNumbersToDraw(null).Sum(x => x.Value.HatchNumberOfPoints + x.Value.ContourNumberOfPoints);
+            if (threeDCheckbox.Checked)
+            {
+                _painter.DrawableParts.ToList().ForEach(x => { x.Value.SetContourRangeToDraw3d(layernumber, fromLayer); x.Value.UpdateVolume(); });
+            }
+            else
+            {
+                _painter.DrawableParts.ToList().ForEach(x => { x.Value.UpdateVolume(); });
+            }
+            //_painter.SetLinesAndDraw(vertices, _numberOfLines);
 
-            mapper.Dispose();
-            mapper = null;
+            SetTimeTrackBar(_numberOfLines);
+            _painter.SetNumberOfLinesToDraw(_numberOfLines);
+            _painter.Draw(layernumber);
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -147,7 +155,7 @@ namespace OVFSliceViewer
             var buffer = _painter.GetBufferPointer(_currentFile.JobShell.PartsMap.Count * 2);
             foreach (var item in _currentFile.JobShell.PartsMap.Keys)
             {
-                _painter.DrawableParts.Add(item, new DrawablePart(shader, buffer[i], buffer[i + 1], _currentFile.JobShell.NumWorkPlanes));
+                _painter.DrawableParts.Add(item, new DrawablePart(shader, buffer[i], buffer[i + 1], _currentFile.JobShell.NumWorkPlanes, item));
                 i += 2;
             }
 
@@ -172,17 +180,40 @@ namespace OVFSliceViewer
             {
                 if (_currentFile != null)
                 {
+                    var pointOrderManagement = new PointOrderManagement(j);
                     var workplane = await _currentFile.GetWorkPlaneAsync(j);
                     var blocks = workplane.VectorBlocks;
                     var numBlocks = blocks.Count();
+                    var numberOfPoints = 0;
 
                     for (int i = 0; i < numBlocks; i++)
                     {
+                        bool isContour = blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour;
+                        if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.LineSequence)
+                        {
+                            numberOfPoints = (blocks[i].LineSequence.Points.Count/2 -1);
+                        }
+                        else if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.Hatches)
+                        {
+                            numberOfPoints = blocks[i].Hatches.Points.Count/2;
+                        }
+                        else if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.HatchParaAdapt)
+                        {
+                            numberOfPoints = blocks[i].HatchParaAdapt.HatchAsLinesequence.Sum(x => x.PointsWithParas.Count/3*2-1);
+                        }
+                        else if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.LineSequenceParaAdapt)
+                        {
+                            numberOfPoints = blocks[i].LineSequenceParaAdapt.PointsWithParas.Count / 3*2-1;
+                        }
+
+                        pointOrderManagement.AddVectorblockInfo(new PartVectorblockInfo() { Partnumber = blocks[i].MetaData.PartKey, NumberOfPoints = numberOfPoints, IsContour = isContour });
+
                         if (blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour)
                         {
-                            _painter.DrawableParts[blocks[i].MetaData.PartKey].AddContour(blocks[i], workplane.WorkPlaneNumber , workplane.ZPosInMm);
+                            _painter.DrawableParts[blocks[i].MetaData.PartKey].AddContour(blocks[i], workplane.WorkPlaneNumber, workplane.ZPosInMm);
                         }
                     }
+                    _painter.LayerPointManager[j] = pointOrderManagement;
                 }
             }
             //GC.Collect();
@@ -197,20 +228,19 @@ namespace OVFSliceViewer
                 var task = fileReader.CacheJobToMemoryAsync();
                 //ToDO: show a progressbar
                 //statusForm.Show();
-               //var temp = task.Result;
+                //var temp = task.Result;
                 task.Wait();
             }
             _currentFile = fileReader;
             layerTrackBar.Value = 0;
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
-           // DrawWorkplaneBeforePaint(true);
+            // DrawWorkplaneBeforePaint(true);
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }
 
         private void layerTrackBarScroll(object sender, EventArgs e)
         {
             DrawWorkplane();
-
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
         }
 
@@ -221,6 +251,7 @@ namespace OVFSliceViewer
                 timeTrackBar.Maximum = _numberOfLines;
             }
             _painter.SetNumberOfLinesToDraw(timeTrackBar.Value);
+            _painter.Draw(layerTrackBar.Value);
         }
 
         private void canvasMouseDown(object sender, MouseEventArgs e)
@@ -254,7 +285,7 @@ namespace OVFSliceViewer
             {
                 _motionTracker.Move(position, _painter.Camera.Rotate);
             }
-            _painter.Draw();
+            _painter.Draw(layerTrackBar.Value);
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {
@@ -283,16 +314,16 @@ namespace OVFSliceViewer
                 c.SetItemChecked(c.CheckedIndices[0], false);
                 c.ItemCheck += highlightCheckedListBox_ItemCheck;
             }
-            if(e.NewValue == CheckState.Checked)
+            if (e.NewValue == CheckState.Checked)
             {
-                checkHighlightIndex = e.Index+1;
+                checkHighlightIndex = e.Index + 1;
             }
             else
             {
                 checkHighlightIndex = 0;
             }
             DrawWorkplane();
-            
+
         }
         private void gridCheckbox_CheckedChanged(object sender, EventArgs e)
         {

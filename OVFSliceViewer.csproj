@@ -81,10 +81,13 @@
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\ColorDictionary.cs" />
     <Compile Include="Classes\DrawableObject.cs" />
+    <Compile Include="Classes\DrawablePart.cs" />
     <Compile Include="Classes\FileHandlerProgress.cs" />
     <Compile Include="Classes\Grid.cs" />
     <Compile Include="Classes\MotionTracker.cs" />
     <Compile Include="Classes\JobViewer.cs" />
+    <Compile Include="Classes\PartVectorblockInfo.cs" />
+    <Compile Include="Classes\PointOrderManagement.cs" />
     <Compile Include="Classes\Shader\Shader.cs" />
     <Compile Include="Classes\VertexArrayObject.cs" />
     <Compile Include="Classes\VertexBufferObject.cs" />
