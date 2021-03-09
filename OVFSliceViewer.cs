@@ -322,8 +322,8 @@ namespace OVFSliceViewer
             {
                 checkHighlightIndex = 0;
             }
+            _painter.SetHighlightColors(checkHighlightIndex);
             DrawWorkplane();
-
         }
         private void gridCheckbox_CheckedChanged(object sender, EventArgs e)
         {

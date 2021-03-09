@@ -16,7 +16,7 @@ namespace OVFSliceViewer.Classes
         protected Vertex[] _vertices = new Vertex[0];
         int _beginDrawingAt = 0;
         int _stopDrawingAt = 0;
-
+        int _vertexSize = Marshal.SizeOf(typeof(Vertex));
         public DrawableObject(Shader shader, int buffer)
         {
             _shader = shader;
@@ -41,7 +41,8 @@ namespace OVFSliceViewer.Classes
         {
             var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_vertexSize * _vertices.Length), handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
+            handle.Free();
             //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
 
@@ -67,7 +68,7 @@ namespace OVFSliceViewer.Classes
             var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
             try
             {
-                GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(),
+                GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_vertexSize * _vertices.Length), handle.AddrOfPinnedObject(),
                     BufferUsageHint.StaticDraw);
             }
             finally
@@ -82,12 +83,12 @@ namespace OVFSliceViewer.Classes
             _vertexArray = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArray);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 28, IntPtr.Zero);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, _vertexSize, new IntPtr(4));
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, 28, new IntPtr(12));
+            GL.VertexAttribPointer(1, 1, VertexAttribPointerType.Float, false, _vertexSize, IntPtr.Zero);
             GL.EnableVertexAttribArray(1);
-            GL.BindVertexArray(_vertexArray);
+            //1 xyz rgba
+            //x yzr gb 
         }
     }
 }

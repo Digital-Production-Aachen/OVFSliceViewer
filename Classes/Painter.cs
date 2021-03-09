@@ -28,19 +28,35 @@ namespace OVFSliceViewer.Classes
         protected Grid _grid = new Grid();
         //protected DrawableObject _drawableGrid;
         private int[] _buffers;
+        Vector4 mainColor = new Vector4(1,0,0,0);
+        Vector4 contourColor = new Vector4(1,0,0,0);
+        Vector4 supportColor = new Vector4(1,0,0,0);
         public bool Is3d { get; set; } = true;
         public Dictionary<int, DrawablePart> DrawableParts { get; set; }
         public Dictionary<int, PointOrderManagement> LayerPointManager { get; set; } = new Dictionary<int, PointOrderManagement>(); // he gets great cash!
 
         Vertex[] _vertices = new Vertex[6]{
-                new Vertex { Color = new Vector4(1,0,0,0), Position = new Vector3(0, 0, 0)},
-                new Vertex { Color = new Vector4(1,0,0,0), Position = new Vector3(20f, 0, 0)},
-                new Vertex { Color = new Vector4(0,1,0,0), Position = new Vector3(0, 0, 0)},
-                new Vertex { Color = new Vector4(0,1,0,0), Position = new Vector3(0, 20f, 0)},
-                new Vertex { Color = new Vector4(0,0,1,0), Position = new Vector3(0, 0, 0)},
-                new Vertex { Color = new Vector4(0,0,1,0), Position = new Vector3(0, 0, 20f)}
+                new Vertex { ColorIndex = 0, Position = new Vector3(0, 0, 0)},
+                new Vertex { ColorIndex = 0, Position = new Vector3(20f, 0, 0)},
+                new Vertex { ColorIndex = 0, Position = new Vector3(0, 0, 0)},
+                new Vertex { ColorIndex = 0, Position = new Vector3(0, 20f, 0)},
+                new Vertex { ColorIndex = 0, Position = new Vector3(0, 0, 0)},
+                new Vertex { ColorIndex = 0, Position = new Vector3(0, 0, 20f)}
         };
-
+        public void SetHighlightColors(int highlightIndex)
+        {
+            var highlightcolor = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f);
+            contourColor = new Vector4(1, 0, 0, 0);
+            supportColor = new Vector4(1, 0, 0, 0);
+            if (highlightIndex == 1)
+            {
+                contourColor = highlightcolor;
+            }
+            else if(highlightIndex == 2)
+            {
+                supportColor = highlightcolor;
+            }
+        }
         public Camera Camera { get; set; }
         public IRotateable Rotation => Camera;
 
@@ -215,9 +231,6 @@ namespace OVFSliceViewer.Classes
             _shader = new Shader();
 
             GL.ClearColor(Color4.LightGray);
-            CreateVertexBuffer();
-            //_drawableGrid = new DrawableObject(_shader, _buffers[1]);
-            //_drawableGrid.ChangePicture(_grid.GetGrid());
             CreateVertexArray(_vertexBuffer);
 
             _shader.Use();
@@ -225,92 +238,77 @@ namespace OVFSliceViewer.Classes
             GL.ShadeModel(ShadingModel.Flat);
             _mvp = _shader.GetUniformLocation();
 
-            //float angle = 0;
-
-            //var lastTimestamp = Stopwatch.GetTimestamp();
-            //var freq = Stopwatch.Frequency;
         }
         public void Draw(int layernumber = 0)
         {
-            // Clear color and depth buffers
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            Matrix4 modelViewProjection = Camera.TranslationMatrix * Camera.LookAtTransformationMatrix * Camera.ProjectionMatrix;
-
-            GL.UniformMatrix4(_mvp, false, ref modelViewProjection);
-
-            GL.BindVertexArray(_vertexArray);
-            GL.LineWidth(5f);
-            if (ShowGrid)
+            if (_shader != null)
             {
-                //GL.DrawArrays(PrimitiveType.Lines, 0, _numberOfLinesToDraw*2/* + _grid.Length*/);
-                //if (_drawableGrid != null)
-                //{
-                //    _drawableGrid.Draw(modelViewProjection);
-                //}
-                if (DrawableParts != null)
+                // Clear color and depth buffers
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+                Matrix4 modelViewProjection = Camera.TranslationMatrix * Camera.LookAtTransformationMatrix * Camera.ProjectionMatrix;
+
+                GL.UniformMatrix4(_mvp, false, ref modelViewProjection);
+
+                //var mainColor = new Vector4(1, 0, 0, 0);
+                //var contourColor = new Vector4(0, 1, 0, 0); 
+                //var supportColor = new Vector4(0.5f, 0.5f, 0.5f, 0);
+
+                GL.Uniform4(_shader.GetMainColorLocation(), mainColor);
+                GL.Uniform4(_shader.GetContourColorLocation(), contourColor);
+                GL.Uniform4(_shader.GetSupportColorLocation(), supportColor);
+
+
+                GL.BindVertexArray(_vertexArray);
+                GL.LineWidth(5f);
+                if (ShowGrid)
                 {
-                    //for (int i = 5; i < 6; i++)
+                    //GL.DrawArrays(PrimitiveType.Lines, 0, _numberOfLinesToDraw*2/* + _grid.Length*/);
+                    //if (_drawableGrid != null)
                     //{
-                    //    DrawableParts[i].DrawAll(modelViewProjection);
+                    //    _drawableGrid.Draw(modelViewProjection);
                     //}
-
-                    var pointsPerPart = LayerPointManager[layernumber].GetPointNumbersToDraw(null, _numberOfLinesToDraw);
-
-                    foreach (var part in DrawableParts.Values)
+                    if (DrawableParts != null)
                     {
-                        int numberOfPolylines = 0;
-                        PartDrawInfo partDrawInfo;
-                        pointsPerPart.TryGetValue(part.Partnumber, out partDrawInfo);
-                        if (Is3d)
+                        //for (int i = 5; i < 6; i++)
+                        //{
+                        //    DrawableParts[i].DrawAll(modelViewProjection);
+                        //}
+
+                        var pointsPerPart = LayerPointManager[layernumber].GetPointNumbersToDraw(null, _numberOfLinesToDraw);
+
+                        foreach (var part in DrawableParts.Values)
                         {
-                            numberOfPolylines += partDrawInfo?.ContourNumberOfPoints ?? 0;
-                            part.SetContourRangeToDraw3d(layernumber, numberOfPolylines);
+                            int numberOfPolylines = 0;
+                            PartDrawInfo partDrawInfo;
+                            pointsPerPart.TryGetValue(part.Partnumber, out partDrawInfo);
+                            if (Is3d)
+                            {
+                                numberOfPolylines += partDrawInfo?.ContourNumberOfPoints ?? 0;
+                                part.SetContourRangeToDraw3d(layernumber, numberOfPolylines);
 
+                            }
+                            else
+                            {
+                                numberOfPolylines += partDrawInfo?.ContourNumberOfPoints ?? 0;
+                                part.SetContourRangeToDraw2d(numberOfPolylines, layernumber);
+
+                            }
+
+                            part.SetVolumeRangeToDraw(partDrawInfo?.HatchNumberOfPoints ?? 0);
+                            part.DrawAll(modelViewProjection);
                         }
-                        else
-                        {
-                            numberOfPolylines += partDrawInfo?.ContourNumberOfPoints ?? 0;
-                            part.SetContourRangeToDraw2d(numberOfPolylines, layernumber);
-
-                        }
-
-                        part.SetVolumeRangeToDraw(partDrawInfo?.HatchNumberOfPoints ?? 0);
-                        part.DrawAll(modelViewProjection);
                     }
                 }
+                else
+                {
+                    //GL.DrawArrays(PrimitiveType.Lines, _grid.Length, _numberOfLinesToDraw * 2);
+                }
+
+                _gl.SwapBuffers();
+                Application.DoEvents();
             }
-            else
-            {
-                //GL.DrawArrays(PrimitiveType.Lines, _grid.Length, _numberOfLinesToDraw * 2);
-            }
-
-            _gl.SwapBuffers();
-            Application.DoEvents();
-        }
-
-        private void CreateVertexBuffer()
-        {
-            //_vertexBuffer = GL.GenBuffer();
-            //_buffers = new int[2];
-            //GL.GenBuffers(2, _buffers);
-            //GL.DeleteBuffers()
-            //_vertexBuffer = _buffers[0];
-
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-
-            //var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-            //try
-            //{
-            //    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(28 * _vertices.Length), handle.AddrOfPinnedObject(),
-            //        BufferUsageHint.StaticDraw);
-            //}
-            //finally
-            //{
-            //    handle.Free();
-            //}
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-        }
+        }   
 
         private void CreateVertexArray(int vertexBuffer)
         {

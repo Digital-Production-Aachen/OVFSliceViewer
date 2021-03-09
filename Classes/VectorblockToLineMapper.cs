@@ -53,12 +53,12 @@ namespace OVFSliceViewer
             {
                 vertices[2*i+gridcount] = new Vertex
                 {
-                    Color = _lines[i].Start.Color,
+                    ColorIndex = _lines[i].Start.Color,
                     Position = _lines[i].Start.Position
                 };
                 vertices[2*i+1 + gridcount] = new Vertex
                 {
-                    Color = _lines[i].Ende.Color,
+                    ColorIndex = _lines[i].Ende.Color,
                     Position = _lines[i].Ende.Position
                 };
             }

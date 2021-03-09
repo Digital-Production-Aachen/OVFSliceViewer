@@ -7,7 +7,7 @@ namespace OVFSliceViewer
     {
         float _minPower;
         float _maxPower;
-        Vector4 _color;
+        float _colorIndex;
 
         public VectorWithColorFactory(float minPower, float maxPower)
         {
@@ -15,13 +15,13 @@ namespace OVFSliceViewer
             _maxPower = maxPower;
         }
 
-        public void SetColor(Vector4 color)
+        public void SetColor(float color)
         {
-            _color = color; 
+            _colorIndex = color; 
         }
         public VmVectorWithColor GetVectorWithColor(Vector3 position)
         {
-            return new VmVectorWithColor(position, _color);
+            return new VmVectorWithColor(position, _colorIndex);
         }
         public VmVectorWithColor GetVectorWithPowerColor(Vector3 position, float power)
         {

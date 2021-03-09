@@ -10,22 +10,21 @@ namespace OVFSliceViewer
 
             if (maxPower - minPower <= 0.001f)
             {
-                Color = new Vector4(1f, 0f, 0f, 0f);
+                Color = 0;
             }
             else
             {
-                var rgbR = 1 - (maxPower - power) / (maxPower - minPower);
                 var rgbG = (maxPower - power) / (maxPower - minPower);
-                Color = new Vector4(rgbR, rgbG, 0f, 0f);
+                Color = rgbG;
             }
         }
-        public VmVectorWithColor(Vector3 position, Vector4 color)
+        public VmVectorWithColor(Vector3 position, float color)
         {
             Position = position;
             Color = color;
         }
 
         public Vector3 Position { get; protected set; }
-        public Vector4 Color { get; protected set; }
+        public float Color { get; protected set; }
     }
 }

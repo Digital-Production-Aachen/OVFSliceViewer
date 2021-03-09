@@ -12,6 +12,9 @@ namespace OVFSliceViewer.Classes.ShaderNamespace
         int _vertexShader;
         int _fragmentShader;
         int _mvp;
+        int _mainColor;
+        int _supportColor;
+        int _contourColor;
 
         public Shader(string vertexPath = @"Classes/Shader/shader.vert", string fragmentPath = @"Classes/Shader/shader.frag")
         {
@@ -49,6 +52,21 @@ namespace OVFSliceViewer.Classes.ShaderNamespace
             return _mvp;
         }
 
+        public int GetMainColorLocation()
+        {
+            return _mainColor;
+        }
+
+        public int GetSupportColorLocation()
+        {
+            return _supportColor;
+        }
+
+        public int GetContourColorLocation()
+        {
+            return _contourColor;
+        }
+
         private int CreateVertexShader(string vertexShaderSource)
         {
             _vertexShader = GL.CreateShader(ShaderType.VertexShader);
@@ -80,13 +98,16 @@ namespace OVFSliceViewer.Classes.ShaderNamespace
             
             GL.BindFragDataLocation(Handle, 0, "FragColor");
             GL.BindAttribLocation(Handle, 0, "position");
-            GL.BindAttribLocation(Handle, 1, "color");
+            GL.BindAttribLocation(Handle, 1, "colorIndex");
 
             GL.LinkProgram(Handle);
             GL.ValidateProgram(Handle);
             //GL.UseProgram(Handle);
 
             _mvp = GL.GetUniformLocation(Handle, "Mvp");
+            _mainColor = GL.GetUniformLocation(Handle, "mainColor");
+            _contourColor = GL.GetUniformLocation(Handle, "contourColor");
+            _supportColor = GL.GetUniformLocation(Handle, "supportColor");
 
             GL.DetachShader(Handle, _vertexShader);
             GL.DetachShader(Handle, _fragmentShader);

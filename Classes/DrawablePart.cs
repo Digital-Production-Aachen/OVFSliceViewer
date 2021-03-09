@@ -66,8 +66,8 @@ namespace OVFSliceViewer.Classes
 
             foreach (var item in _contourLines)
             {
-                var startVertex = new Vertex { Color = item.Start.Color, Position = item.Start.Position };
-                var endVertex = new Vertex { Color = item.Ende.Color, Position = item.Ende.Position };
+                var startVertex = new Vertex (item.Start.Position, item.Start.Color);
+                var endVertex = new Vertex (item.Ende.Position, item.Ende.Color);
 
                 vertices.Add(startVertex);
                 vertices.Add(endVertex);
@@ -81,11 +81,11 @@ namespace OVFSliceViewer.Classes
         public void UpdateVolume()
         {
             var vertices = new List<Vertex>();
-
+            //toDo: consolidate
             foreach (var item in _volumeLines)
             {
-                var startVertex = new Vertex { Color = item.Start.Color, Position = item.Start.Position };
-                var endVertex = new Vertex { Color = item.Ende.Color, Position = item.Ende.Position };
+                var startVertex = new Vertex(item.Start.Position, item.Start.Color);
+                var endVertex = new Vertex(item.Ende.Position, item.Ende.Color);
 
                 vertices.Add(startVertex);
                 vertices.Add(endVertex);
@@ -136,18 +136,17 @@ namespace OVFSliceViewer.Classes
         {
             List<VmLine> list = new List<VmLine>();
             var points = new RepeatedField<float>();
-            var color = new Vector4(1f, 0f, 0f, 0f);
-            switch (HightlightIndex)
+            var color = 0;
+            //new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f)
+            if (_vectorBlock.LpbfMetadata.PartArea == PartArea.Contour)
             {
-                case 0: break;//0 = nothing
-                case 1:
-                    if (_vectorBlock.LpbfMetadata.PartArea == PartArea.Contour) color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //1 = Contour 
-                    break;
-                case 2:
-                    if (_vectorBlock.LpbfMetadata.StructureType == StructureType.Support) color = new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f); //2 = Support
-                    break;
-                default: break;
+                color = 2;
             }
+            if (_vectorBlock.LpbfMetadata.StructureType == StructureType.Support)
+            {
+                color = 3;
+            }
+
 
             _vectorFactory.SetColor(color);
             switch (_vectorBlock.VectorDataCase)
