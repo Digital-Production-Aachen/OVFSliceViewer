@@ -126,7 +126,7 @@ namespace OVFSliceViewer
 
         private void LoadJobButtonClick(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "ovf files (*.ovf)|*.ovf|All files (*.*)|*.*";
+            openFileDialog1.Filter = "ovf and ilt files (*.ovf; *.ilt)|*.ovf;*.ilt|All files (*.*)|*.*";
             var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -166,7 +166,7 @@ namespace OVFSliceViewer
 
             Console.WriteLine(_viewerJob.Center.ToString());
             _painter.Camera.MoveToPosition2D(_viewerJob.Center);
-
+            layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
             LoadContours();
         }
 

@@ -43,21 +43,16 @@ namespace OVFSliceViewer.Classes
             
             _contour.SetRangeToDraw(startcount*2 + numberOfPoints*2, startcount * 2);
         }
-        public void SetContourRangeToDraw3d(int endlayer, int startlayer = 0)
+        public void SetContourRangeToDraw3d(int endlayer, int linesInLayer = 0)
         {
             var endcount = 0;
             var startcount = 0;
 
-            for (int i = 0; i <= startlayer; i++)
-            {
-                startcount += numberOfContourLinesInWorkplane[i];
-            }
-
-            for(int i = startlayer; i <= endlayer; i++)
+            for(int i = 0; i < endlayer; i++)
             {
                 endcount += numberOfContourLinesInWorkplane[i];
             }
-            _contour.SetRangeToDraw(endcount*2, startcount*2);
+            _contour.SetRangeToDraw(endcount*2 + linesInLayer*2, 0);
         }
         public void SetVolumeRangeToDraw(int end)
         {

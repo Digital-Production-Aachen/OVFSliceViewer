@@ -28,7 +28,7 @@ namespace OVFSliceViewer.Classes
         protected Grid _grid = new Grid();
         //protected DrawableObject _drawableGrid;
         private int[] _buffers;
-        public bool Is3d { get; set; } = false;
+        public bool Is3d { get; set; } = true;
         public Dictionary<int, DrawablePart> DrawableParts { get; set; }
         public Dictionary<int, PointOrderManagement> LayerPointManager { get; set; } = new Dictionary<int, PointOrderManagement>(); // he gets great cash!
 
@@ -260,26 +260,22 @@ namespace OVFSliceViewer.Classes
                     foreach (var part in DrawableParts.Values)
                     {
                         int numberOfPolylines = 0;
-
+                        PartDrawInfo partDrawInfo;
+                        pointsPerPart.TryGetValue(part.Partnumber, out partDrawInfo);
                         if (Is3d)
                         {
-
-                            for (int i = 0; i < layernumber-1; i++)
-                            {
-                                numberOfPolylines += LayerPointManager[i].GetPointNumbersToDraw(null)[part.Partnumber].ContourNumberOfPoints;
-                            }
-                            numberOfPolylines += pointsPerPart[part.Partnumber].ContourNumberOfPoints;
-                            part.SetContourRangeToDraw3d(layernumber, 0);
+                            numberOfPolylines += partDrawInfo?.ContourNumberOfPoints ?? 0;
+                            part.SetContourRangeToDraw3d(layernumber, numberOfPolylines);
 
                         }
                         else
                         {
-                            numberOfPolylines += pointsPerPart[part.Partnumber].ContourNumberOfPoints;
+                            numberOfPolylines += partDrawInfo?.ContourNumberOfPoints ?? 0;
                             part.SetContourRangeToDraw2d(numberOfPolylines, layernumber);
 
                         }
 
-                        part.SetVolumeRangeToDraw(pointsPerPart[part.Partnumber].HatchNumberOfPoints);
+                        part.SetVolumeRangeToDraw(partDrawInfo?.HatchNumberOfPoints ?? 0);
                         part.DrawAll(modelViewProjection);
                     }
                 }
