@@ -10,9 +10,10 @@ out vec4 fragcolor;
 void main()
 {
 	vec4 colorOut = vec4(1,0,0,0);
+	vec4 colorMinPower = vec4(0,1,0,0);
 	if(colorIndex <= 1)
 	{
-		colorOut = mainColor;
+		colorOut = mix(colorOut, colorMinPower, colorIndex);
 	}
 	else if(colorIndex < 3 )
 	{

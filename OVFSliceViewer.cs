@@ -175,6 +175,8 @@ namespace OVFSliceViewer
             int layernumber = layerTrackBar.Value;
             //mapper.HightlightIndex = 
             int fromLayer = 0;
+            float minPower = 500000;
+            float maxPower = 0;
 
             for (int j = fromLayer; j < _currentFile.JobShell.NumWorkPlanes; j++)
             {
@@ -182,6 +184,20 @@ namespace OVFSliceViewer
                 {
                     var pointOrderManagement = new PointOrderManagement(j);
                     var workplane = await _currentFile.GetWorkPlaneAsync(j);
+
+
+                    if (workplane.MetaData != null && workplane.MetaData.MaxPower != 0 && workplane.MetaData.MinPower != 0)
+                    {
+                        if (minPower > (workplane.MetaData.MinPower))
+                        {
+                            minPower = workplane.MetaData.MinPower;
+                        }
+                        if (maxPower < workplane.MetaData.MaxPower)
+                        {
+                            maxPower = workplane.MetaData.MaxPower;
+                        }
+                    }
+
                     var blocks = workplane.VectorBlocks;
                     var numBlocks = blocks.Count();
                     var numberOfPoints = 0;
@@ -217,7 +233,7 @@ namespace OVFSliceViewer
                 }
             }
             //GC.Collect();
-            _painter.DrawableParts.ToList().ForEach(x => x.Value.UpdateContour());
+            _painter.DrawableParts.ToList().ForEach(x => { x.Value.UpdateContour(); x.Value.VectorFactory.SetPowerLevels(minPower, maxPower); });
         }
 
         public async void LoadJob(FileReader fileReader, string filePath)

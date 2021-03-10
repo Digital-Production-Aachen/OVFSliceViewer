@@ -15,6 +15,12 @@ namespace OVFSliceViewer
             _maxPower = maxPower;
         }
 
+        public void SetPowerLevels(float minPower, float maxPower) 
+        {
+            _minPower = minPower;
+            _maxPower = maxPower;
+        }
+
         public void SetColor(float color)
         {
             _colorIndex = color; 

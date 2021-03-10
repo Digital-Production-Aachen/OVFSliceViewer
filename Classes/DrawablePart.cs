@@ -15,7 +15,7 @@ namespace OVFSliceViewer.Classes
         protected DrawableObject _volume;
         protected VectorBlock _vectorBlock;
         int _numberOfLayers;
-        VectorWithColorFactory _vectorFactory = new VectorWithColorFactory(250, 350);
+        public VectorWithColorFactory VectorFactory { get; protected set; } = new VectorWithColorFactory(250, 350);
         float _height;
         List<VmLine> _contourLines = new List<VmLine>();
         List<VmLine> _volumeLines = new List<VmLine>();
@@ -148,7 +148,7 @@ namespace OVFSliceViewer.Classes
             }
 
 
-            _vectorFactory.SetColor(color);
+            VectorFactory.SetColor(color);
             switch (_vectorBlock.VectorDataCase)
             {
                 case VectorBlock.VectorDataOneofCase.LineSequence:
@@ -178,8 +178,8 @@ namespace OVFSliceViewer.Classes
                 var positionStart = new Vector3(points[i - 3], points[i - 2], _height);
                 var positionEnd = new Vector3(points[i - 1], points[i], _height);
 
-                var vmVectorStart = _vectorFactory.GetVectorWithColor(positionStart);
-                var vmVectorEnde = _vectorFactory.GetVectorWithColor(positionEnd);
+                var vmVectorStart = VectorFactory.GetVectorWithColor(positionStart);
+                var vmVectorEnde = VectorFactory.GetVectorWithColor(positionEnd);
                 var vmVector = new VmLine() { Start = vmVectorStart, Ende = vmVectorEnde, Height = _height };
 
                 list.Add(vmVector);
@@ -196,8 +196,8 @@ namespace OVFSliceViewer.Classes
                 var positionStart = new Vector3(points[i - 5], points[i - 4], _height);
                 var positionEnd = new Vector3(points[i - 2], points[i - 1], _height);
 
-                var vmVectorStart = _vectorFactory.GetVectorWithPowerColor(positionStart, points[i - 3]);
-                var vmVectorEnde = _vectorFactory.GetVectorWithPowerColor(positionEnd, points[i]);
+                var vmVectorStart = VectorFactory.GetVectorWithPowerColor(positionStart, points[i - 3]);
+                var vmVectorEnde = VectorFactory.GetVectorWithPowerColor(positionEnd, points[i]);
 
                 var vmVector = new VmLine() { Start = vmVectorStart, Ende = vmVectorEnde, Height = _height };
                 list.Add(vmVector);
@@ -214,8 +214,8 @@ namespace OVFSliceViewer.Classes
                 var positionStart = new Vector3(points[i - 3], points[i - 2], _height);
                 var positionEnd = new Vector3(points[i - 1], points[i - 0], _height);
 
-                var vmVectorStart = _vectorFactory.GetVectorWithColor(positionStart);
-                var vmVectorEnde = _vectorFactory.GetVectorWithColor(positionEnd);
+                var vmVectorStart = VectorFactory.GetVectorWithColor(positionStart);
+                var vmVectorEnde = VectorFactory.GetVectorWithColor(positionEnd);
 
                 var vmLine = new VmLine() { Start = vmVectorStart, Ende = vmVectorEnde, Height = _height };
 
