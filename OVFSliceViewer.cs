@@ -2,7 +2,6 @@
 using OpenTK;
 using OpenVectorFormat;
 using OpenVectorFormat.AbstractReaderWriter;
-using ProceduralControl;
 using System;
 using System.IO;
 using System.Linq;
@@ -119,11 +118,7 @@ namespace OVFSliceViewer
         {
             _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
 
-            var command = new JobExecutionCommand
-            {
-                FileReader = _currentFile,
-                FilePath = openFileDialog1.FileNames[0],
-            };
+            var command = new FileHandlerProgress();
 
             await _currentFile.OpenJobAsync(filename, command);
 
