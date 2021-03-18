@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 
 using System.Windows.Forms;
 
-namespace CustomControls
+namespace ViewerCustomControls
 {
     // source https://stackoverflow.com/questions/778678/how-to-change-the-color-of-progressbar-in-c-sharp-net-3-5
     public class ColorProgressBar : ProgressBar

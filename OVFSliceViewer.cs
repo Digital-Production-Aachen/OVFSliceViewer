@@ -79,6 +79,10 @@ namespace OVFSliceViewer
 
                     for (int i = 0; i < numBlocks; i++)
                     {
+                        if (blocks[i].LpbfMetadata == null)
+                        {
+                            continue;
+                        }
                         if (blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour || j == layernumber)
                         {
                             mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
