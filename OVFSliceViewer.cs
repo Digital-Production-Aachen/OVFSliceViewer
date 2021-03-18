@@ -113,7 +113,6 @@ namespace OVFSliceViewer
             {
                 //openFileDialog1.FileNames;
                 var filename = openFileDialog1.FileNames[0];
-
                 LoadJob(filename);
             }
         }
@@ -121,18 +120,15 @@ namespace OVFSliceViewer
         public async void LoadJob(string filename)
         {
             _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
-
             var command = new FileHandlerProgress();
 
             await _currentFile.OpenJobAsync(filename, command);
-
+            //SetDefaultLpbfMetaData();
             _viewerJob = new JobViewer(_currentFile);
-
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
             layerTrackBar.Value = 0;
-
             Console.WriteLine(_viewerJob.Center.ToString());
-            _painter.Camera.MoveToPosition2D(_viewerJob.Center);
+            _painter.Camera.MoveToPosition2D(_viewerJob.Center);          
             LoadPartNames();
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
             DrawWorkplane();
@@ -150,13 +146,31 @@ namespace OVFSliceViewer
                 task.Wait();
             }
             _currentFile = fileReader;
+            //SetDefaultLpbfMetaData();
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
             layerTrackBar.Value = 0;
            // DrawWorkplaneBeforePaint(true);
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
             LoadPartNames();
         }
-
+        private void SetDefaultLpbfMetaData()
+        {
+            var workplane = _currentFile.GetWorkPlaneAsync(0).GetAwaiter().GetResult();
+            if (workplane.VectorBlocks[0].LpbfMetadata == null)
+            {
+                for (int i = 0; i < _currentFile.JobShell.NumWorkPlanes; i++)
+                {
+                    foreach (var block in _currentFile.GetWorkPlaneAsync(0).GetAwaiter().GetResult().VectorBlocks)
+                    {
+                        var metadata = new VectorBlock.Types.LPBFMetadata();
+                        metadata.PartArea = VectorBlock.Types.PartArea.Contour;
+                        metadata.StructureType = VectorBlock.Types.StructureType.Part;
+                        metadata.SkinType = VectorBlock.Types.LPBFMetadata.Types.SkinType.InSkin;
+                        block.LpbfMetadata = metadata;
+                    }
+                }
+            }
+        }
         private void LoadPartNames()
         {
             if(_currentFile.CacheState != CacheState.NotCached)
