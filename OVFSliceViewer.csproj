@@ -82,7 +82,10 @@
     <Compile Include="Classes\ColorDictionary.cs" />
     <Compile Include="Classes\DrawableObject.cs" />
     <Compile Include="Classes\DrawablePart.cs" />
-    <Compile Include="Classes\FileHandlerProgress.cs" />
+    <Compile Include="CustomControls\ColorProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+	<Compile Include="Classes\FileHandlerProgress.cs" />
     <Compile Include="Classes\Grid.cs" />
     <Compile Include="Classes\MotionTracker.cs" />
     <Compile Include="Classes\JobViewer.cs" />
@@ -110,7 +113,6 @@
       <DependentUpon>ProgressStatus.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\SlmMultiLaserScanFieldDummy.cs" />
     <Compile Include="Classes\VectorblockToLineMapper.cs" />
     <Compile Include="Classes\Vertex.cs" />
     <Compile Include="Classes\VmLine.cs" />
@@ -151,32 +153,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
-      <Project>{d7ba560a-ff69-4ac1-97d4-43bb9680c779}</Project>
-      <Name>CustomControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FileReader\FileReader\SLMFileReaderAdapter\SLMFileReaderAdapter.csproj">
-      <Project>{55B96A6A-D631-4F84-BC8A-7BCEEE69DAAA}</Project>
-      <Name>SLMFileReaderAdapter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj">
-      <Project>{3cbb4d12-0ce6-494b-b629-42a0b9808d96}</Project>
-      <Name>AbstractReaderWriter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj">
-      <Project>{158c4d36-22bf-4b63-9e12-4852917b9c9a}</Project>
-      <Name>FileReaderWriterFactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FileReader\laservectorformat\ReaderWriter\OVFDefinition\OVFDefinition.csproj">
-      <Project>{380cbf8d-e0f9-4b86-8f68-228a067cd626}</Project>
-      <Name>OVFDefinition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModuleFramework\ModuleFramework\ModuleFramework.csproj">
-      <Project>{D84067BA-D822-466B-B6D3-D7652317BE5C}</Project>
-      <Name>ModuleFramework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Google.Protobuf">
       <Version>3.14.0</Version>
     </PackageReference>
@@ -185,6 +161,9 @@
     </PackageReference>
     <PackageReference Include="OpenTK.GLControl">
       <Version>3.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="OpenVectorFormat">
+      <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

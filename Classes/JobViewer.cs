@@ -40,7 +40,7 @@ namespace OVFSliceViewer.Classes
         {
             GetWorkplaneBoundingBox(0);
             GetWorkplaneBoundingBox(NumberOfWorkplanes/2);
-            GetWorkplaneBoundingBox(NumberOfWorkplanes - 1);
+            GetWorkplaneBoundingBox(NumberOfWorkplanes);
 
             var min = new Vector2(_edges.Min(x => x.X), _edges.Min(x => x.Y));
             var max = new Vector2(_edges.Max(x => x.X), _edges.Max(x => x.Y));
@@ -80,6 +80,14 @@ namespace OVFSliceViewer.Classes
                         {
                             temp.AddRange(hatch.PointsWithParas.Where((x, index) => (index + 1) % 3 != 0).Select(x => x).ToList());
                         }
+                        break;
+                    case VectorBlock.VectorDataOneofCase.LineSequence3D:
+                        var linesequence3d = vectorblock.LineSequence3D.Points;
+                        temp.AddRange(linesequence3d.Where((x, index) => (index + 1) % 3 != 0).Select(x => x).ToList());
+                        break;
+                    case VectorBlock.VectorDataOneofCase.Hatches3D:
+                        var hatch3d = vectorblock.Hatches3D.Points;
+                        temp.AddRange(hatch3d.Where((x, index) => (index + 1) % 3 != 0).Select(x => x).ToList());
                         break;
                     default:
                         break;

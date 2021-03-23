@@ -2,7 +2,6 @@
 using OpenTK;
 using OpenVectorFormat;
 using OpenVectorFormat.AbstractReaderWriter;
-using ProceduralControl;
 using System;
 using System.IO;
 using System.Linq;
@@ -10,8 +9,8 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using OpenVectorFormat.FileReaderWriterFactory;
 using LayerViewer;
+using System.Drawing;
 using System.Collections.Generic;
-using ModularEmulator.ProductView;
 
 namespace OVFSliceViewer
 {
@@ -93,7 +92,11 @@ namespace OVFSliceViewer
 
                     for (int i = 0; i < numBlocks; i++)
                     {
-                        if (blocks[i].LpbfMetadata.PartArea != VectorBlock.Types.PartArea.Contour && j == layernumber)
+                        if (blocks[i].LpbfMetadata == null)
+                        {
+                            continue;
+                        }
+                        if (blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour || j == layernumber)
                         {
                             _painter.DrawableParts[blocks[i].MetaData.PartKey].AddVectorBlock(blocks[i], workplane.WorkPlaneNumber, workplane.ZPosInMm);
                             //mapper.CalculateVectorBlock(blocks[i], workplane.ZPosInMm);
@@ -132,7 +135,6 @@ namespace OVFSliceViewer
             {
                 //openFileDialog1.FileNames;
                 var filename = openFileDialog1.FileNames[0];
-
                 LoadJob(filename);
             }
         }
@@ -140,32 +142,37 @@ namespace OVFSliceViewer
         public async void LoadJob(string filename)
         {
             _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
-
-            var command = new JobExecutionCommand
-            {
-                FileReader = _currentFile,
-                FilePath = openFileDialog1.FileNames[0],
-            };
+            var command = new FileHandlerProgress();
 
             await _currentFile.OpenJobAsync(filename, command);
-
+            //SetDefaultLpbfMetaData();
             _painter.DrawableParts = new Dictionary<int, DrawablePart>();
             var shader = _painter.GetShader();
             int i = 1;
-            var buffer = _painter.GetBufferPointer(_currentFile.JobShell.PartsMap.Count * 2);
-            foreach (var item in _currentFile.JobShell.PartsMap.Keys)
+            int[] buffer;
+            if (_currentFile.JobShell.PartsMap == null || _currentFile.JobShell.PartsMap.Count == 0)
             {
-                _painter.DrawableParts.Add(item, new DrawablePart(shader, buffer[i], buffer[i + 1], _currentFile.JobShell.NumWorkPlanes, item));
-                i += 2;
+                //no parts in MetaData, add dummy part 0
+                buffer = _painter.GetBufferPointer(2);
+                _painter.DrawableParts.Add(0, new DrawablePart(shader, buffer[i], buffer[i + 1], _currentFile.JobShell.NumWorkPlanes, 0));
+                _currentFile.JobShell.PartsMap.Add(0, new Part() { Name = "no part" });
+            }
+            else
+            {
+                buffer = _painter.GetBufferPointer(_currentFile.JobShell.PartsMap.Count * 2);
+                foreach (var item in _currentFile.JobShell.PartsMap.Keys)
+                {
+                    _painter.DrawableParts.Add(item, new DrawablePart(shader, buffer[i], buffer[i + 1], _currentFile.JobShell.NumWorkPlanes, item));
+                    i += 2;
+                }
             }
 
             _viewerJob = new JobViewer(_currentFile);
-
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
             layerTrackBar.Value = 0;
-
             Console.WriteLine(_viewerJob.Center.ToString());
             _painter.Camera.MoveToPosition2D(_viewerJob.Center);
+            LoadPartNames();
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
             LoadContours();
         }
@@ -204,7 +211,7 @@ namespace OVFSliceViewer
 
                     for (int i = 0; i < numBlocks; i++)
                     {
-                        bool isContour = blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour;
+                        bool isContour = blocks[i].LpbfMetadata != null ? blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour : true;
                         if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.LineSequence)
                         {
                             numberOfPoints = (blocks[i].LineSequence.Points.Count/2 -1);
@@ -221,12 +228,12 @@ namespace OVFSliceViewer
                         {
                             numberOfPoints = blocks[i].LineSequenceParaAdapt.PointsWithParas.Count / 3*2-1;
                         }
+                        var newInfo = new PartVectorblockInfo() { Partnumber = blocks[i].MetaData != null ? blocks[i].MetaData.PartKey : 0, NumberOfPoints = numberOfPoints, IsContour = isContour };
+                        pointOrderManagement.AddVectorblockInfo(newInfo);
 
-                        pointOrderManagement.AddVectorblockInfo(new PartVectorblockInfo() { Partnumber = blocks[i].MetaData.PartKey, NumberOfPoints = numberOfPoints, IsContour = isContour });
-
-                        if (blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour)
+                        if (blocks[i].LpbfMetadata == null || blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour)
                         {
-                            _painter.DrawableParts[blocks[i].MetaData.PartKey].AddContour(blocks[i], workplane.WorkPlaneNumber, workplane.ZPosInMm);
+                            _painter.DrawableParts[newInfo.Partnumber].AddContour(blocks[i], workplane.WorkPlaneNumber, workplane.ZPosInMm);
                         }
                     }
                     _painter.LayerPointManager[j] = pointOrderManagement;
@@ -248,10 +255,41 @@ namespace OVFSliceViewer
                 task.Wait();
             }
             _currentFile = fileReader;
-            layerTrackBar.Value = 0;
+            //SetDefaultLpbfMetaData();
             layerTrackBar.Maximum = _currentFile.JobShell.NumWorkPlanes - 1;
+            layerTrackBar.Value = 0;
             // DrawWorkplaneBeforePaint(true);
             layerNumberLabel.Text = "Layer: " + layerTrackBar.Value + " von " + layerTrackBar.Maximum;
+            LoadPartNames();
+        }
+        private void SetDefaultLpbfMetaData()
+        {
+            var workplane = _currentFile.GetWorkPlaneAsync(0).GetAwaiter().GetResult();
+            if (workplane.VectorBlocks[0].LpbfMetadata == null)
+            {
+                for (int i = 0; i < _currentFile.JobShell.NumWorkPlanes; i++)
+                {
+                    foreach (var block in _currentFile.GetWorkPlaneAsync(0).GetAwaiter().GetResult().VectorBlocks)
+                    {
+                        var metadata = new VectorBlock.Types.LPBFMetadata();
+                        metadata.PartArea = VectorBlock.Types.PartArea.Contour;
+                        metadata.StructureType = VectorBlock.Types.StructureType.Part;
+                        metadata.SkinType = VectorBlock.Types.LPBFMetadata.Types.SkinType.InSkin;
+                        block.LpbfMetadata = metadata;
+                    }
+                }
+            }
+        }
+        private void LoadPartNames()
+        {
+            if(_currentFile.CacheState != CacheState.NotCached)
+            {
+                partsCheckedListBox.Items.Clear();
+                foreach (var part in _currentFile.JobShell.PartsMap.Values)
+                {
+                    partsCheckedListBox.Items.Add(part.Name);
+                }
+            }
         }
 
         private void layerTrackBarScroll(object sender, EventArgs e)
@@ -345,6 +383,41 @@ namespace OVFSliceViewer
         {
             _painter.ShowGrid = gridCheckbox.Checked;
             DrawWorkplane();
+        }
+
+        private void moveButton_Click(object sender, EventArgs e)
+        {
+            if (Double.TryParse(xTextBox.Text, out double valX) && Double.TryParse(yTextBox.Text, out double valY))
+            {
+                _painter.Camera.MoveToPosition2D(new Vector2((float)valX, (float)valY));
+                _painter.Draw();
+            }
+        }
+        private int oldFloatIndex = 0;
+        private string oldFloatText = String.Empty;
+
+        private void numBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            oldFloatIndex = ((TextBox)sender).SelectionStart;
+            oldFloatText = ((TextBox)sender).Text;
+        }
+
+        private void numBoxTextChanged(object sender, EventArgs e)
+        {
+            var tb = sender as TextBox;
+            double val;
+            if (!Double.TryParse(tb.Text, out val))
+            {
+                tb.TextChanged -= numBoxTextChanged;
+                tb.Text = oldFloatText;
+                tb.SelectionStart = oldFloatIndex;
+                tb.TextChanged += numBoxTextChanged;
+                tb.BackColor = Color.Red;
+            }
+            else
+            {
+                tb.BackColor = Color.White;
+            }
         }
     }
 }

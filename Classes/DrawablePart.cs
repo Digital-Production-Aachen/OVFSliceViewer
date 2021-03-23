@@ -106,7 +106,7 @@ namespace OVFSliceViewer.Classes
             _vectorBlock = vectorBlock;
             var lines = VectorBlockToViewModel();
 
-            if (_vectorBlock.LpbfMetadata.PartArea == PartArea.Contour)
+            if (_vectorBlock.LpbfMetadata == null || _vectorBlock.LpbfMetadata.PartArea == PartArea.Contour)
             {
                 _contourLines.AddRange(lines);
             }
@@ -138,11 +138,11 @@ namespace OVFSliceViewer.Classes
             var points = new RepeatedField<float>();
             var color = 0;
             //new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f)
-            if (_vectorBlock.LpbfMetadata.PartArea == PartArea.Contour)
+            if (_vectorBlock.LpbfMetadata == null || _vectorBlock.LpbfMetadata.PartArea == PartArea.Contour)
             {
                 color = 2;
             }
-            if (_vectorBlock.LpbfMetadata.StructureType == StructureType.Support)
+            if (_vectorBlock.LpbfMetadata != null && _vectorBlock.LpbfMetadata.StructureType == StructureType.Support)
             {
                 color = 3;
             }

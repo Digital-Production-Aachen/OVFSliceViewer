@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progressBar = new CustomControls.ColorProgressBar();
+            this.progressBar = new ViewerCustomControls.ColorProgressBar();
             this.progressLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -67,7 +67,7 @@
 
         #endregion
 
-        private CustomControls.ColorProgressBar progressBar;
+        private ViewerCustomControls.ColorProgressBar progressBar;
         private System.Windows.Forms.Label progressLabel;
     }
 }

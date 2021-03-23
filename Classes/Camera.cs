@@ -25,6 +25,7 @@ namespace OVFSliceViewer
         float _yaw = 0;
         float _pitch = 0;
         public float ObjectHeight { get; set; }
+        public Vector2 CameraPosition { get { return new Vector2(_position.X, _position.Y); } set { CameraPosition = value; } }
         public Matrix4 RotationMatrixYaw { get; protected set; } = Matrix4.Identity;
         public Matrix4 RotationMatrixPitch { get; protected set; } = Matrix4.Identity;
         public Matrix4 LookAtTransformationMatrix =>
