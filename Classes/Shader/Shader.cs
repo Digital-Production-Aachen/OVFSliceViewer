@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.IO;
 using System.Text;
@@ -15,6 +16,10 @@ namespace OVFSliceViewer.Classes.ShaderNamespace
         int _mainColor;
         int _supportColor;
         int _contourColor;
+
+        public Vector4 MainColor { get; set; } = new Vector4(1, 0, 0, 0);
+        public Vector4 ContourColor { get; set; } = new Vector4(1, 0, 0, 0);
+        public Vector4 SupportColor { get; set; } = new Vector4(1, 0, 0, 0);
 
         public Shader(string vertexPath = @"Classes/Shader/shader.vert", string fragmentPath = @"Classes/Shader/shader.frag")
         {
@@ -47,9 +52,16 @@ namespace OVFSliceViewer.Classes.ShaderNamespace
             
         }
 
-        public int GetUniformLocation()
+        public int GetTransformationMatrixLocation()
         {
             return _mvp;
+        }
+
+        public void UseColors()
+        {
+            GL.Uniform4(_mainColor, MainColor);
+            GL.Uniform4(_contourColor, ContourColor);
+            GL.Uniform4(_supportColor, SupportColor);
         }
 
         public int GetMainColorLocation()

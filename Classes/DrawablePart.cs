@@ -23,10 +23,10 @@ namespace OVFSliceViewer.Classes
         public int[] NumberOfContourLinesInWorkplane { get; protected set; }
         public int HightlightIndex { get; set; } = 0;
 
-        public DrawablePart(Shader shader, int contourBuffer, int volumeBuffer, int numberOfLayers, int partnumber)
+        public DrawablePart(Shader shader, int numberOfLayers, int partnumber)
         {
-            _contour = new DrawableObject(shader, contourBuffer);
-            _volume = new DrawableObject(shader, volumeBuffer);
+            _contour = new DrawableObject(shader);
+            _volume = new DrawableObject(shader);
             _numberOfLayers = numberOfLayers;
             NumberOfContourLinesInWorkplane = new int[numberOfLayers];
             Partnumber = partnumber;

@@ -93,13 +93,13 @@ namespace OVFSliceViewer
                 newPosition = _cameraTarget + (delta + _zoomfactor) * ((_position - _cameraTarget).Normalized());
             }
 
-            if ((newPosition - _cameraTarget).Length < _zNear)
+            if (/*(newPosition - _cameraTarget).Length < _zNear*/ newPosition.Z <= 0)
             {
-                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zNear + 0.1f);
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zNear + 0.2f);
             }
             else if ((newPosition - _cameraTarget).Length > _zFar)
             {
-                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zFar - 0.1f);
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zFar - 0.2f);
             }
 
             _position = newPosition;

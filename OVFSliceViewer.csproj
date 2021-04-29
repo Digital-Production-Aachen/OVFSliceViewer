@@ -85,15 +85,13 @@
     <Compile Include="CustomControls\ColorProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-	<Compile Include="Classes\FileHandlerProgress.cs" />
+    <Compile Include="Classes\FileHandlerProgress.cs" />
     <Compile Include="Classes\Grid.cs" />
     <Compile Include="Classes\MotionTracker.cs" />
     <Compile Include="Classes\JobViewer.cs" />
     <Compile Include="Classes\PartVectorblockInfo.cs" />
     <Compile Include="Classes\PointOrderManagement.cs" />
     <Compile Include="Classes\Shader\Shader.cs" />
-    <Compile Include="Classes\VertexArrayObject.cs" />
-    <Compile Include="Classes\VertexBufferObject.cs" />
     <Compile Include="Interfaces\IRotateable.cs" />
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Classes\VectorWithColorFactory.cs" />
@@ -103,7 +101,6 @@
     <Compile Include="OVFSliceViewer.Designer.cs">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Mover.cs" />
     <Compile Include="Classes\Painter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressStatus.cs">
@@ -117,6 +114,7 @@
     <Compile Include="Classes\Vertex.cs" />
     <Compile Include="Classes\VmLine.cs" />
     <Compile Include="Classes\VmVectorWithColor.cs" />
+    <Compile Include="ViewerAPI.cs" />
     <EmbeddedResource Include="OVFSliceViewer.resx">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </EmbeddedResource>

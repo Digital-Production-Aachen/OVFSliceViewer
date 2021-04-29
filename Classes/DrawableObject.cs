@@ -17,13 +17,11 @@ namespace OVFSliceViewer.Classes
         int _beginDrawingAt = 0;
         int _stopDrawingAt = 0;
         int _vertexSize = Marshal.SizeOf(typeof(Vertex));
-        public DrawableObject(Shader shader, int buffer)
+        public DrawableObject(Shader shader)
         {
             _shader = shader;
-            _vertexBuffer = buffer;
-            //CreateVertexBuffer();
+            CreateVertexBuffer();
             CreateVertexArray();
-
         }
 
         public void SetRangeToDraw(int end, int start = 0)
@@ -46,14 +44,9 @@ namespace OVFSliceViewer.Classes
             //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
 
-        //public void SetNumberOfLinesToDraw(int numberOfLines)
-        //{
-        //    _stopDrawingAt = numberOfLines*2;
-        //}
-
         public void Draw(Matrix4 modelViewProjection)
         {
-            GL.UniformMatrix4(_shader.GetUniformLocation(), false, ref modelViewProjection);
+            GL.UniformMatrix4(_shader.GetTransformationMatrixLocation(), false, ref modelViewProjection);
 
             GL.BindVertexArray(_vertexArray);
             GL.LineWidth(2.5f);
@@ -62,7 +55,7 @@ namespace OVFSliceViewer.Classes
 
         private void CreateVertexBuffer()
         {
-            //GL.GenBuffers(2, out _vertexBuffer);
+            GL.CreateBuffers(1, out _vertexBuffer);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
 
             var handle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
@@ -87,8 +80,6 @@ namespace OVFSliceViewer.Classes
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(1, 1, VertexAttribPointerType.Float, false, _vertexSize, IntPtr.Zero);
             GL.EnableVertexAttribArray(1);
-            //1 xyz rgba
-            //x yzr gb 
         }
     }
 }
