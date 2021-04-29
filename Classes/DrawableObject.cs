@@ -56,7 +56,7 @@ namespace OVFSliceViewer.Classes
             GL.UniformMatrix4(_shader.GetUniformLocation(), false, ref modelViewProjection);
 
             GL.BindVertexArray(_vertexArray);
-            GL.LineWidth(5f);
+            GL.LineWidth(2.5f);
             GL.DrawArrays(PrimitiveType.Lines, _beginDrawingAt, _stopDrawingAt-_beginDrawingAt);
         }
 

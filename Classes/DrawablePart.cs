@@ -17,9 +17,10 @@ namespace OVFSliceViewer.Classes
         int _numberOfLayers;
         public VectorWithColorFactory VectorFactory { get; protected set; } = new VectorWithColorFactory(250, 350);
         float _height;
+
         List<VmLine> _contourLines = new List<VmLine>();
         List<VmLine> _volumeLines = new List<VmLine>();
-        int[] numberOfContourLinesInWorkplane;
+        public int[] NumberOfContourLinesInWorkplane { get; protected set; }
         public int HightlightIndex { get; set; } = 0;
 
         public DrawablePart(Shader shader, int contourBuffer, int volumeBuffer, int numberOfLayers, int partnumber)
@@ -27,7 +28,7 @@ namespace OVFSliceViewer.Classes
             _contour = new DrawableObject(shader, contourBuffer);
             _volume = new DrawableObject(shader, volumeBuffer);
             _numberOfLayers = numberOfLayers;
-            numberOfContourLinesInWorkplane = new int[numberOfLayers];
+            NumberOfContourLinesInWorkplane = new int[numberOfLayers];
             Partnumber = partnumber;
         }
 
@@ -37,7 +38,7 @@ namespace OVFSliceViewer.Classes
 
             for (int i = 0; i < layer; i++)
             {
-                startcount += numberOfContourLinesInWorkplane[i];
+                startcount += NumberOfContourLinesInWorkplane[i];
             }
 
             
@@ -50,7 +51,7 @@ namespace OVFSliceViewer.Classes
 
             for(int i = 0; i < endlayer; i++)
             {
-                endcount += numberOfContourLinesInWorkplane[i];
+                endcount += NumberOfContourLinesInWorkplane[i];
             }
             _contour.SetRangeToDraw(endcount*2 + linesInLayer*2, 0);
         }
@@ -110,7 +111,7 @@ namespace OVFSliceViewer.Classes
             {
                 _contourLines.AddRange(lines);
             }
-            numberOfContourLinesInWorkplane[layernumber] += lines.Count;
+            NumberOfContourLinesInWorkplane[layernumber] += lines.Count;
         }
         public void AddVectorBlock(VectorBlock vectorBlock, int layernumber, float height)
         {

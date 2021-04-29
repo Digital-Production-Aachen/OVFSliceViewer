@@ -31,7 +31,7 @@ namespace OVFSliceViewer.Classes
         Vector4 mainColor = new Vector4(1,0,0,0);
         Vector4 contourColor = new Vector4(1,0,0,0);
         Vector4 supportColor = new Vector4(1,0,0,0);
-        public bool Is3d { get; set; } = true;
+        public bool Is3d { get; set; } = false;
         public Dictionary<int, DrawablePart> DrawableParts { get; set; }
         public Dictionary<int, PointOrderManagement> LayerPointManager { get; set; } = new Dictionary<int, PointOrderManagement>(); // he gets great cash!
 
@@ -235,7 +235,7 @@ namespace OVFSliceViewer.Classes
 
             _shader.Use();
 
-            GL.ShadeModel(ShadingModel.Flat);
+            GL.ShadeModel(ShadingModel.Smooth);
             _mvp = _shader.GetUniformLocation();
 
         }
@@ -276,6 +276,15 @@ namespace OVFSliceViewer.Classes
                         //}
 
                         var pointsPerPart = LayerPointManager[layernumber].GetPointNumbersToDraw(null, _numberOfLinesToDraw);
+
+                        //if (DrawableParts.Values.Any())
+                        //{
+                        //    var numberOfContours5 = DrawableParts.Values.Sum(x => x.NumberOfContourLinesInWorkplane[5]);
+                        //    var numberOfContours100 = DrawableParts.Values.Sum(x => x.NumberOfContourLinesInWorkplane[Math.Min(100, x.NumberOfContourLinesInWorkplane.Count()-1)]);
+                        //    var numberOfContours200 = DrawableParts.Values.Sum(x => x.NumberOfContourLinesInWorkplane[Math.Min(200, x.NumberOfContourLinesInWorkplane.Count()-1)]);
+                        //    var numberOfContours500 = DrawableParts.Values.Sum(x => x.NumberOfContourLinesInWorkplane[Math.Min(500, x.NumberOfContourLinesInWorkplane.Count()-1)]);
+                        //    var numberOfContours1500 = DrawableParts.Values.Sum(x => x.NumberOfContourLinesInWorkplane[Math.Min(1500, x.NumberOfContourLinesInWorkplane.Count()-1)]);
+                        //}
 
                         foreach (var part in DrawableParts.Values)
                         {

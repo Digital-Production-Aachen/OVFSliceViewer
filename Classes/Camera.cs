@@ -19,9 +19,9 @@ namespace OVFSliceViewer
         protected float _aspectRatio;
         protected float _canvasWidth;
         protected float _canvasHeight;
-        protected float _zoomfactor = 1f;
+        protected float _zoomfactor = 2f;
         protected float _zNear = 0.1f;
-        protected float _zFar = 200f;
+        protected float _zFar = 500f;
         float _yaw = 0;
         float _pitch = 0;
         public float ObjectHeight { get; set; }

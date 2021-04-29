@@ -141,6 +141,10 @@ namespace OVFSliceViewer
 
         public async void LoadJob(string filename)
         {
+            if (_currentFile != null)
+            {
+                _currentFile.Dispose();
+            }
             _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
             var command = new FileHandlerProgress();
 
@@ -182,8 +186,8 @@ namespace OVFSliceViewer
             int layernumber = layerTrackBar.Value;
             //mapper.HightlightIndex = 
             int fromLayer = 0;
-            float minPower = 500000;
-            float maxPower = 0;
+            float minPower = 0;
+            float maxPower = 1;
 
             for (int j = fromLayer; j < _currentFile.JobShell.NumWorkPlanes; j++)
             {
@@ -356,6 +360,7 @@ namespace OVFSliceViewer
 
         private void threeDCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            _painter.Is3d = threeDCheckbox.Checked;
             DrawWorkplane();
         }
 
