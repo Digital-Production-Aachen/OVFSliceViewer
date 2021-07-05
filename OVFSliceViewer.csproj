@@ -95,6 +95,8 @@
     <Compile Include="Interfaces\IRotateable.cs" />
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Classes\VectorWithColorFactory.cs" />
+    <Compile Include="Model\RenderObject.cs" />
+    <Compile Include="Model\Shader.cs" />
     <Compile Include="OVFSliceViewer.cs">
       <SubType>Form</SubType>
     </Compile>
