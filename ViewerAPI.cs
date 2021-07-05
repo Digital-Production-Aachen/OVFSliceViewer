@@ -51,6 +51,7 @@ namespace OVFSliceViewer
         {
             if (_currentFile != null)
             {
+                _currentFile.CloseFile();
                 _currentFile.Dispose();
             }
             _currentFile = FileReaderFactory.CreateNewReader(Path.GetExtension(filename));
