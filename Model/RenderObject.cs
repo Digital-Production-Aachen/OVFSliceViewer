@@ -23,13 +23,13 @@ namespace LayerViewer.Model
 
         public void SetVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
         {
-            Vertices = vertices;
+            Vertices = vertices.ToArray();
             _shader.BindNewData();
         }
 
         public void Render()
         {
-            _shader.Render(this);
+            _shader.Render(0, Vertices.Length);
         }
     }
 }
