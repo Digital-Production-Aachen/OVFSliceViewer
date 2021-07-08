@@ -96,13 +96,14 @@
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Classes\VectorWithColorFactory.cs" />
     <Compile Include="Model\AbstrPart.cs" />
+    <Compile Include="Model\ICanvas.cs" />
+    <Compile Include="Model\IModelViewProjection.cs" />
+    <Compile Include="Model\OVFFileLoader.cs" />
     <Compile Include="Model\OVFPart.cs" />
     <Compile Include="Model\RenderObject.cs" />
     <Compile Include="Model\SceneController.cs" />
     <Compile Include="Model\Shader.cs" />
-    <Compile Include="OVFSliceViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="OVFSliceViewer.cs" />
     <Compile Include="OVFSliceViewer.Designer.cs">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </Compile>

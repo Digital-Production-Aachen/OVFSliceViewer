@@ -1,16 +1,21 @@
-﻿using OpenVectorFormat;
-using OpenVectorFormat.FileReaderWriterFactory;
-using OpenVectorFormat.OVFReaderWriter;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace LayerViewer.Model
 {
-    public class SceneController
+    public class SceneController: IScene
     {
+        public OVFSliceViewer.Camera Camera { get; protected set; }
         protected OVFFileLoader _ovfFileLoader;
         public Dictionary<int, AbstrPart> PartsInViewer;
         
+        public SceneController(ICanvas canvas)
+        {
+            Camera = new OVFSliceViewer.Camera(canvas.Width, canvas.Height);
+        }
+
         public void RenderAllParts()
         {
             foreach (var part in PartsInViewer.Values)
@@ -23,7 +28,7 @@ namespace LayerViewer.Model
         {
             var fileInfo = new FileInfo(path);
 
-            if (fileInfo.Extension.ToLower() == "ovf")
+            if (fileInfo.Extension.ToLower() == ".ovf")
             {
                 _ovfFileLoader = new OVFFileLoader(fileInfo);
             }
@@ -42,37 +47,15 @@ namespace LayerViewer.Model
                 }
             }
         }
+
+        public List<string> GetPartNames()
+        {
+            return new List<string>() { "test" };
+        }
     }
 
-
-    public class OVFFileLoader
+    public interface IScene
     {
-        FileInfo _fileInfo;
-        OVFFileReader _ovfFileReader;
-        public readonly FileReaderWriterProgress Progress;
-        public OVFFileLoader(FileInfo file)
-        {
-            _fileInfo = file;
-            Progress = new FileReaderWriterProgress();
-            _ovfFileReader = new OVFFileReader();
-            _ovfFileReader.OpenJobAsync(_fileInfo.FullName, Progress).GetAwaiter().GetResult();
-        }
-
-        public List<int> GetPartsList()
-        {
-            var parts = new List<int>();
-
-            foreach (var part in _ovfFileReader.JobShell.PartsMap)
-            {
-                parts.Add(part.Key);
-            }
-
-            return parts;
-        }
-
-        public WorkPlane GetWorkplane(int index)
-        {
-            return _ovfFileReader.GetWorkPlaneAsync(index).GetAwaiter().GetResult();
-        }
+        OVFSliceViewer.Camera Camera { get; }
     }
 }

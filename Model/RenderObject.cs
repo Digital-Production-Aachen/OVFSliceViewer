@@ -8,24 +8,27 @@ using System.Threading.Tasks;
 
 namespace LayerViewer.Model
 {
-    public class RenderObject
+    public class RenderObject : IRenderData
     {
         protected readonly AbstrShader _shader;
         public int Start { get; protected set; } = 0;
         public int End { get; protected set; }
         public OVFSliceViewer.Classes.Vertex[] Vertices { get; protected set; }
 
-        public int SingleVertexSize = Marshal.SizeOf(typeof(OVFSliceViewer.Classes.Vertex));
-        public readonly PrimitiveType PrimitiveType = PrimitiveType.Lines;
+        public int SingleVertexSize { get; protected set; } = Marshal.SizeOf(typeof(OVFSliceViewer.Classes.Vertex));
+        public PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.Lines;
 
-        public RenderObject(Func<RenderObject, AbstrShader> creator)
+        public RenderObject(IModelViewProjection mvp)
         {
-            _shader = creator(this);
+            _shader = new Shader(this, mvp);
         }
 
-        public void SetVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
+        public void AddVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
         {
-            Vertices = vertices.ToArray();
+            var temp = Vertices.ToList();
+            temp.AddRange(vertices);
+            Vertices = temp.ToArray();
+
             _shader.BindNewData();
         }
 
@@ -37,5 +40,14 @@ namespace LayerViewer.Model
         {
             _shader.Render();
         }
+    }
+
+    public interface IRenderData
+    {
+        int Start { get; }
+        int End { get; }
+        OVFSliceViewer.Classes.Vertex[] Vertices { get; }
+        int SingleVertexSize { get; }
+        PrimitiveType PrimitiveType { get; }
     }
 }

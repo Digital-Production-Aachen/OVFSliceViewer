@@ -9,7 +9,7 @@ namespace OVFSliceViewer
 {
     // Todo: seperate Matrix for movement and rotation
 
-    public class Camera : IZoomable, IRotateable
+    public class Camera : IZoomable, IRotateable, LayerViewer.Model.IModelViewProjection
     {
         Vector3 _position;    
         Vector3 _cameraTarget;
@@ -39,6 +39,9 @@ namespace OVFSliceViewer
         public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, _zNear, _zFar);
 
         public Matrix4 TranslationMatrix { get; protected set; } = Matrix4.Identity;
+
+        public Matrix4 ModelViewProjection => TranslationMatrix * LookAtTransformationMatrix * ProjectionMatrix;
+
         public Camera(float canvasWidth, float canvasHeight)
         {
             _canvasWidth = canvasWidth;

@@ -13,11 +13,15 @@ namespace LayerViewer.Model
     {
         protected int _vertexBuffer;
         protected int _vertexArray;
-        protected readonly RenderObject _renderObject;
+        protected readonly IRenderData _renderObject;
+        protected IModelViewProjection _mvp;
+        
 
-        public Shader(RenderObject renderObject, string vertexPath = @"/../Classes/Shader/shader.vert", string fragmentPath = @"/../Classes/Shader/shader.frag") : base(vertexPath, fragmentPath)
+        public Shader(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"/../Classes/Shader/shader.vert", string fragmentPath = @"/../Classes/Shader/shader.frag") : base(vertexPath, fragmentPath)
         {
             _renderObject = renderObject;
+            _mvp = mvp;
+
             CreateVertexBuffer();
             CreateVertexArray();
 
@@ -27,7 +31,8 @@ namespace LayerViewer.Model
         public override void Render()
         {
             this.Use();
-            //SetUniforms(guiObject);
+            var mvp = _mvp.ModelViewProjection;
+            GL.UniformMatrix4(_mvpPointer, false, ref mvp);
 
             GL.BindVertexArray(_vertexArray);
             GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
@@ -79,6 +84,7 @@ namespace LayerViewer.Model
         string _fragmentPath;
         string _vertexShaderCode;
         string _fragmentShaderCode;
+        protected int _mvpPointer;
 
         protected AbstrShader(string vertexPath, string fragmentPath)
         {
@@ -131,6 +137,9 @@ namespace LayerViewer.Model
             GL.AttachShader(handle, FragmentShader);
 
             GL.LinkProgram(handle);
+            GL.ValidateProgram(handle);
+
+            _mvpPointer = GL.GetUniformLocation(handle, "Mvp");
 
             GL.DetachShader(handle, VertexShader);
             GL.DetachShader(handle, FragmentShader);

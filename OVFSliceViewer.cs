@@ -7,12 +7,25 @@ using System.ComponentModel;
 using LayerViewer;
 using System.Drawing;
 using OVFSliceViewer.Classes.ShaderNamespace;
+using System.Threading.Tasks;
 
 namespace OVFSliceViewer
 {
+    public class CanvasWrapper : LayerViewer.Model.ICanvas
+    {
+        GLControl _canvas;
+        public CanvasWrapper(GLControl gl)
+        {
+            _canvas = gl;
+        }
+        public float Width => _canvas.Width;
+
+        public float Height => _canvas.Height;
+    }
     public partial class OVFSliceViewer : Form
     {
-        ViewerAPI _viewerAPI;
+        //ViewerAPI _viewerAPI;
+        LayerViewer.Model.SceneController Scene;
         MotionTracker _motionTracker;
         int _numberOfLines = 3;
         private int checkHighlightIndex = 0;
@@ -26,7 +39,11 @@ namespace OVFSliceViewer
             var painter = new Painter(glCanvas, this);
             _motionTracker = new MotionTracker();
 
-            _viewerAPI = new ViewerAPI(painter);
+            var canvasWrapper = new CanvasWrapper(glCanvas);
+
+            Scene = new LayerViewer.Model.SceneController(canvasWrapper);
+
+            //_viewerAPI = new ViewerAPI(painter);
         }
         public OVFSliceViewer(bool showLoadButton) : this()
         {
@@ -34,20 +51,24 @@ namespace OVFSliceViewer
         }
         protected override void OnClosing(CancelEventArgs e)
         {
-            _viewerAPI.Dispose();
+            //_viewerAPI.Dispose();
             base.OnClosing(e);
         }
 
         private void MouseWheelZoom(object sender, MouseEventArgs e)
         {
-            _viewerAPI.Zoom(e.Delta);
+            Scene.Camera.Zoom(e.Delta > 0);
+            //_viewerAPI.Zoom(e.Delta);
         }
 
         private async void DrawWorkplane()
         {
-            await _viewerAPI.DrawWorkplane(layerTrackBar.Value);
-            _numberOfLines = _viewerAPI.NumberOfLines;
-            SetTimeTrackBar(_numberOfLines);
+            //await _viewerAPI.DrawWorkplane(layerTrackBar.Value);
+
+            Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
+
+            //_numberOfLines = _viewerAPI.NumberOfLines;
+            //SetTimeTrackBar(_numberOfLines);
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -68,94 +89,20 @@ namespace OVFSliceViewer
             }
         }
 
-        public async void LoadJob(string filename)
+        public void LoadJob(string filename)
         {
-            await _viewerAPI.LoadJob(filename);
-            layerTrackBar.Maximum = _viewerAPI.NumberOfLayer - 1;
-            layerTrackBar.Value = _viewerAPI.CurrentLayer;
+            //await _viewerAPI.LoadJob(filename);
+
+            Scene.LoadFile(filename);
+
+            layerTrackBar.Maximum = 99; //_viewerAPI.NumberOfLayer - 1;
+            layerTrackBar.Value = 0;
             SetTrackBarText();
-        }
-
-        //private async void LoadContours()
-        //{
-        //    int layernumber = layerTrackBar.Value;
-        //    //mapper.HightlightIndex = 
-        //    int fromLayer = 0;
-        //    float minPower = 0;
-        //    float maxPower = 1;
-
-        //    for (int j = fromLayer; j < _currentFile.JobShell.NumWorkPlanes; j++)
-        //    {
-        //        if (_currentFile != null)
-        //        {
-        //            var pointOrderManagement = new PointOrderManagement(j);
-        //            var workplane = await _currentFile.GetWorkPlaneAsync(j);
-
-
-        //            if (workplane.MetaData != null && workplane.MetaData.MaxPower != 0 && workplane.MetaData.MinPower != 0)
-        //            {
-        //                if (minPower > (workplane.MetaData.MinPower))
-        //                {
-        //                    minPower = workplane.MetaData.MinPower;
-        //                }
-        //                if (maxPower < workplane.MetaData.MaxPower)
-        //                {
-        //                    maxPower = workplane.MetaData.MaxPower;
-        //                }
-        //            }
-
-        //            var blocks = workplane.VectorBlocks;
-        //            var numBlocks = blocks.Count();
-        //            var numberOfPoints = 0;
-
-        //            for (int i = 0; i < numBlocks; i++)
-        //            {
-        //                bool isContour = blocks[i].LpbfMetadata != null ? blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour : true;
-        //                if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.LineSequence)
-        //                {
-        //                    numberOfPoints = (blocks[i].LineSequence.Points.Count/2 -1);
-        //                }
-        //                else if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.Hatches)
-        //                {
-        //                    numberOfPoints = blocks[i].Hatches.Points.Count/2;
-        //                }
-        //                else if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.HatchParaAdapt)
-        //                {
-        //                    numberOfPoints = blocks[i].HatchParaAdapt.HatchAsLinesequence.Sum(x => x.PointsWithParas.Count/3*2-1);
-        //                }
-        //                else if (blocks[i].VectorDataCase == VectorBlock.VectorDataOneofCase.LineSequenceParaAdapt)
-        //                {
-        //                    numberOfPoints = blocks[i].LineSequenceParaAdapt.PointsWithParas.Count / 3*2-1;
-        //                }
-        //                var newInfo = new PartVectorblockInfo() { Partnumber = blocks[i].MetaData != null ? blocks[i].MetaData.PartKey : 0, NumberOfPoints = numberOfPoints, IsContour = isContour };
-        //                pointOrderManagement.AddVectorblockInfo(newInfo);
-
-        //                if (blocks[i].LpbfMetadata == null || blocks[i].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour)
-        //                {
-        //                    _painter.DrawableParts[newInfo.Partnumber].AddContour(blocks[i], workplane.WorkPlaneNumber, workplane.ZPosInMm);
-        //                }
-        //            }
-        //            _painter.LayerPointManager[j] = pointOrderManagement;
-        //        }
-        //    }
-        //    //GC.Collect();
-        //    _painter.DrawableParts.ToList().ForEach(x => { x.Value.UpdateContour(); x.Value.VectorFactory.SetPowerLevels(minPower, maxPower); });
-        //}
-
-        public async void LoadJob(FileReader fileReader, string filePath)
-        {
-            await _viewerAPI.LoadJob(fileReader, filePath);
-            
-            layerTrackBar.Maximum = _viewerAPI.NumberOfLayer-1;
-            layerTrackBar.Value = _viewerAPI.CurrentLayer;
-
-            SetTrackBarText();
-            LoadPartNames();
-        }
-        
+        }        
         private void LoadPartNames()
         {
-            var names = _viewerAPI.LoadPartNames();
+            //var names = _viewerAPI.LoadPartNames();
+            var names = Scene.GetPartNames();
             if(_currentFile.CacheState != CacheState.NotCached)
             {
                 partsCheckedListBox.Items.Clear();
@@ -173,7 +120,7 @@ namespace OVFSliceViewer
         }
         private void SetTrackBarText()
         {
-            layerNumberLabel.Text = "Layer: " + _viewerAPI.CurrentLayer + " von " + _viewerAPI.NumberOfLayer;
+            //layerNumberLabel.Text = "Layer: " + _viewerAPI.CurrentLayer + " von " + _viewerAPI.NumberOfLayer;
         }
 
         private void timeTrackBarScroll(object sender, EventArgs e)
@@ -182,8 +129,9 @@ namespace OVFSliceViewer
             {
                 timeTrackBar.Maximum = _numberOfLines;
             }
-            _viewerAPI.SetNumberOfLines(timeTrackBar.Value);
-            _viewerAPI.Draw();
+            //_viewerAPI.SetNumberOfLines(timeTrackBar.Value);
+            //_viewerAPI.Draw();
+            Scene.RenderAllParts();
         }
 
         private void canvasMouseDown(object sender, MouseEventArgs e)
@@ -211,11 +159,11 @@ namespace OVFSliceViewer
 
             if (e.Button == MouseButtons.Middle)
             {
-                _motionTracker.Move(position, _viewerAPI.Move);
+                _motionTracker.Move(position, Scene.Camera.Move);
             }
             else if (e.Button == MouseButtons.Left)
             {
-                _motionTracker.Move(position, _viewerAPI.Rotate);
+                _motionTracker.Move(position, Scene.Camera.Rotate);
             }
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
@@ -227,13 +175,13 @@ namespace OVFSliceViewer
         {
             if (e.Button == MouseButtons.Right)
             {
-                _viewerAPI.CenterView();
+                //_viewerAPI.CenterView();
             }
         }
 
         private void threeDCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            _viewerAPI.DrawThreeD = threeDCheckbox.Checked;
+            //_viewerAPI.DrawThreeD = threeDCheckbox.Checked;
             DrawWorkplane();
         }
 
@@ -254,21 +202,21 @@ namespace OVFSliceViewer
             {
                 checkHighlightIndex = 0;
             }
-            _viewerAPI.SetHighlightColors(checkHighlightIndex);
+            //_viewerAPI.SetHighlightColors(checkHighlightIndex);
             DrawWorkplane();
         }
         private void gridCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            _viewerAPI.ShowGrid = gridCheckbox.Checked;
-            _viewerAPI.Draw();
+            //_viewerAPI.ShowGrid = gridCheckbox.Checked;
+            //_viewerAPI.Draw();
         }
 
         private void moveButton_Click(object sender, EventArgs e)
         {
             if (Double.TryParse(xTextBox.Text, out double valX) && Double.TryParse(yTextBox.Text, out double valY))
             {
-                _viewerAPI.MoveToPosition2D(new Vector2((float)valX, (float)valY));
-                _viewerAPI.Draw();
+                //_viewerAPI.MoveToPosition2D(new Vector2((float)valX, (float)valY));
+                //_viewerAPI.Draw();
             }
         }
         private int oldFloatIndex = 0;

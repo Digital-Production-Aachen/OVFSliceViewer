@@ -85,44 +85,7 @@ namespace OVFSliceViewer.Classes
         }
         private Vector2 CalculateCenter()
         {
-            //if (_vertices.Length > 4)
-            //{
-            //    float minX = _vertices[_grid.Length].Position.X;
-            //    float maxX = _vertices[_grid.Length].Position.X;
-            //    float minY = _vertices[_grid.Length].Position.Y;
-            //    float maxY = _vertices[_grid.Length].Position.Y;
-
-            //    for (int i = _grid.Length + 1; i < _vertices.Length; i++)
-            //    {
-            //        var x = _vertices[i].Position.X;
-            //        var y = _vertices[i].Position.Y;
-            //        if (x < minX)
-            //        {
-            //            minX = x;
-            //        }
-            //        else if (x > maxX)
-            //        {
-            //            maxX = x;
-            //        }
-
-            //        if (y < minY)
-            //        {
-            //            minY = y;
-            //        }
-            //        else if (y > maxY)
-            //        {
-            //            maxY = y;
-            //        }
-
-            //    }
-            //    var center = new Vector2(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2);
-            //    return center;
-
-            //}
-            //else
-            //{
             return Vector2.Zero;
-            //}
         }
 
         void InitGrid()
@@ -132,29 +95,7 @@ namespace OVFSliceViewer.Classes
             _grid.GetGrid().CopyTo(gridVertices, 0);
             _drawableGrid.ChangePicture(gridVertices);
         }
-        //public void SetLines(Vertex[] vertices, int numberOfLinesToDraw = 0)
-        //{
-        //    _vertices = null;
-        //    _vertices = new Vertex[_grid.Length + vertices.Length];
-        //    _grid.GetGrid().CopyTo(_vertices, 0);
-        //    vertices.CopyTo(_vertices, _grid.Length);
 
-        //    _numberOfLinesToDraw = numberOfLinesToDraw;
-
-        //    MoveCameraWithLayer();
-        //}
-        //private void MoveCameraWithLayer()
-        //{
-        //    if (_vertices.Length > _grid.Length)
-        //    {
-        //        var zHeight = _vertices[_vertices.Length - 1].Position.Z;
-        //        if (zHeight != _zHeight)
-        //        {
-        //            Camera.ChangeHeight(zHeight - _zHeight);
-        //            _zHeight = zHeight;
-        //        }
-        //    }
-        //}
         public void SetNumberOfLinesToDraw(int numberOfLinesToDraw)
         {
             if (numberOfLinesToDraw != 0)
