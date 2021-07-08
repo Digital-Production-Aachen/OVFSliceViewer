@@ -10,15 +10,17 @@ namespace LayerViewer.Model
 {
     public class RenderObject
     {
-        protected readonly Shader _shader;
+        protected readonly AbstrShader _shader;
+        public int Start { get; protected set; } = 0;
+        public int End { get; protected set; }
         public OVFSliceViewer.Classes.Vertex[] Vertices { get; protected set; }
 
         public int SingleVertexSize = Marshal.SizeOf(typeof(OVFSliceViewer.Classes.Vertex));
         public readonly PrimitiveType PrimitiveType = PrimitiveType.Lines;
 
-        public RenderObject(Shader shader)
+        public RenderObject(Func<RenderObject, AbstrShader> creator)
         {
-            _shader = shader;
+            _shader = creator(this);
         }
 
         public void SetVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
@@ -27,9 +29,13 @@ namespace LayerViewer.Model
             _shader.BindNewData();
         }
 
+        public void Reset()
+        {
+            End = 0;
+        }
         public void Render()
         {
-            _shader.Render(0, Vertices.Length);
+            _shader.Render();
         }
     }
 }

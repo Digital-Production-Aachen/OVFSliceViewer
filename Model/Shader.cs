@@ -15,23 +15,22 @@ namespace LayerViewer.Model
         protected int _vertexArray;
         protected readonly RenderObject _renderObject;
 
-        public Shader(RenderObject renderObject, string vertexPath = @"Classes/Shader/shader.vert", string fragmentPath = @"Classes/Shader/shader.frag") : base(vertexPath, fragmentPath)
+        public Shader(RenderObject renderObject, string vertexPath = @"/../Classes/Shader/shader.vert", string fragmentPath = @"/../Classes/Shader/shader.frag") : base(vertexPath, fragmentPath)
         {
             _renderObject = renderObject;
-            
             CreateVertexBuffer();
             CreateVertexArray();
 
             Use();
         }
 
-        public void Render(int start, int end)
+        public override void Render()
         {
             this.Use();
             //SetUniforms(guiObject);
 
             GL.BindVertexArray(_vertexArray);
-            GL.DrawArrays(_renderObject.PrimitiveType, start, end);
+            GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
         }
 
         private void CreateVertexBuffer()
@@ -52,7 +51,7 @@ namespace LayerViewer.Model
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
         }
 
-        public void BindNewData()
+        public override void BindNewData()
         {
             var handle = GCHandle.Alloc(_renderObject.Vertices, GCHandleType.Pinned);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
@@ -88,6 +87,10 @@ namespace LayerViewer.Model
 
             CompileShader();
         }
+
+        public abstract void Render();
+        public abstract void BindNewData();
+
         private void CompileShader()
         {
             bool isDebug = true;
