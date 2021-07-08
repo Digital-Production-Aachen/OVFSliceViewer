@@ -1,0 +1,3 @@
+[submodule "OpenVectorFormat"]
+	path = OpenVectorFormat
+	url = https://github.com/Digital-Production-Aachen/OpenVectorFormatTools.git

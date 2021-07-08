@@ -1,5 +1,4 @@
-﻿using OpenVectorFormat;
-using OpenVectorFormat.FileReaderWriterFactory;
+﻿using OpenVectorFormat.AbstractReaderWriter;
 using OpenVectorFormat.OVFReaderWriter;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +9,7 @@ namespace LayerViewer.Model
     {
         FileInfo _fileInfo;
         OVFFileReader _ovfFileReader;
-        public readonly FileReaderWriterProgress Progress;
+        public readonly IFileReaderWriterProgress Progress;
         public OVFFileLoader(FileInfo file)
         {
             _fileInfo = file;
