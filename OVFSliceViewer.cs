@@ -80,7 +80,7 @@ namespace OVFSliceViewer
         {
             SceneController.LoadFile(filename);
 
-            layerTrackBar.Maximum = SceneController.Scene.NumberOfWorkplanes-1;
+            layerTrackBar.Maximum = Math.Max(SceneController.Scene.NumberOfWorkplanes-1, 0);
             layerTrackBar.Value = 0;
             SetTrackBarText();
         }        
