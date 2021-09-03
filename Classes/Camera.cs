@@ -4,6 +4,7 @@ using System.Windows.Media.Media3D;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
+using LayerViewer.Model;
 
 namespace OVFSliceViewer
 {
@@ -15,6 +16,7 @@ namespace OVFSliceViewer
         Vector3 _cameraTarget;
         Vector3 _translation = new Vector3();
 
+        protected SceneController _scene;
         protected float _fieldOfView;
         protected float _aspectRatio;
         protected float _canvasWidth;
@@ -42,8 +44,9 @@ namespace OVFSliceViewer
 
         public Matrix4 ModelViewProjection => TranslationMatrix * LookAtTransformationMatrix * ProjectionMatrix;
 
-        public Camera(float canvasWidth, float canvasHeight)
+        public Camera(SceneController scene, float canvasWidth, float canvasHeight)
         {
+            _scene = scene;
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
             _fieldOfView = ((float)Math.PI / 180) * 80;
@@ -51,6 +54,13 @@ namespace OVFSliceViewer
             _aspectRatio = Convert.ToSingle(_canvasWidth) / Convert.ToSingle(_canvasHeight);
             _position = new Vector3(0, 0, 50f);
             _cameraTarget = Vector3.Zero;
+            TranslationMatrix = Matrix4.CreateTranslation(new Vector3(0));
+        }
+        public void Resize(System.Drawing.Size size)
+        {
+            _canvasWidth = size.Width;
+            _canvasHeight = size.Height;
+            _aspectRatio = Convert.ToSingle(_canvasWidth) / Convert.ToSingle(_canvasHeight);
         }
         
         public void MoveToPosition2D(Vector2 position)
@@ -64,15 +74,25 @@ namespace OVFSliceViewer
             }
             _translation = new Vector3(-position);
             TranslationMatrix = Matrix4.CreateTranslation(_translation);
+            _scene.Render();
         }
         public void Move(Vector2 delta) // Basically it moves Camera and focus (target)
         {
+            if (delta.Length < 0.00001)
+            {
+                return;
+            }
             var delta3 = new Vector3(-delta);
             delta3 = ConvertToCanvasCoordinates(delta3);
 
-            _translation += delta3;
+            var temp = (RotationMatrixYaw * new Vector4(delta3));
+            temp = temp * delta3.Xy.Length / temp.Length;
 
-            TranslationMatrix = Matrix4.CreateTranslation((RotationMatrixYaw * new Vector4(_translation)).Xyz);
+            _translation += temp.Xyz;
+            //
+            var temp2 = Matrix4.CreateTranslation(_translation);//temp.Xyz);
+            TranslationMatrix = temp2;
+            _scene.Render();
         }
 
         protected Vector3 ConvertToCanvasCoordinates(Vector3 delta)
@@ -106,12 +126,14 @@ namespace OVFSliceViewer
             }
 
             _position = newPosition;
+            _scene.Render();
         }
 
         public void ChangeHeight(float deltaZ)
         {
             ObjectHeight += deltaZ;
             _position.Z += deltaZ;
+            _scene.Render();
         }
 
         public void Rotate(Vector2 delta)
@@ -132,6 +154,7 @@ namespace OVFSliceViewer
 
             RotationMatrixYaw = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, _yaw);
             RotationMatrixPitch = Matrix4.CreateFromAxisAngle(Vector3.UnitX, _pitch);
+            _scene.Render();
         }
     }
 }

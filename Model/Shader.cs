@@ -2,40 +2,43 @@
 //using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace LayerViewer.Model
 {
-    public class Shader: AbstrShader
+    public class Shader : AbstrShader
     {
         protected int _vertexBuffer;
         protected int _vertexArray;
         protected readonly IRenderData _renderObject;
         protected IModelViewProjection _mvp;
         
+        protected int _colorPointer => GL.GetUniformLocation(handle, "highlightColor");
 
-        public Shader(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"/../Classes/Shader/shader.vert", string fragmentPath = @"/../Classes/Shader/shader.frag") : base(vertexPath, fragmentPath)
+        public Shader(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"Classes/Shader/shader.vert", string fragmentPath = @"Classes/Shader/shader.frag") : base(vertexPath, fragmentPath)
         {
             _renderObject = renderObject;
             _mvp = mvp;
 
+            Use();
             CreateVertexBuffer();
             CreateVertexArray();
-
-            Use();
         }
 
         public override void Render()
         {
             this.Use();
+
             var mvp = _mvp.ModelViewProjection;
+            //mvp = Matrix4.Identity;
             GL.UniformMatrix4(_mvpPointer, false, ref mvp);
 
+            GL.Uniform4(_colorPointer, Color);
             GL.BindVertexArray(_vertexArray);
-            GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
+            GL.LineWidth(2.5f);
+            GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.Vertices.Length);
         }
 
         private void CreateVertexBuffer()
@@ -46,7 +49,9 @@ namespace LayerViewer.Model
             var handle = GCHandle.Alloc(_renderObject.Vertices, GCHandleType.Pinned);
             try
             {
-                GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_renderObject.Vertices.Length * sizeof(float)), handle.AddrOfPinnedObject(),
+                GL.BufferData(BufferTarget.ArrayBuffer,
+                    new IntPtr(_renderObject.SingleVertexSize * _renderObject.Vertices.Length),
+                    handle.AddrOfPinnedObject(),
                     BufferUsageHint.StaticDraw);
             }
             finally
@@ -58,143 +63,27 @@ namespace LayerViewer.Model
 
         public override void BindNewData()
         {
+            var test = _renderObject.Vertices.ToArray();
             var handle = GCHandle.Alloc(_renderObject.Vertices, GCHandleType.Pinned);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
+            //GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(3* sizeof(float) * _renderObject.Vertices.Length), handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
             GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_renderObject.SingleVertexSize * _renderObject.Vertices.Length), handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
             handle.Free();
             //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
 
-        protected void CreateVertexArray()
+        protected virtual void CreateVertexArray()
         {
             GL.CreateVertexArrays(1, out _vertexArray);
             GL.BindVertexArray(_vertexArray);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, _renderObject.SingleVertexSize, new IntPtr(4));
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 4 * sizeof(float), 4);
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(1, 1, VertexAttribPointerType.Float, false, _renderObject.SingleVertexSize, IntPtr.Zero);
+            GL.VertexAttribPointer(1, 1, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
             GL.EnableVertexAttribArray(1);
+
+            //GL.Enable(EnableCap.Blend);
+            //GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
     }
-
-    public abstract class AbstrShader
-    {
-        public int handle;
-        string _vertexPath;
-        string _fragmentPath;
-        string _vertexShaderCode;
-        string _fragmentShaderCode;
-        protected int _mvpPointer;
-
-        protected AbstrShader(string vertexPath, string fragmentPath)
-        {
-            _vertexPath = vertexPath;
-            _fragmentPath = fragmentPath;
-
-            CompileShader();
-        }
-
-        public abstract void Render();
-        public abstract void BindNewData();
-
-        private void CompileShader()
-        {
-            bool isDebug = true;
-
-            if (isDebug)
-            {
-                ReadShaderDebug();
-            }
-            else
-            {
-                ReadShaderDeploy();
-            }
-
-
-
-            var VertexShader = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(VertexShader, _vertexShaderCode);
-
-            var FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(FragmentShader, _fragmentShaderCode);
-
-            GL.CompileShader(VertexShader);
-
-            string infoLogVert = GL.GetShaderInfoLog(VertexShader);
-            if (infoLogVert != System.String.Empty)
-                System.Console.WriteLine(infoLogVert);
-
-            GL.CompileShader(FragmentShader);
-
-            string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
-
-            if (infoLogFrag != System.String.Empty)
-                System.Console.WriteLine(infoLogFrag);
-
-            handle = GL.CreateProgram();
-
-            GL.AttachShader(handle, VertexShader);
-            GL.AttachShader(handle, FragmentShader);
-
-            GL.LinkProgram(handle);
-            GL.ValidateProgram(handle);
-
-            _mvpPointer = GL.GetUniformLocation(handle, "Mvp");
-
-            GL.DetachShader(handle, VertexShader);
-            GL.DetachShader(handle, FragmentShader);
-            GL.DeleteShader(FragmentShader);
-            GL.DeleteShader(VertexShader);
-        }
-        private void ReadShaderDebug()
-        {
-            using (StreamReader reader = new StreamReader(_vertexPath, Encoding.UTF8))
-            {
-                _vertexShaderCode = reader.ReadToEnd();
-            }
-
-
-            using (StreamReader reader = new StreamReader(_fragmentPath, Encoding.UTF8))
-            {
-                _fragmentShaderCode = reader.ReadToEnd();
-            }
-        }
-        private void ReadShaderDeploy()
-        {
-            _vertexShaderCode = _vertexPath;
-            _fragmentShaderCode = _fragmentPath;
-        }
-        public virtual void Use(double? iTime = null, int index = 0)
-        {
-            GL.UseProgram(handle);
-        }
-        public void Recompile()
-        {
-            GL.DeleteProgram(handle);
-            CompileShader();
-        }
-
-        private bool disposedValue = false;
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                GL.DeleteProgram(handle);
-
-                disposedValue = true;
-            }
-        }
-        ~AbstrShader()
-        {
-            GL.DeleteProgram(handle);
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-    }
-
-
-
 }

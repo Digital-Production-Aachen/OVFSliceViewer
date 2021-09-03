@@ -1,4 +1,6 @@
-﻿using OpenVectorFormat.AbstractReaderWriter;
+﻿using OpenVectorFormat;
+using OpenVectorFormat.AbstractReaderWriter;
+using OpenVectorFormat.FileReaderWriterFactory;
 using OpenVectorFormat.OVFReaderWriter;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +17,17 @@ namespace LayerViewer.Model
             _fileInfo = file;
             Progress = new FileReaderWriterProgress();
             _ovfFileReader = new OVFFileReader();
-            _ovfFileReader.OpenJobAsync(_fileInfo.FullName, Progress).GetAwaiter().GetResult();
+            try
+            {
+                _ovfFileReader.OpenJobAsync(_fileInfo.FullName, Progress).GetAwaiter().GetResult();
+            }
+            catch (System.Exception e)
+            {
+                var temp = e;
+                throw;
+            }
+
+            NumberOfWorkplanes = _ovfFileReader.JobShell.NumWorkPlanes;
         }
 
         public List<int> GetPartsList()
@@ -29,10 +41,12 @@ namespace LayerViewer.Model
 
             return parts;
         }
-
+        // workplane => WorkPlane
         public WorkPlane GetWorkplane(int index)
         {
             return _ovfFileReader.GetWorkPlaneAsync(index).GetAwaiter().GetResult();
         }
+
+        public int NumberOfWorkplanes { get; protected set; }
     }
 }

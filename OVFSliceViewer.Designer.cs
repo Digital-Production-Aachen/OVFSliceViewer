@@ -59,7 +59,7 @@
             // 
             this.loadFileButton.AccessibleName = "loadFileButton";
             this.loadFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadFileButton.Location = new System.Drawing.Point(1530, 795);
+            this.loadFileButton.Location = new System.Drawing.Point(1530, 789);
             this.loadFileButton.Name = "loadFileButton";
             this.loadFileButton.Size = new System.Drawing.Size(129, 50);
             this.loadFileButton.TabIndex = 1;
@@ -76,7 +76,7 @@
             this.layerTrackBar.AccessibleName = "layerTrackBar";
             this.layerTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.layerTrackBar.Location = new System.Drawing.Point(1612, 32);
+            this.layerTrackBar.Location = new System.Drawing.Point(1612, 45);
             this.layerTrackBar.Maximum = 0;
             this.layerTrackBar.Name = "layerTrackBar";
             this.layerTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -90,7 +90,7 @@
             this.timeTrackBar.AccessibleName = "timeTrackBar";
             this.timeTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.timeTrackBar.Location = new System.Drawing.Point(1561, 32);
+            this.timeTrackBar.Location = new System.Drawing.Point(1561, 45);
             this.timeTrackBar.Maximum = 1;
             this.timeTrackBar.Minimum = 1;
             this.timeTrackBar.Name = "timeTrackBar";
@@ -111,7 +111,7 @@
             // layerNumberLabel
             // 
             this.layerNumberLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.layerNumberLabel.Location = new System.Drawing.Point(1558, 673);
+            this.layerNumberLabel.Location = new System.Drawing.Point(1558, 686);
             this.layerNumberLabel.Name = "layerNumberLabel";
             this.layerNumberLabel.Size = new System.Drawing.Size(99, 22);
             this.layerNumberLabel.TabIndex = 8;
@@ -125,21 +125,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.glCanvas.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.glCanvas.BackColor = System.Drawing.Color.Black;
-            this.glCanvas.Location = new System.Drawing.Point(119, 12);
+            this.glCanvas.Location = new System.Drawing.Point(0, 0);
+            this.glCanvas.Margin = new System.Windows.Forms.Padding(0);
             this.glCanvas.Name = "glCanvas";
-            this.glCanvas.Size = new System.Drawing.Size(1405, 833);
+            this.glCanvas.Size = new System.Drawing.Size(1673, 845);
             this.glCanvas.TabIndex = 9;
             this.glCanvas.VSync = false;
             this.glCanvas.MouseClick += new System.Windows.Forms.MouseEventHandler(this.canvasMouseClick);
             this.glCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvasMouseDown);
             this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvasMouseMove);
             this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvasMoveMouseUp);
+            this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
             // 
             // timeLayerLabel
             // 
             this.timeLayerLabel.AccessibleName = "timeLayerLabel";
             this.timeLayerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.timeLayerLabel.Location = new System.Drawing.Point(1558, 12);
+            this.timeLayerLabel.Location = new System.Drawing.Point(1558, 18);
             this.timeLayerLabel.Name = "timeLayerLabel";
             this.timeLayerLabel.Size = new System.Drawing.Size(99, 22);
             this.timeLayerLabel.TabIndex = 20;
@@ -155,7 +157,7 @@
             this.checkboxPanel.Controls.Add(this.highlightCheckedListBox);
             this.checkboxPanel.Location = new System.Drawing.Point(4, 28);
             this.checkboxPanel.Name = "checkboxPanel";
-            this.checkboxPanel.Size = new System.Drawing.Size(109, 113);
+            this.checkboxPanel.Size = new System.Drawing.Size(118, 113);
             this.checkboxPanel.TabIndex = 21;
             // 
             // viewSelectionLabel
@@ -218,9 +220,9 @@
             this.partPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.partPanel.Controls.Add(this.partSelectionLabel);
             this.partPanel.Controls.Add(this.partsCheckedListBox);
-            this.partPanel.Location = new System.Drawing.Point(1, 147);
+            this.partPanel.Location = new System.Drawing.Point(4, 147);
             this.partPanel.Name = "partPanel";
-            this.partPanel.Size = new System.Drawing.Size(112, 207);
+            this.partPanel.Size = new System.Drawing.Size(118, 207);
             this.partPanel.TabIndex = 22;
             // 
             // partSelectionLabel
@@ -254,7 +256,7 @@
             // 
             this.xTextBox.AccessibleName = "xTextBox";
             this.xTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.xTextBox.Location = new System.Drawing.Point(1600, 742);
+            this.xTextBox.Location = new System.Drawing.Point(1600, 732);
             this.xTextBox.Name = "xTextBox";
             this.xTextBox.Size = new System.Drawing.Size(59, 20);
             this.xTextBox.TabIndex = 23;
@@ -265,7 +267,7 @@
             // 
             this.yTextBox.AccessibleName = "yTextBox";
             this.yTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.yTextBox.Location = new System.Drawing.Point(1600, 768);
+            this.yTextBox.Location = new System.Drawing.Point(1600, 758);
             this.yTextBox.Name = "yTextBox";
             this.yTextBox.Size = new System.Drawing.Size(59, 20);
             this.yTextBox.TabIndex = 24;
@@ -276,7 +278,7 @@
             // 
             this.moveButton.AccessibleName = "moveButton";
             this.moveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.moveButton.Location = new System.Drawing.Point(1530, 754);
+            this.moveButton.Location = new System.Drawing.Point(1530, 744);
             this.moveButton.Name = "moveButton";
             this.moveButton.Size = new System.Drawing.Size(47, 22);
             this.moveButton.TabIndex = 25;
@@ -289,7 +291,7 @@
             this.xLabel.AccessibleName = "xLabel";
             this.xLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.xLabel.AutoSize = true;
-            this.xLabel.Location = new System.Drawing.Point(1582, 743);
+            this.xLabel.Location = new System.Drawing.Point(1582, 733);
             this.xLabel.Name = "xLabel";
             this.xLabel.Size = new System.Drawing.Size(15, 13);
             this.xLabel.TabIndex = 26;
@@ -300,7 +302,7 @@
             this.yLabel.AccessibleName = "yLabel";
             this.yLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.yLabel.AutoSize = true;
-            this.yLabel.Location = new System.Drawing.Point(1583, 768);
+            this.yLabel.Location = new System.Drawing.Point(1583, 758);
             this.yLabel.Name = "yLabel";
             this.yLabel.Size = new System.Drawing.Size(15, 13);
             this.yLabel.TabIndex = 27;
@@ -312,6 +314,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1671, 847);
+            this.Controls.Add(this.layerNumberLabel);
+            this.Controls.Add(this.timeTrackBar);
             this.Controls.Add(this.yLabel);
             this.Controls.Add(this.xLabel);
             this.Controls.Add(this.moveButton);
@@ -320,12 +324,10 @@
             this.Controls.Add(this.partPanel);
             this.Controls.Add(this.checkboxPanel);
             this.Controls.Add(this.timeLayerLabel);
-            this.Controls.Add(this.glCanvas);
-            this.Controls.Add(this.layerNumberLabel);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.timeTrackBar);
             this.Controls.Add(this.layerTrackBar);
             this.Controls.Add(this.loadFileButton);
+            this.Controls.Add(this.glCanvas);
             this.Name = "OVFSliceViewer";
             this.Text = "Layer Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).EndInit();

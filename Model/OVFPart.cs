@@ -5,6 +5,7 @@ using OVFSliceViewer.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using static OpenVectorFormat.VectorBlock.Types;
 
 namespace LayerViewer.Model
@@ -12,19 +13,17 @@ namespace LayerViewer.Model
     public class OVFPart : AbstrPart
     {
         public readonly int Id;
-
-        RenderObject _contour;
-        //RenderObject _support;
-        RenderObject _volume;
-        public OVFPart(int id, IScene scene)
+        private List<OVFRenderObject> _ovfRenderObjects = new List<OVFRenderObject>();
+        public OVFPart(int id, ISceneController scene)
         {
             Id = id;
 
-            _contour = new RenderObject(scene.Camera);
-            _volume = new RenderObject(scene.Camera);
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.Contour, new Vector4(0, 1, 0, 1)));
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.Volume, new Vector4(1, 0, 0, 1)));
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.SupportContour, new Vector4(1, 0, 0, 1)));
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.SupportVolume, new Vector4(1, 0, 0, 1)));
 
-            RenderObjects.Add(_contour);
-            RenderObjects.Add(_volume);
+            RenderObjects.AddRange(_ovfRenderObjects);
         }
 
         public void Render()
@@ -37,28 +36,52 @@ namespace LayerViewer.Model
         }
         public void AddWorkplane(WorkPlane workplane)
         {
+            Reset();
             var vectorblocks = workplane.VectorBlocks.Where(x => x.MetaData.PartKey == Id).ToList();
 
             vectorblocks.ForEach(x => AddVectorblock(x, workplane.ZPosInMm));
+
+            BindData();
         }
-        public void AddVectorblock(VectorBlock vectorBlock, float height)
+        public void BindData()
+        {
+            _ovfRenderObjects.ForEach(x => x.BindNewData());
+        }
+        public int AddVectorblock(VectorBlock vectorBlock, float height)
         {
             var vertices = GetVerticesFromVectorblock(vectorBlock, height);
+            BoundingBox.AddVertices(vertices);
+
+            OVFRenderObject contourTarget;
+            OVFRenderObject volumeTarget;
+
+            if (vectorBlock.LpbfMetadata.StructureType != StructureType.Support)
+            {
+                contourTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.Contour);
+                volumeTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.Volume);
+            }
+            else
+            {
+                contourTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.SupportContour);
+                volumeTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.SupportVolume);
+            }
 
             switch (vectorBlock.LpbfMetadata.PartArea)
             {
                 case VectorBlock.Types.PartArea.Volume:
-                    _volume.AddVertices(vertices);
+                    volumeTarget.AddVertices(vertices);
                     break;
                 case VectorBlock.Types.PartArea.Contour:
-                    _contour.AddVertices(vertices);
+                    contourTarget.AddVertices(vertices);
                     break;
                 case VectorBlock.Types.PartArea.TransitionContour:
-                    _contour.AddVertices(vertices);
+                    contourTarget.AddVertices(vertices);
                     break;
                 default:
                     break;
             }
+
+            return vertices.Count / 2;
         }
         private List<Vertex> GetVerticesFromVectorblock(VectorBlock vectorblock, float height)
         {
@@ -93,8 +116,8 @@ namespace LayerViewer.Model
 
             for (int i = 3; i <= points.Count(); i += 2)
             {
-                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 0);
-                var endVertex = new Vertex(new Vector3(points[i - 1], points[i], height), 0);
+                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 2);
+                var endVertex = new Vertex(new Vector3(points[i - 1], points[i], height), 2);
 
                 vertices.Add(startVertex);
                 vertices.Add(endVertex);
@@ -123,8 +146,8 @@ namespace LayerViewer.Model
             var vertices = new List<Vertex>();
             for (int i = 3; i <= points.Count; i += 4)
             {
-                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 0);
-                var endVertex = new Vertex(new Vector3(points[i - 1], points[i - 0], height), 0);
+                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 2);
+                var endVertex = new Vertex(new Vector3(points[i - 1], points[i - 0], height), 2);
 
                 vertices.Add(startVertex);
                 vertices.Add(endVertex);

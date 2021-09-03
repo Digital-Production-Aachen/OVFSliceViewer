@@ -23,15 +23,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileReaderWriterFactory", "OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj", "{BEB4B8D5-C1E1-459A-B15E-CF222E585723}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FormatAdapter", "FormatAdapter", "{49255480-F0E1-4A64-A899-F676C4577B61}"
-	ProjectSection(SolutionItems) = preProject
-		OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\ASPFileReaderWriter.csproj = OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\ASPFileReaderWriter.csproj
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILTFileReader", "OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\ILTFileReader.csproj", "{C6CA8E21-76A4-4F3C-A914-DD8ECE58A87F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILTFileReaderAdapter", "OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj", "{DE72F5E5-2F92-4ECC-9287-FE4BE9E1089C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILTFileReaderInterfaces", "OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\ILTFileReaderInterfaces.csproj", "{87E9AF63-7B12-4603-BFDC-1732767C72D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPFileReaderWriter", "OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\ASPFileReaderWriter.csproj", "{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +112,14 @@ Global
 		{87E9AF63-7B12-4603-BFDC-1732767C72D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87E9AF63-7B12-4603-BFDC-1732767C72D1}.Release|x64.ActiveCfg = Release|x64
 		{87E9AF63-7B12-4603-BFDC-1732767C72D1}.Release|x64.Build.0 = Release|x64
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Debug|x64.ActiveCfg = Debug|x64
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Debug|x64.Build.0 = Debug|x64
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Release|x64.ActiveCfg = Release|x64
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +134,7 @@ Global
 		{C6CA8E21-76A4-4F3C-A914-DD8ECE58A87F} = {49255480-F0E1-4A64-A899-F676C4577B61}
 		{DE72F5E5-2F92-4ECC-9287-FE4BE9E1089C} = {49255480-F0E1-4A64-A899-F676C4577B61}
 		{87E9AF63-7B12-4603-BFDC-1732767C72D1} = {49255480-F0E1-4A64-A899-F676C4577B61}
+		{2E694F0B-645B-415B-8F7B-6DC40DAE4B2C} = {49255480-F0E1-4A64-A899-F676C4577B61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30942BB3-77A5-4191-8B77-EF30C8CD0B65}
