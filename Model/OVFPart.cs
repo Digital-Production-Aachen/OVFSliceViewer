@@ -14,6 +14,7 @@ namespace LayerViewer.Model
     {
         public readonly int Id;
         private List<OVFRenderObject> _ovfRenderObjects = new List<OVFRenderObject>();
+        private Dictionary<int, OVFRenderObject> VectorBlockRenderObjectMap = new Dictionary<int, OVFRenderObject>();
         public OVFPart(int id, ISceneController scene)
         {
             Id = id;
@@ -32,6 +33,8 @@ namespace LayerViewer.Model
         }
         public void Reset()
         {
+            _addedVectorblocks = 0;
+            VectorBlockRenderObjectMap.Clear();
             RenderObjects.ForEach(x => x.Reset());
         }
         public void AddWorkplane(WorkPlane workplane)
@@ -47,6 +50,8 @@ namespace LayerViewer.Model
         {
             _ovfRenderObjects.ForEach(x => x.BindNewData());
         }
+
+        private int _addedVectorblocks = 0;
         public int AddVectorblock(VectorBlock vectorBlock, float height)
         {
             var vertices = GetVerticesFromVectorblock(vectorBlock, height);
@@ -66,23 +71,30 @@ namespace LayerViewer.Model
                 volumeTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.SupportVolume);
             }
 
+            OVFRenderObject target = contourTarget;
             switch (vectorBlock.LpbfMetadata.PartArea)
             {
                 case VectorBlock.Types.PartArea.Volume:
-                    volumeTarget.AddVertices(vertices);
+                    target = volumeTarget;
                     break;
                 case VectorBlock.Types.PartArea.Contour:
-                    contourTarget.AddVertices(vertices);
+                    target = contourTarget;
                     break;
                 case VectorBlock.Types.PartArea.TransitionContour:
-                    contourTarget.AddVertices(vertices);
+                    target = contourTarget;
                     break;
                 default:
                     break;
             }
 
+            target.AddVertices(vertices);
+            VectorBlockRenderObjectMap.Add(_addedVectorblocks, target);
+            _addedVectorblocks++;
+
             return vertices.Count / 2;
         }
+
+        #region ModelToViewmodel
         private List<Vertex> GetVerticesFromVectorblock(VectorBlock vectorblock, float height)
         {
             List<Vertex> list = new List<Vertex>();
@@ -166,5 +178,26 @@ namespace LayerViewer.Model
 
             return list;
         }
+
+        #endregion
+
+        private int _vectorblockNumber = 0;
+        public void IncreaseNumberOfLinesToDraw(int numberOfLines)
+        {
+            var renderObject = VectorBlockRenderObjectMap[_vectorblockNumber];
+            renderObject.End = Math.Min(renderObject.End + numberOfLines, renderObject.Vertices.Length);
+            _vectorblockNumber++;
+        }
+
+        public void ResetNumberOfLinesToDraw()
+        {
+            _ovfRenderObjects.ForEach(x => x.End = 0);
+            _vectorblockNumber = 0;
+        }
+    }
+
+    public static class VectorBlockExtensions
+    {
+        // ToDo: Move LinesequenceToViewModel etc. here
     }
 }

@@ -13,7 +13,7 @@ namespace LayerViewer.Model
     {
         protected AbstrShader _shader;
         public int Start { get; protected set; } = 0;
-        public int End { get; protected set; }
+        public int End { get; set; } = 0;
         public OVFSliceViewer.Classes.Vertex[] Vertices { get; protected set; } = new OVFSliceViewer.Classes.Vertex[0];
         public BoundingBox BoundingBox { get; protected set; }
         public int SingleVertexSize { get; protected set; } = Marshal.SizeOf(typeof(OVFSliceViewer.Classes.Vertex));
@@ -51,10 +51,14 @@ namespace LayerViewer.Model
         }
         public void Render()
         {
-            var test2 = _mvp.ModelViewProjection;
-            var test = Vertices.Select(x => test2 * new Vector4(x.Position, 0)).ToList();
+            //var test2 = _mvp.ModelViewProjection;
+            //var test = Vertices.Select(x => test2 * new Vector4(x.Position, 0)).ToList();
+
+            if (Start < End)
+            {
+                _shader.Render();
+            }
             //_shader.BindNewData();
-            _shader.Render();
         }
 
         public void ChangeColor()

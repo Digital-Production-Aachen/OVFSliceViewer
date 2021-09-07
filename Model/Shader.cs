@@ -38,7 +38,7 @@ namespace LayerViewer.Model
             GL.Uniform4(_colorPointer, Color);
             GL.BindVertexArray(_vertexArray);
             GL.LineWidth(2.5f);
-            GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.Vertices.Length);
+            GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
         }
 
         private void CreateVertexBuffer()

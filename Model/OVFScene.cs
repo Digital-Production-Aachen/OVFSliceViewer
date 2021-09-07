@@ -3,11 +3,14 @@ using OpenTK.Graphics.OpenGL;
 using OpenVectorFormat;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace LayerViewer.Model
 {
+
+    //ToDo new Class SceneState which handles currentworkplane, state etc.
     public class OVFScene: IDisposable
     {
         public ISceneController SceneController { get; protected set; }
@@ -16,14 +19,16 @@ namespace LayerViewer.Model
             SceneController = sceneController;
         }
         protected OVFFileLoader _ovfFileLoader;
+        public OVFFileInfo OVFFileInfo { get; protected set; }
 
         public Dictionary<int, OVFPart> PartsInViewer = new Dictionary<int, OVFPart>();
         private bool disposedValue;
 
-        public int NumberOfWorkplanes { get; set; }
-        public int NumberOfLinesInWorkplane { get; set; }
-        public int CurrentWorkplane { get; set; }
-        public int CurrentNumberOfDrawnLines { get; set; }
+        //public int NumberOfWorkplanes { get; set; }
+        public int NumberOfLinesInWorkplane => OVFFileInfo.NumberOfVerticesInWorkplane[CurrentWorkplane];
+        public int CurrentWorkplane { get; private set; }
+        public int CurrentNumberOfDrawnLines { get; private set; }
+        private bool _stateChanged = false;
 
         public List<KeyValuePair<int, int>> LinesInPart { get; set; } = new List<KeyValuePair<int, int>>();
 
@@ -31,14 +36,13 @@ namespace LayerViewer.Model
         {
             PartsInViewer.Clear();
             _ovfFileLoader = new OVFFileLoader(fileInfo);
-            var parts = _ovfFileLoader.GetPartsList();
-            foreach (var part in parts)
-            {
-                PartsInViewer.Add(part, new OVFPart(part, SceneController));
-            }
-            NumberOfWorkplanes = _ovfFileLoader.NumberOfWorkplanes;
-        }
+            OVFFileInfo = _ovfFileLoader.OVFFileInfo;
 
+            foreach (var partKey in OVFFileInfo.PartKeys)
+            {
+                PartsInViewer.Add(partKey, new OVFPart(partKey, SceneController));
+            }
+        }
         public void Render()
         {
             //GL.ClearColor(Color4.LightGray);
@@ -46,21 +50,51 @@ namespace LayerViewer.Model
             GL.ShadeModel(ShadingModel.Smooth);
             GL.LineWidth(5f);
 
-            foreach (var part in PartsInViewer.Values)
+            if (_stateChanged)
             {
-                if (part.IsActive)
+                foreach (var part in PartsInViewer.Values)
                 {
-                    part.RenderObjects.ForEach(y => y.Render());
+                    part.ResetNumberOfLinesToDraw();
                 }
+
+                var vectorBlockInfos = OVFFileInfo.GetVectorblockDisplayData(CurrentWorkplane);
+
+                int numberOfVertices = 0;
+                for (int i = 0; i < vectorBlockInfos.Count; i++)
+                {
+                    if (numberOfVertices >= CurrentNumberOfDrawnLines)
+                    {
+                        break;
+                    }
+
+                    var info = vectorBlockInfos[i];
+
+                    PartsInViewer[info.PartKey].IncreaseNumberOfLinesToDraw(Math.Min(CurrentNumberOfDrawnLines-numberOfVertices, info.NumberOfVertices));
+                    numberOfVertices += info.NumberOfVertices;
+                }
+
+                _stateChanged = false;
+
+                Debug.WriteLine("Seems like something went wrong here.");
             }
-            Console.WriteLine(GL.GetError());
-            Console.WriteLine(GL.GetError());
+            
+                foreach (var part in PartsInViewer.Values)
+                {
+                    if (part.IsActive)
+                    {
+                        part.RenderObjects.ForEach(y => y.Render());
+                    }
+                }
+            
+
+            Debug.WriteLine(GL.GetError());
+            Debug.WriteLine(GL.GetError());
         }
 
         public void LoadWorkplaneToBuffer(int index)
         {
             ResetLinesInPart();
-            ResetParts();
+            ResetScene();
             var workplane = _ovfFileLoader.GetWorkplane(index);
 
             foreach (var vectorblock in workplane.VectorBlocks)
@@ -69,9 +103,16 @@ namespace LayerViewer.Model
             }
             BindDataToAllParts();
             CurrentWorkplane = index;
-            NumberOfLinesInWorkplane = LinesInPart.Sum(x => x.Value);
+            //_stateChanged = true;
+            CurrentNumberOfDrawnLines = NumberOfLinesInWorkplane;
+            //NumberOfLinesInWorkplane = LinesInPart.Sum(x => x.Value);
         }
-        protected void ResetParts()
+        public void ChangeNumberOfLinesToDraw(int numberOfLinesToDraw)
+        {
+            CurrentNumberOfDrawnLines = numberOfLinesToDraw;
+            _stateChanged = true;
+        }
+        protected void ResetScene()
         {
             foreach (var part in PartsInViewer.Values)
             {

@@ -13,7 +13,6 @@ namespace OVFSliceViewer
     {
         LayerViewer.Model.SceneController SceneController;
         MotionTracker _motionTracker;
-        int _numberOfLines = 3;
         private int checkHighlightIndex = 0;
         FileReader _currentFile { get; set; }
 
@@ -50,12 +49,10 @@ namespace OVFSliceViewer
 
         private async void DrawWorkplane()
         {
-            //await _viewerAPI.DrawWorkplane(layerTrackBar.Value);
             _canvasWrapper.Init();
             SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
             SceneController.Render();
-            _numberOfLines = SceneController.Scene.NumberOfLinesInWorkplane;
-            SetTimeTrackBar(_numberOfLines);
+            SetTimeTrackBar(SceneController.Scene.NumberOfLinesInWorkplane);
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -80,7 +77,7 @@ namespace OVFSliceViewer
         {
             SceneController.LoadFile(filename);
 
-            layerTrackBar.Maximum = Math.Max(SceneController.Scene.NumberOfWorkplanes-1, 0);
+            layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes-1, 0);
             layerTrackBar.Value = 0;
             SetTrackBarText();
         }        
@@ -104,18 +101,13 @@ namespace OVFSliceViewer
         }
         private void SetTrackBarText()
         {
-            layerNumberLabel.Text = $"Layer: {SceneController.Scene.CurrentWorkplane+1} von {SceneController.Scene.NumberOfWorkplanes}";
+            layerNumberLabel.Text = $"Layer: {SceneController.Scene.CurrentWorkplane+1} von {SceneController.Scene.OVFFileInfo.NumberOfWorkplanes}";
         }
 
         private void timeTrackBarScroll(object sender, EventArgs e)
         {
-            if (timeTrackBar.Maximum != _numberOfLines)
-            {
-                timeTrackBar.Maximum = _numberOfLines;
-            }
-            //_viewerAPI.SetNumberOfLines(timeTrackBar.Value);
-            //_viewerAPI.Draw();
-            //Scene.RenderAllParts();
+            SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
+            SceneController.Render();
         }
 
         private void canvasMouseDown(object sender, MouseEventArgs e)
@@ -170,7 +162,7 @@ namespace OVFSliceViewer
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {
-            SetTimeTrackBar(_numberOfLines);
+            SetTimeTrackBar(SceneController.Scene.NumberOfLinesInWorkplane);
         }
 
         private void canvasMouseClick(object sender, MouseEventArgs e)

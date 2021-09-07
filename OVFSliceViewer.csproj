@@ -98,6 +98,7 @@
     <Compile Include="Model\ICanvas.cs" />
     <Compile Include="Model\IModelViewProjection.cs" />
     <Compile Include="Model\IRenderData.cs" />
+    <Compile Include="Model\OVFFileInfo.cs" />
     <Compile Include="Model\OVFFileLoader.cs" />
     <Compile Include="Model\OVFPart.cs" />
     <Compile Include="Model\OVFRenderObject.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Model\Shader.cs" />
     <Compile Include="Model\STLRenderObject.cs" />
     <Compile Include="Model\TriangleShader.cs" />
+    <Compile Include="Model\VectorblockDisplayData.cs" />
     <Compile Include="OVFSliceViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,9 +140,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Classes\Shader\shader - Copy.vert">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Classes\Shader\shader.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
