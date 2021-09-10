@@ -33,17 +33,6 @@ namespace LayerViewer.Model
             GetOVFFileInfo();
         }
 
-        //protected List<int> GetPartsList()
-        //{
-        //    var parts = new List<int>();
-
-        //    foreach (var part in _ovfFileReader.JobShell.PartsMap)
-        //    {
-        //        parts.Add(part.Key);
-        //    }
-
-        //    return parts;
-        //}
         public WorkPlane GetWorkplane(int index)
         {
             return _ovfFileReader.GetWorkPlaneAsync(index).GetAwaiter().GetResult();
@@ -77,6 +66,19 @@ namespace LayerViewer.Model
                         VectorblockNumber = j,
                         NumberOfVertices = GetVectorblockNumberOfVertices(workplane.VectorBlocks[j]),
                         PartKey = workplane.VectorBlocks[j].MetaData.PartKey
+                    };
+
+                    list.Add(vectorblockDisplayData);
+                }
+
+                if (workplane.NumBlocks == 0)
+                {
+                    var vectorblockDisplayData = new VectorblockDisplayData()
+                    {
+                        WorkplaneNumber = i,
+                        VectorblockNumber = 0,
+                        NumberOfVertices = 0,
+                        PartKey = _ovfFileReader.JobShell.PartsMap.FirstOrDefault().Key
                     };
 
                     list.Add(vectorblockDisplayData);

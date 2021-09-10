@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK;
+using OpenTK.Graphics.OpenGL4;
 //using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,9 @@ namespace LayerViewer.Model
         protected int _vertexArray;
         protected readonly IRenderData _renderObject;
         protected IModelViewProjection _mvp;
+        //protected Dictionary<int, Vector4> ColorDictionary = new Dictionary<int, Vector4>();
         
-        protected int _colorPointer => GL.GetUniformLocation(handle, "highlightColor");
+        protected int _colorPointer => GL.GetUniformLocation(handle, "colorIndex");
 
         public Shader(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"Classes/Shader/shader.vert", string fragmentPath = @"Classes/Shader/shader.frag") : base(vertexPath, fragmentPath)
         {
@@ -31,14 +33,33 @@ namespace LayerViewer.Model
         {
             this.Use();
 
-            var mvp = _mvp.ModelViewProjection;
-            //mvp = Matrix4.Identity;
-            GL.UniformMatrix4(_mvpPointer, false, ref mvp);
+            if (_renderObject.UseColorIndex)
+            {
+                foreach (var item in _renderObject.ColorIndexRange)
+                {
+                    var mvp = _mvp.ModelViewProjection;
+                    //mvp = Matrix4.Identity;
+                    GL.UniformMatrix4(_mvpPointer, false, ref mvp);
 
-            GL.Uniform4(_colorPointer, Color);
-            GL.BindVertexArray(_vertexArray);
-            GL.LineWidth(2.5f);
-            GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
+                    GL.Uniform1(_colorPointer, item.ColorIndex);
+                    GL.BindVertexArray(_vertexArray);
+                    GL.LineWidth(2.5f);
+                    GL.DrawArrays(_renderObject.PrimitiveType, item.Range.Start, Math.Min(item.Range.End, _renderObject.End));
+                }
+            }
+            else
+            {
+                var mvp = _mvp.ModelViewProjection;
+                //mvp = Matrix4.Identity;
+                GL.UniformMatrix4(_mvpPointer, false, ref mvp);
+
+                GL.Uniform1(_colorPointer, 0);
+                GL.BindVertexArray(_vertexArray);
+                GL.LineWidth(2.5f);
+                GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
+            }
+
+            
         }
 
         private void CreateVertexBuffer()

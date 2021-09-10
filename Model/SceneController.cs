@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LayerViewer.Model
 {
@@ -11,7 +12,7 @@ namespace LayerViewer.Model
         public OVFSliceViewer.Camera Camera { get; protected set; }
         private ICanvas _canvas;
 
-        public OVFScene Scene;// = new OVFScene();
+        public OVFScene Scene;
         
 
         public SceneController(ICanvas canvas)
@@ -64,6 +65,12 @@ namespace LayerViewer.Model
 
 
         private bool disposedValue;
+
+        public List<AbstrPart> GetParts()
+        {
+            var temp = Scene.PartsInScene.Values.ToList();
+            return temp.Select(x => (AbstrPart)x).ToList();
+        }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -99,5 +106,7 @@ namespace LayerViewer.Model
     public interface ISceneController
     {
         OVFSliceViewer.Camera Camera { get; }
+
+        List<AbstrPart> GetParts();
     }
 }

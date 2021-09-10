@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
 using OpenTK.Graphics.OpenGL;
+using LayerViewer.Model;
 
 namespace OVFSliceViewer
 {
@@ -67,7 +68,6 @@ namespace OVFSliceViewer
             var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                //openFileDialog1.FileNames;
                 var filename = openFileDialog1.FileNames[0];
                 LoadJob(filename);
             }
@@ -80,6 +80,17 @@ namespace OVFSliceViewer
             layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes-1, 0);
             layerTrackBar.Value = 0;
             SetTrackBarText();
+
+            var parts = SceneController.GetParts();
+
+            ((ListBox)this.partsCheckedListBox).DataSource = parts;
+            ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
+            ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
+
+            for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
+            {
+                partsCheckedListBox.SetItemChecked(i, true);
+            }
         }        
         private void LoadPartNames()
         {
@@ -123,15 +134,15 @@ namespace OVFSliceViewer
 
             //_test = new LayerViewer.Model.RenderObject(Scene.Camera);
 
-            Vertex[] vertices =
-            {
-                new Vertex(new Vector3(-1.0f, 1.0f, 0.0f), 0),
-                new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), 0),
-                new Vertex(new Vector3(1.0f, 1.0f, 0.0f), 0),
-                new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), 0),
-                new Vertex(new Vector3(1.0f, 1.0f, 0.0f), 0),
-                new Vertex(new Vector3(1.0f, -1.0f, 0.0f), 0)
-            };
+            //Vertex[] vertices =
+            //{
+            //    new Vertex(new Vector3(-1.0f, 1.0f, 0.0f), 0),
+            //    new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), 0),
+            //    new Vertex(new Vector3(1.0f, 1.0f, 0.0f), 0),
+            //    new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), 0),
+            //    new Vertex(new Vector3(1.0f, 1.0f, 0.0f), 0),
+            //    new Vertex(new Vector3(1.0f, -1.0f, 0.0f), 0)
+            //};
 
             //_test.AddVertices(vertices);
             //_test.PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType.Triangles;
@@ -248,6 +259,16 @@ namespace OVFSliceViewer
                 SceneController.Camera.Resize(_canvasWrapper.GetCanvasArea());
                 SceneController.Render();
             });
+        }
+
+        private void partsCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            var index = e.Index;
+            var newState = e.NewValue == CheckState.Checked ? true : false;
+
+            ((AbstrPart)partsCheckedListBox.Items[index]).IsActive = newState;
+
+            SceneController.Render();
         }
     }
 

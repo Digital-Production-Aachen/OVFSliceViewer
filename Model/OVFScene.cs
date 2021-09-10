@@ -21,10 +21,9 @@ namespace LayerViewer.Model
         protected OVFFileLoader _ovfFileLoader;
         public OVFFileInfo OVFFileInfo { get; protected set; }
 
-        public Dictionary<int, OVFPart> PartsInViewer = new Dictionary<int, OVFPart>();
-        private bool disposedValue;
+        public Dictionary<int, OVFPart> PartsInScene = new Dictionary<int, OVFPart>();
+        
 
-        //public int NumberOfWorkplanes { get; set; }
         public int NumberOfLinesInWorkplane => OVFFileInfo.NumberOfVerticesInWorkplane[CurrentWorkplane];
         public int CurrentWorkplane { get; private set; }
         public int CurrentNumberOfDrawnLines { get; private set; }
@@ -34,13 +33,14 @@ namespace LayerViewer.Model
 
         public void LoadOVF(FileInfo fileInfo)
         {
-            PartsInViewer.Clear();
+            PartsInScene.Values.ToList().ForEach(x => x.Dispose());
+            PartsInScene.Clear();
             _ovfFileLoader = new OVFFileLoader(fileInfo);
             OVFFileInfo = _ovfFileLoader.OVFFileInfo;
 
             foreach (var partKey in OVFFileInfo.PartKeys)
             {
-                PartsInViewer.Add(partKey, new OVFPart(partKey, SceneController));
+                PartsInScene.Add(partKey, new OVFPart(partKey, OVFFileInfo.PartNamesMap[partKey], SceneController));
             }
         }
         public void Render()
@@ -52,7 +52,7 @@ namespace LayerViewer.Model
 
             if (_stateChanged)
             {
-                foreach (var part in PartsInViewer.Values)
+                foreach (var part in PartsInScene.Values)
                 {
                     part.ResetNumberOfLinesToDraw();
                 }
@@ -69,7 +69,7 @@ namespace LayerViewer.Model
 
                     var info = vectorBlockInfos[i];
 
-                    PartsInViewer[info.PartKey].IncreaseNumberOfLinesToDraw(Math.Min(CurrentNumberOfDrawnLines-numberOfVertices, info.NumberOfVertices));
+                    PartsInScene[info.PartKey].IncreaseNumberOfLinesToDraw(Math.Min(CurrentNumberOfDrawnLines-numberOfVertices, info.NumberOfVertices));
                     numberOfVertices += info.NumberOfVertices;
                 }
 
@@ -78,7 +78,7 @@ namespace LayerViewer.Model
                 Debug.WriteLine("Seems like something went wrong here.");
             }
             
-                foreach (var part in PartsInViewer.Values)
+                foreach (var part in PartsInScene.Values)
                 {
                     if (part.IsActive)
                     {
@@ -103,9 +103,7 @@ namespace LayerViewer.Model
             }
             BindDataToAllParts();
             CurrentWorkplane = index;
-            //_stateChanged = true;
             CurrentNumberOfDrawnLines = NumberOfLinesInWorkplane;
-            //NumberOfLinesInWorkplane = LinesInPart.Sum(x => x.Value);
         }
         public void ChangeNumberOfLinesToDraw(int numberOfLinesToDraw)
         {
@@ -114,7 +112,7 @@ namespace LayerViewer.Model
         }
         protected void ResetScene()
         {
-            foreach (var part in PartsInViewer.Values)
+            foreach (var part in PartsInScene.Values)
             {
                 part.Reset();
             }
@@ -122,7 +120,7 @@ namespace LayerViewer.Model
 
         protected void BindDataToAllParts()
         {
-            foreach (var part in PartsInViewer.Values)
+            foreach (var part in PartsInScene.Values)
             {
                 part.BindData();
             }
@@ -131,7 +129,7 @@ namespace LayerViewer.Model
         {
             var part = vectorblock.MetaData.PartKey;
 
-            var ovfPart = PartsInViewer[part] as OVFPart;
+            var ovfPart = PartsInScene[part] as OVFPart;
             LinesInPart.Add(new KeyValuePair<int, int>(part, ovfPart.AddVectorblock(vectorblock, height)));
         }
 
@@ -144,7 +142,7 @@ namespace LayerViewer.Model
             Vector3 min = new Vector3(float.MaxValue);
             Vector3 max = -min;
 
-            foreach (var part in PartsInViewer.Values)
+            foreach (var part in PartsInScene.Values)
             {
                 min = Vector3.ComponentMin(part.BoundingBox.Min, min);
                 max = Vector3.ComponentMax(part.BoundingBox.Max, max);
@@ -155,6 +153,8 @@ namespace LayerViewer.Model
             //SceneController.MoveToPosition2D(center.Xy);
         }
 
+
+        private bool disposedValue;
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -164,11 +164,11 @@ namespace LayerViewer.Model
                     // TODO: dispose managed state (managed objects)
                 }
 
-                foreach (var part in PartsInViewer.Values)
+                foreach (var part in PartsInScene.Values)
                 {
                     part.Dispose();
                 }
-                PartsInViewer = null;
+                PartsInScene = null;
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null

@@ -1,9 +1,9 @@
 ﻿#version 330 core
 uniform mat4 Mvp; 
-uniform vec4 highlightColor;
+uniform int colorIndex;
 
 layout(location = 0) in vec3 position;
-layout(location = 1) in float colorIndex;
+layout(location = 1) in float powerCoefficient;
 out vec4 fragcolor; 
 
 float colormap_red(float x) {
@@ -44,13 +44,33 @@ void main()
 	vec4 colorMinPower = vec4(0,1,0,0);
     //float colorIndex = 0;
 
-    if (colorIndex <= 1.0)
+    if (powerCoefficient <= 1.0)
     {
-        colorOut = vec4(0, 0, 1, 0);
+        colorOut = vec4(1, 0, 0, 0);
     }
     else
     {
-        colorOut = highlightColor;
+        if (colorIndex == 0)
+        {
+            colorOut = vec4(1, 0, 0, 0);
+        }
+        else if (colorIndex == 1)
+        {
+            colorOut = vec4(0, 1, 0, 0);
+        }
+        else if (colorIndex == 2)
+        {
+            colorOut = vec4(0, 0, 1, 0);
+        }
+        else if (colorIndex == 3)
+        {
+            colorOut = vec4(0.5, 0.5, 0, 0);
+        }
+        else
+        {
+            colorOut = vec4(1, 0, 0, 0);
+        }
+        
     }
      //colormap(smoothstep(-0.5, 1.5, 1.-colorIndex));
         //mix(colorOut, colorMinPower, colorIndex);

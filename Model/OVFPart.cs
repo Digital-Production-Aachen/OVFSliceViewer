@@ -1,7 +1,6 @@
 ﻿using Google.Protobuf.Collections;
 using OpenTK;
 using OpenVectorFormat;
-using OVFSliceViewer.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +14,16 @@ namespace LayerViewer.Model
         public readonly int Id;
         private List<OVFRenderObject> _ovfRenderObjects = new List<OVFRenderObject>();
         private Dictionary<int, OVFRenderObject> VectorBlockRenderObjectMap = new Dictionary<int, OVFRenderObject>();
-        public OVFPart(int id, ISceneController scene)
+        //public string Name { get; protected set; }
+        public OVFPart(int id, string name, ISceneController scene)
         {
             Id = id;
+            Name = name;
 
-            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.Contour, new Vector4(0, 1, 0, 1)));
-            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.Volume, new Vector4(1, 0, 0, 1)));
-            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.SupportContour, new Vector4(1, 0, 0, 1)));
-            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.SupportVolume, new Vector4(1, 0, 0, 1)));
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.Contour, new Vector4(0.8f, 0.02745f, 0.117647f, 1)));
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.Volume, new Vector4(0.8f, 0.02745f, 0.117647f, 1)));
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.SupportContour, new Vector4(0.8f, 0.02745f, 0.117647f, 1)));
+            _ovfRenderObjects.Add(new OVFRenderObject(scene.Camera, OVFRenderObject.ViewerPartArea.SupportVolume, new Vector4(0.8f, 0.02745f, 0.117647f, 1)));
 
             RenderObjects.AddRange(_ovfRenderObjects);
         }
@@ -54,7 +55,7 @@ namespace LayerViewer.Model
         private int _addedVectorblocks = 0;
         public int AddVectorblock(VectorBlock vectorBlock, float height)
         {
-            var vertices = GetVerticesFromVectorblock(vectorBlock, height);
+            var vertices = vectorBlock.GetVerticesFromVectorblock(height);
             BoundingBox.AddVertices(vertices);
 
             OVFRenderObject contourTarget;
@@ -87,99 +88,12 @@ namespace LayerViewer.Model
                     break;
             }
 
-            target.AddVertices(vertices);
+            target.AddVertices(vertices, vectorBlock.LaserIndex);
             VectorBlockRenderObjectMap.Add(_addedVectorblocks, target);
             _addedVectorblocks++;
 
             return vertices.Count / 2;
         }
-
-        #region ModelToViewmodel
-        private List<Vertex> GetVerticesFromVectorblock(VectorBlock vectorblock, float height)
-        {
-            List<Vertex> list = new List<Vertex>();
-            var points = new RepeatedField<float>();
-            var color = 0;
-            //new Vector4(87f / 255f, 171f / 255f, 39f / 255f, 0f)
-
-            switch (vectorblock.VectorDataCase)
-            {
-                case VectorBlock.VectorDataOneofCase.LineSequence:
-                    list = LineSequenceToViewModel(vectorblock, height);
-                    break;
-                case VectorBlock.VectorDataOneofCase.Hatches:
-                    list = HatchesToViewModel(vectorblock, height);
-                    break;
-                case VectorBlock.VectorDataOneofCase.LineSequenceParaAdapt:
-                    list = LineSequenceParaAdaptToViewModel(vectorblock.LineSequenceParaAdapt, height);
-                    break;
-                case VectorBlock.VectorDataOneofCase.HatchParaAdapt:
-                    list = HatchesParaAdaptToViewModel(vectorblock, height);
-                    break;
-                default:
-                    break;
-            }
-            return list;
-        }
-        private List<Vertex> LineSequenceToViewModel(VectorBlock vectorblock, float height)
-        {
-            var points = vectorblock.LineSequence.Points;
-            var vertices = new List<Vertex>();
-
-            for (int i = 3; i <= points.Count(); i += 2)
-            {
-                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 2);
-                var endVertex = new Vertex(new Vector3(points[i - 1], points[i], height), 2);
-
-                vertices.Add(startVertex);
-                vertices.Add(endVertex);
-            }
-            return vertices;
-        }
-        private List<Vertex> LineSequenceParaAdaptToViewModel(LineSequenceParaAdapt lineSequenceParaAdapt, float height)
-        {
-            var points = lineSequenceParaAdapt.PointsWithParas;
-            var vertices = new List<Vertex>();
-
-            for (int i = 5; i <= points.Count(); i += 3)
-            {
-                var startVertex = new Vertex(new Vector3(points[i - 5], points[i - 4], height), points[i - 3]);
-                var endVertex = new Vertex(new Vector3(points[i - 2], points[i - 1], height), points[i]);
-
-                vertices.Add(startVertex);
-                vertices.Add(endVertex);
-            }
-            return vertices;
-        }
-
-        private List<Vertex> HatchesToViewModel(VectorBlock vectorblock, float height)
-        {
-            var points = vectorblock.Hatches.Points;
-            var vertices = new List<Vertex>();
-            for (int i = 3; i <= points.Count; i += 4)
-            {
-                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 2);
-                var endVertex = new Vertex(new Vector3(points[i - 1], points[i - 0], height), 2);
-
-                vertices.Add(startVertex);
-                vertices.Add(endVertex);
-            }
-            return vertices;
-        }
-
-        private List<Vertex> HatchesParaAdaptToViewModel(VectorBlock vectorblock, float height)
-        {
-            var list = new List<Vertex>();
-
-            foreach (var item in vectorblock.HatchParaAdapt.HatchAsLinesequence)
-            {
-                list.AddRange(LineSequenceParaAdaptToViewModel(item, height));
-            }
-
-            return list;
-        }
-
-        #endregion
 
         private int _vectorblockNumber = 0;
         public void IncreaseNumberOfLinesToDraw(int numberOfLines)
@@ -194,10 +108,5 @@ namespace LayerViewer.Model
             _ovfRenderObjects.ForEach(x => x.End = 0);
             _vectorblockNumber = 0;
         }
-    }
-
-    public static class VectorBlockExtensions
-    {
-        // ToDo: Move LinesequenceToViewModel etc. here
     }
 }

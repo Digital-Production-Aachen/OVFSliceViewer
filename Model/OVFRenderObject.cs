@@ -3,7 +3,7 @@ using OpenTK.Graphics;
 
 namespace LayerViewer.Model
 {
-    public class OVFRenderObject : RenderObject
+    public class OVFRenderObject : RenderDataObject
     {
         public enum ViewerPartArea 
         {

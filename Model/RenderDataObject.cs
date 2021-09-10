@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LayerViewer.Model
 {
-    public class RenderObject : IRenderData, IDisposable
+    public class RenderDataObject : IRenderData, IDisposable
     {
         protected AbstrShader _shader;
         public int Start { get; protected set; } = 0;
@@ -17,11 +17,12 @@ namespace LayerViewer.Model
         public OVFSliceViewer.Classes.Vertex[] Vertices { get; protected set; } = new OVFSliceViewer.Classes.Vertex[0];
         public BoundingBox BoundingBox { get; protected set; }
         public int SingleVertexSize { get; protected set; } = Marshal.SizeOf(typeof(OVFSliceViewer.Classes.Vertex));
-        public virtual PrimitiveType PrimitiveType { get; /*protected*/ set; } = PrimitiveType.Lines;
+        public virtual PrimitiveType PrimitiveType { get; set; } = PrimitiveType.Lines;
         IModelViewProjection _mvp;
-        private bool disposedValue;
+        public bool UseColorIndex { get; set; } = true;
+        public List<ColorIndexRange> ColorIndexRange { get; protected set; } = new List<ColorIndexRange>();
 
-        public RenderObject(IModelViewProjection mvp)
+        public RenderDataObject(IModelViewProjection mvp)
         {
             _mvp = mvp;
             CreateShader(mvp);
@@ -33,10 +34,18 @@ namespace LayerViewer.Model
             _shader = new Shader(this, mvp);
         }
 
-        public void AddVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
+        public void AddVertices(IList<OVFSliceViewer.Classes.Vertex> vertices, int colorIndex)
         {
+            if (vertices.Count == 0) return;
+
             BoundingBox.AddVertices(vertices);
             var temp = Vertices.ToList();
+            ColorIndexRange colorIndexRange = new ColorIndexRange()
+            {
+                Range = new Range { Start = Vertices.Length, End = Vertices.Length + vertices.Count },
+                ColorIndex = colorIndex
+            };
+            ColorIndexRange.Add(colorIndexRange);
             temp.AddRange(vertices);
             Vertices = temp.ToArray();
 
@@ -48,17 +57,15 @@ namespace LayerViewer.Model
         {
             Vertices = new OVFSliceViewer.Classes.Vertex[0];
             End = 0;
+            Start = 0;
+            ColorIndexRange.Clear();
         }
         public void Render()
         {
-            //var test2 = _mvp.ModelViewProjection;
-            //var test = Vertices.Select(x => test2 * new Vector4(x.Position, 0)).ToList();
-
             if (Start < End)
             {
                 _shader.Render();
             }
-            //_shader.BindNewData();
         }
 
         public void ChangeColor()
@@ -66,6 +73,8 @@ namespace LayerViewer.Model
 
         }
 
+
+        private bool disposedValue;
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

@@ -94,6 +94,7 @@
     <Compile Include="Model\AbstrPart.cs" />
     <Compile Include="Model\AbstrShader.cs" />
     <Compile Include="Model\BoundingBox.cs" />
+    <Compile Include="Model\ColorIndexRange.cs" />
     <Compile Include="Model\GeometryShader.cs" />
     <Compile Include="Model\ICanvas.cs" />
     <Compile Include="Model\IModelViewProjection.cs" />
@@ -103,12 +104,14 @@
     <Compile Include="Model\OVFPart.cs" />
     <Compile Include="Model\OVFRenderObject.cs" />
     <Compile Include="Model\OVFScene.cs" />
-    <Compile Include="Model\RenderObject.cs" />
+    <Compile Include="Model\Range.cs" />
+    <Compile Include="Model\RenderDataObject.cs" />
     <Compile Include="Model\SceneController.cs" />
     <Compile Include="Model\Shader.cs" />
     <Compile Include="Model\STLRenderObject.cs" />
     <Compile Include="Model\TriangleShader.cs" />
     <Compile Include="Model\VectorblockDisplayData.cs" />
+    <Compile Include="Model\VectorBlockExtensions.cs" />
     <Compile Include="OVFSliceViewer.cs">
       <SubType>Form</SubType>
     </Compile>

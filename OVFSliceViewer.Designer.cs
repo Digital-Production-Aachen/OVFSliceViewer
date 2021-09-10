@@ -38,17 +38,15 @@
             this.timeLayerLabel = new System.Windows.Forms.Label();
             this.checkboxPanel = new System.Windows.Forms.Panel();
             this.viewSelectionLabel = new System.Windows.Forms.Label();
-            this.threeDCheckbox = new System.Windows.Forms.CheckBox();
-            this.gridCheckbox = new System.Windows.Forms.CheckBox();
             this.highlightCheckedListBox = new System.Windows.Forms.CheckedListBox();
-            this.partPanel = new System.Windows.Forms.Panel();
-            this.partSelectionLabel = new System.Windows.Forms.Label();
-            this.partsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.xTextBox = new System.Windows.Forms.TextBox();
             this.yTextBox = new System.Windows.Forms.TextBox();
             this.moveButton = new System.Windows.Forms.Button();
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
+            this.partsCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.partSelectionLabel = new System.Windows.Forms.Label();
+            this.partPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).BeginInit();
             this.checkboxPanel.SuspendLayout();
@@ -152,12 +150,10 @@
             this.checkboxPanel.AccessibleName = "checkboxPanel";
             this.checkboxPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.checkboxPanel.Controls.Add(this.viewSelectionLabel);
-            this.checkboxPanel.Controls.Add(this.threeDCheckbox);
-            this.checkboxPanel.Controls.Add(this.gridCheckbox);
             this.checkboxPanel.Controls.Add(this.highlightCheckedListBox);
             this.checkboxPanel.Location = new System.Drawing.Point(4, 28);
             this.checkboxPanel.Name = "checkboxPanel";
-            this.checkboxPanel.Size = new System.Drawing.Size(118, 113);
+            this.checkboxPanel.Size = new System.Drawing.Size(178, 113);
             this.checkboxPanel.TabIndex = 21;
             // 
             // viewSelectionLabel
@@ -167,36 +163,9 @@
             this.viewSelectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.viewSelectionLabel.Location = new System.Drawing.Point(-2, 0);
             this.viewSelectionLabel.Name = "viewSelectionLabel";
-            this.viewSelectionLabel.Size = new System.Drawing.Size(113, 20);
+            this.viewSelectionLabel.Size = new System.Drawing.Size(131, 20);
             this.viewSelectionLabel.TabIndex = 23;
-            this.viewSelectionLabel.Text = "View Selection";
-            // 
-            // threeDCheckbox
-            // 
-            this.threeDCheckbox.AccessibleName = "threeDCheckbox";
-            this.threeDCheckbox.AutoSize = true;
-            this.threeDCheckbox.Location = new System.Drawing.Point(3, 23);
-            this.threeDCheckbox.Name = "threeDCheckbox";
-            this.threeDCheckbox.Size = new System.Drawing.Size(69, 17);
-            this.threeDCheckbox.TabIndex = 16;
-            this.threeDCheckbox.Text = "3D View ";
-            this.threeDCheckbox.UseVisualStyleBackColor = true;
-            this.threeDCheckbox.CheckedChanged += new System.EventHandler(this.threeDCheckbox_CheckedChanged);
-            // 
-            // gridCheckbox
-            // 
-            this.gridCheckbox.AccessibleName = "gridCheckbox";
-            this.gridCheckbox.AutoSize = true;
-            this.gridCheckbox.Checked = true;
-            this.gridCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gridCheckbox.Location = new System.Drawing.Point(3, 41);
-            this.gridCheckbox.Margin = new System.Windows.Forms.Padding(1);
-            this.gridCheckbox.Name = "gridCheckbox";
-            this.gridCheckbox.Size = new System.Drawing.Size(45, 17);
-            this.gridCheckbox.TabIndex = 18;
-            this.gridCheckbox.Text = "Grid";
-            this.gridCheckbox.UseVisualStyleBackColor = true;
-            this.gridCheckbox.CheckedChanged += new System.EventHandler(this.gridCheckbox_CheckedChanged);
+            this.viewSelectionLabel.Text = "Highlight Feature";
             // 
             // highlightCheckedListBox
             // 
@@ -208,49 +177,11 @@
             this.highlightCheckedListBox.Items.AddRange(new object[] {
             "Contour",
             "Support"});
-            this.highlightCheckedListBox.Location = new System.Drawing.Point(2, 59);
+            this.highlightCheckedListBox.Location = new System.Drawing.Point(0, 23);
             this.highlightCheckedListBox.Name = "highlightCheckedListBox";
-            this.highlightCheckedListBox.Size = new System.Drawing.Size(86, 45);
+            this.highlightCheckedListBox.Size = new System.Drawing.Size(169, 45);
             this.highlightCheckedListBox.TabIndex = 17;
             this.highlightCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.highlightCheckedListBox_ItemCheck);
-            // 
-            // partPanel
-            // 
-            this.partPanel.AccessibleName = "partPanel";
-            this.partPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.partPanel.Controls.Add(this.partSelectionLabel);
-            this.partPanel.Controls.Add(this.partsCheckedListBox);
-            this.partPanel.Location = new System.Drawing.Point(4, 147);
-            this.partPanel.Name = "partPanel";
-            this.partPanel.Size = new System.Drawing.Size(118, 207);
-            this.partPanel.TabIndex = 22;
-            // 
-            // partSelectionLabel
-            // 
-            this.partSelectionLabel.AccessibleName = "partSelectionLabel";
-            this.partSelectionLabel.AutoSize = true;
-            this.partSelectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.partSelectionLabel.Location = new System.Drawing.Point(1, 7);
-            this.partSelectionLabel.Name = "partSelectionLabel";
-            this.partSelectionLabel.Size = new System.Drawing.Size(108, 20);
-            this.partSelectionLabel.TabIndex = 24;
-            this.partSelectionLabel.Text = "Part Selection";
-            // 
-            // partsCheckedListBox
-            // 
-            this.partsCheckedListBox.AccessibleName = "partsCheckedListBox";
-            this.partsCheckedListBox.BackColor = System.Drawing.SystemColors.Control;
-            this.partsCheckedListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.partsCheckedListBox.CheckOnClick = true;
-            this.partsCheckedListBox.FormattingEnabled = true;
-            this.partsCheckedListBox.Items.AddRange(new object[] {
-            "part1",
-            "part2",
-            "part3"});
-            this.partsCheckedListBox.Location = new System.Drawing.Point(3, 30);
-            this.partsCheckedListBox.Name = "partsCheckedListBox";
-            this.partsCheckedListBox.Size = new System.Drawing.Size(106, 150);
-            this.partsCheckedListBox.TabIndex = 17;
             // 
             // xTextBox
             // 
@@ -308,6 +239,41 @@
             this.yLabel.TabIndex = 27;
             this.yLabel.Text = "y:";
             // 
+            // partsCheckedListBox
+            // 
+            this.partsCheckedListBox.AccessibleName = "partsCheckedListBox";
+            this.partsCheckedListBox.BackColor = System.Drawing.SystemColors.Control;
+            this.partsCheckedListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.partsCheckedListBox.CheckOnClick = true;
+            this.partsCheckedListBox.FormattingEnabled = true;
+            this.partsCheckedListBox.Location = new System.Drawing.Point(3, 30);
+            this.partsCheckedListBox.Name = "partsCheckedListBox";
+            this.partsCheckedListBox.Size = new System.Drawing.Size(166, 150);
+            this.partsCheckedListBox.TabIndex = 17;
+            this.partsCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.partsCheckedListBox_ItemCheck);
+            // 
+            // partSelectionLabel
+            // 
+            this.partSelectionLabel.AccessibleName = "partSelectionLabel";
+            this.partSelectionLabel.AutoSize = true;
+            this.partSelectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.partSelectionLabel.Location = new System.Drawing.Point(1, 7);
+            this.partSelectionLabel.Name = "partSelectionLabel";
+            this.partSelectionLabel.Size = new System.Drawing.Size(108, 20);
+            this.partSelectionLabel.TabIndex = 24;
+            this.partSelectionLabel.Text = "Part Selection";
+            // 
+            // partPanel
+            // 
+            this.partPanel.AccessibleName = "partPanel";
+            this.partPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.partPanel.Controls.Add(this.partSelectionLabel);
+            this.partPanel.Controls.Add(this.partsCheckedListBox);
+            this.partPanel.Location = new System.Drawing.Point(4, 147);
+            this.partPanel.Name = "partPanel";
+            this.partPanel.Size = new System.Drawing.Size(178, 207);
+            this.partPanel.TabIndex = 22;
+            // 
             // OVFSliceViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -329,7 +295,7 @@
             this.Controls.Add(this.loadFileButton);
             this.Controls.Add(this.glCanvas);
             this.Name = "OVFSliceViewer";
-            this.Text = "Layer Viewer";
+            this.Text = "OVF Slice Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).EndInit();
             this.checkboxPanel.ResumeLayout(false);
@@ -351,18 +317,16 @@
         private OpenTK.GLControl glCanvas;
         private System.Windows.Forms.Label timeLayerLabel;
         private System.Windows.Forms.Panel checkboxPanel;
-        private System.Windows.Forms.CheckBox threeDCheckbox;
-        private System.Windows.Forms.CheckBox gridCheckbox;
         private System.Windows.Forms.CheckedListBox highlightCheckedListBox;
-        private System.Windows.Forms.Panel partPanel;
-        private System.Windows.Forms.CheckedListBox partsCheckedListBox;
         private System.Windows.Forms.Label viewSelectionLabel;
-        private System.Windows.Forms.Label partSelectionLabel;
         private System.Windows.Forms.TextBox xTextBox;
         private System.Windows.Forms.TextBox yTextBox;
         private System.Windows.Forms.Button moveButton;
         private System.Windows.Forms.Label xLabel;
         private System.Windows.Forms.Label yLabel;
+        private System.Windows.Forms.CheckedListBox partsCheckedListBox;
+        private System.Windows.Forms.Label partSelectionLabel;
+        private System.Windows.Forms.Panel partPanel;
     }
 }
 

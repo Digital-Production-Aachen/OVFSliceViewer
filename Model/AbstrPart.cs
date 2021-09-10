@@ -9,19 +9,22 @@ namespace LayerViewer.Model
         public AbstrPart()
         {
             BoundingBox = new BoundingBox();
-            RenderObjects = new List<RenderObject>();
+            RenderObjects = new List<RenderDataObject>();
         }
         public BoundingBox BoundingBox { get; protected set; }
-        public bool IsActive = true;
+        public bool IsActive { get;
+            set; } = true;
+
+        public string Name { get; protected set; } = "No name";
         private bool disposedValue;
 
-        public virtual List<RenderObject> RenderObjects { get; protected set; }
+        public virtual List<RenderDataObject> RenderObjects { get; protected set; }
 
-        public virtual void AddVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
-        {
-            BoundingBox.AddVertices(vertices);
-            RenderObjects.FirstOrDefault().AddVertices(vertices);
-        }
+        //public virtual void AddVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
+        //{
+        //    BoundingBox.AddVertices(vertices);
+        //    RenderObjects.FirstOrDefault().AddVertices(vertices, 0);
+        //}
 
         protected virtual void Dispose(bool disposing)
         {

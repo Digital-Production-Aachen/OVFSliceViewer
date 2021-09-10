@@ -16,6 +16,8 @@ namespace OVFSliceViewer
         {
             MakeCurrent();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            //GL.ClearColor(232f/255f, 241f/255f, 250f/255f, 1.0f);
+            //GL.ClearColor(new Color4(45, 127, 131, 255));
         }
 
         public void SwapBuffers()

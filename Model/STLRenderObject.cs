@@ -2,7 +2,7 @@
 
 namespace LayerViewer.Model
 {
-    public class STLRenderObject: RenderObject
+    public class STLRenderObject: RenderDataObject
     {
         public STLRenderObject(IModelViewProjection mvp) : base(mvp) 
         {
