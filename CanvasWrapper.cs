@@ -1,10 +1,12 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
+using System.Drawing;
+using System;
 
 namespace OVFSliceViewer
 {
-    public class CanvasWrapper : LayerViewer.Model.ICanvas
+    public class CanvasWrapper : OVFSliceViewerBusinessLayer.Model.ICanvas
     {
         GLControl _canvas;
         public CanvasWrapper(GLControl gl)
@@ -16,8 +18,6 @@ namespace OVFSliceViewer
         {
             MakeCurrent();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            //GL.ClearColor(232f/255f, 241f/255f, 250f/255f, 1.0f);
-            //GL.ClearColor(new Color4(45, 127, 131, 255));
         }
 
         public void SwapBuffers()
@@ -29,17 +29,17 @@ namespace OVFSliceViewer
             _canvas.MakeCurrent();
         }
 
-        public void Resize(System.Drawing.Size size)
+        public void Resize(int width, int height)
         {
             if (_canvas.ClientSize.Height == 0)
-                _canvas.ClientSize = size;
-
-            GL.Viewport(size);
+                _canvas.ClientSize = new Size(width, height);
+            
+            GL.Viewport(_canvas.ClientSize);
 
         }
-        public System.Drawing.Size GetCanvasArea()
+        public Tuple<int,int> GetCanvasArea()
         {
-            return _canvas.ClientSize;
+            return new Tuple<int, int>(_canvas.ClientSize.Width, _canvas.ClientSize.Height);
         }
         public float Width => _canvas.Width;
 

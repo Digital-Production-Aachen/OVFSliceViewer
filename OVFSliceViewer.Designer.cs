@@ -37,6 +37,7 @@
             this.glCanvas = new OpenTK.GLControl();
             this.timeLayerLabel = new System.Windows.Forms.Label();
             this.checkboxPanel = new System.Windows.Forms.Panel();
+            this.CbShow3dModel = new System.Windows.Forms.CheckBox();
             this.viewSelectionLabel = new System.Windows.Forms.Label();
             this.highlightCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.xTextBox = new System.Windows.Forms.TextBox();
@@ -149,12 +150,24 @@
             // 
             this.checkboxPanel.AccessibleName = "checkboxPanel";
             this.checkboxPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.checkboxPanel.Controls.Add(this.CbShow3dModel);
             this.checkboxPanel.Controls.Add(this.viewSelectionLabel);
             this.checkboxPanel.Controls.Add(this.highlightCheckedListBox);
             this.checkboxPanel.Location = new System.Drawing.Point(4, 28);
             this.checkboxPanel.Name = "checkboxPanel";
             this.checkboxPanel.Size = new System.Drawing.Size(178, 113);
             this.checkboxPanel.TabIndex = 21;
+            // 
+            // CbShow3dModel
+            // 
+            this.CbShow3dModel.AutoSize = true;
+            this.CbShow3dModel.Location = new System.Drawing.Point(2, 93);
+            this.CbShow3dModel.Name = "CbShow3dModel";
+            this.CbShow3dModel.Size = new System.Drawing.Size(100, 17);
+            this.CbShow3dModel.TabIndex = 24;
+            this.CbShow3dModel.Text = "Show 3d Model";
+            this.CbShow3dModel.UseVisualStyleBackColor = true;
+            this.CbShow3dModel.CheckedChanged += new System.EventHandler(this.CbShow3dModel_CheckedChanged);
             // 
             // viewSelectionLabel
             // 
@@ -327,6 +340,7 @@
         private System.Windows.Forms.CheckedListBox partsCheckedListBox;
         private System.Windows.Forms.Label partSelectionLabel;
         private System.Windows.Forms.Panel partPanel;
+        private System.Windows.Forms.CheckBox CbShow3dModel;
     }
 }
 

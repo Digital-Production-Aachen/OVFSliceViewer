@@ -1,4 +1,4 @@
-﻿using OVFSliceViewer.Classes;
+﻿using OVFSliceViewerBusinessLayer.Classes;
 using OpenTK;
 using OpenVectorFormat.AbstractReaderWriter;
 using System;
@@ -6,13 +6,13 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
 using OpenTK.Graphics.OpenGL;
-using LayerViewer.Model;
+using OVFSliceViewerBusinessLayer.Model;
 
 namespace OVFSliceViewer
 {
     public partial class OVFSliceViewer : Form
     {
-        LayerViewer.Model.SceneController SceneController;
+        SceneController SceneController;
         MotionTracker _motionTracker;
         private int checkHighlightIndex = 0;
         FileReader _currentFile { get; set; }
@@ -28,7 +28,7 @@ namespace OVFSliceViewer
 
             _canvasWrapper = new CanvasWrapper(glCanvas);
 
-            SceneController = new LayerViewer.Model.SceneController(_canvasWrapper);
+            SceneController = new OVFSliceViewerBusinessLayer.Model.SceneController(_canvasWrapper);
         }
         public OVFSliceViewer(bool showLoadButton) : this()
         {
@@ -42,13 +42,14 @@ namespace OVFSliceViewer
 
         private void MouseWheelZoom(object sender, MouseEventArgs e)
         {
-            SceneController.Camera.Zoom(e.Delta > 0);
+            var fastZoom = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl);
+            SceneController.Camera.Zoom(e.Delta > 0, fastZoom);
             
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SceneController.Render();
         }
 
-        private async void DrawWorkplane()
+        private void DrawWorkplane()
         {
             _canvasWrapper.Init();
             SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
@@ -112,7 +113,7 @@ namespace OVFSliceViewer
         }
         private void SetTrackBarText()
         {
-            layerNumberLabel.Text = $"Layer: {SceneController.Scene.CurrentWorkplane+1} von {SceneController.Scene.OVFFileInfo.NumberOfWorkplanes}";
+            layerNumberLabel.Text = $"Layer: {SceneController.Scene.SceneSettings.CurrentWorkplane + 1} von {SceneController.Scene.OVFFileInfo.NumberOfWorkplanes}";
         }
 
         private void timeTrackBarScroll(object sender, EventArgs e)
@@ -130,23 +131,7 @@ namespace OVFSliceViewer
                 _motionTracker.Start(position);
             }
 
-            _canvasWrapper.Init();
-
-            //_test = new LayerViewer.Model.RenderObject(Scene.Camera);
-
-            //Vertex[] vertices =
-            //{
-            //    new Vertex(new Vector3(-1.0f, 1.0f, 0.0f), 0),
-            //    new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), 0),
-            //    new Vertex(new Vector3(1.0f, 1.0f, 0.0f), 0),
-            //    new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), 0),
-            //    new Vertex(new Vector3(1.0f, 1.0f, 0.0f), 0),
-            //    new Vertex(new Vector3(1.0f, -1.0f, 0.0f), 0)
-            //};
-
-            //_test.AddVertices(vertices);
-            //_test.PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType.Triangles;
-            
+            _canvasWrapper.Init();          
         }
 
         private void canvasMoveMouseUp(object sender, MouseEventArgs e)
@@ -192,6 +177,8 @@ namespace OVFSliceViewer
 
         private void highlightCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+            SceneController.Scene.SceneSettings.UseColorIndex = !SceneController.Scene.SceneSettings.UseColorIndex;
+
             var c = sender as CheckedListBox;
             if (e.NewValue == CheckState.Checked && c.CheckedItems.Count > 0)
             {
@@ -255,8 +242,9 @@ namespace OVFSliceViewer
         {
             this.glCanvas.BeginInvoke((MethodInvoker)delegate
             {
-                _canvasWrapper.Resize(this.glCanvas.ClientSize);
-                SceneController.Camera.Resize(_canvasWrapper.GetCanvasArea());
+                _canvasWrapper.Resize(this.glCanvas.ClientSize.Width, this.glCanvas.ClientSize.Height);
+                var canvasArea = _canvasWrapper.GetCanvasArea();
+                SceneController.Camera.Resize(canvasArea.Item1, canvasArea.Item2);
                 SceneController.Render();
             });
         }
@@ -269,6 +257,26 @@ namespace OVFSliceViewer
             ((AbstrPart)partsCheckedListBox.Items[index]).IsActive = newState;
 
             SceneController.Render();
+        }
+
+        private void CbShow3dModel_CheckedChanged(object sender, EventArgs e)
+        {
+            SceneController.Scene.SceneSettings.ShowAs3dObject = CbShow3dModel.Checked;
+
+            if (SceneController.Scene.SceneSettings.ShowAs3dObject)
+            {
+                layerTrackBar.Enabled = false;
+                layerTrackBar.Value = layerTrackBar.Maximum;
+                timeTrackBar.Enabled = false;
+                SceneController.Scene.SceneSettings.UseColorIndex = false;
+            }
+            else
+            {
+                timeTrackBar.Enabled = true;
+                layerTrackBar.Enabled = true;
+            }
+
+            DrawWorkplane();
         }
     }
 

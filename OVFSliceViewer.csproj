@@ -79,39 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CanvasWrapper.cs" />
-    <Compile Include="Classes\Camera.cs" />
-    <Compile Include="Classes\ColorDictionary.cs" />
     <Compile Include="CustomControls\ColorProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Classes\FileHandlerProgress.cs" />
-    <Compile Include="Classes\Grid.cs" />
-    <Compile Include="Classes\MotionTracker.cs" />
-    <Compile Include="Classes\JobViewer.cs" />
-    <Compile Include="Classes\Shader\Shader.cs" />
-    <Compile Include="Interfaces\IRotateable.cs" />
-    <Compile Include="Interfaces\IZoomable.cs" />
-    <Compile Include="Model\AbstrPart.cs" />
-    <Compile Include="Model\AbstrShader.cs" />
-    <Compile Include="Model\BoundingBox.cs" />
-    <Compile Include="Model\ColorIndexRange.cs" />
-    <Compile Include="Model\GeometryShader.cs" />
-    <Compile Include="Model\ICanvas.cs" />
-    <Compile Include="Model\IModelViewProjection.cs" />
-    <Compile Include="Model\IRenderData.cs" />
-    <Compile Include="Model\OVFFileInfo.cs" />
-    <Compile Include="Model\OVFFileLoader.cs" />
-    <Compile Include="Model\OVFPart.cs" />
-    <Compile Include="Model\OVFRenderObject.cs" />
-    <Compile Include="Model\OVFScene.cs" />
-    <Compile Include="Model\Range.cs" />
-    <Compile Include="Model\RenderDataObject.cs" />
-    <Compile Include="Model\SceneController.cs" />
-    <Compile Include="Model\Shader.cs" />
-    <Compile Include="Model\STLRenderObject.cs" />
-    <Compile Include="Model\TriangleShader.cs" />
-    <Compile Include="Model\VectorblockDisplayData.cs" />
-    <Compile Include="Model\VectorBlockExtensions.cs" />
     <Compile Include="OVFSliceViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,7 +96,6 @@
       <DependentUpon>ProgressStatus.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\Vertex.cs" />
     <EmbeddedResource Include="OVFSliceViewer.resx">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -143,12 +112,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Classes\Shader\shader.frag">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Classes\Shader\shader.vert">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -174,6 +137,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SliceViewerBusinessLayer\OVFSliceViewerBusinessLayer.csproj">
+      <Project>{8215d0f3-61f8-4d56-be81-476fd8e257d1}</Project>
+      <Name>OVFSliceViewerBusinessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj">
       <Project>{662B5772-45FB-4250-B295-CF943E7EE18A}</Project>
       <Name>AbstractReaderWriter</Name>
