@@ -2,6 +2,7 @@
 /bin/x64/Debug
 /obj/Debug
 /obj
+/SliceViewerBusinessLayer/obj
 *.suo
 *.lock
 *.ide

@@ -137,10 +137,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SliceViewerBusinessLayer\OVFSliceViewerBusinessLayer.csproj">
-      <Project>{8215d0f3-61f8-4d56-be81-476fd8e257d1}</Project>
-      <Name>OVFSliceViewerBusinessLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj">
       <Project>{662B5772-45FB-4250-B295-CF943E7EE18A}</Project>
       <Name>AbstractReaderWriter</Name>
@@ -156,6 +152,10 @@
     <ProjectReference Include="OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj">
       <Project>{D0488E66-2536-45F7-B298-DDBE80A1DAEE}</Project>
       <Name>OVFReaderWriter</Name>
+    </ProjectReference>
+    <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerBusinessLayer.csproj">
+      <Project>{8215d0f3-61f8-4d56-be81-476fd8e257d1}</Project>
+      <Name>OVFSliceViewerBusinessLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
