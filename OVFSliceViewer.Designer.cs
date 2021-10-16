@@ -48,6 +48,8 @@
             this.partsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.partSelectionLabel = new System.Windows.Forms.Label();
             this.partPanel = new System.Windows.Forms.Panel();
+            this.cBLaserIndexColor = new System.Windows.Forms.CheckBox();
+            this.btnCloseFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).BeginInit();
             this.checkboxPanel.SuspendLayout();
@@ -58,7 +60,7 @@
             // 
             this.loadFileButton.AccessibleName = "loadFileButton";
             this.loadFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadFileButton.Location = new System.Drawing.Point(1530, 789);
+            this.loadFileButton.Location = new System.Drawing.Point(1528, 749);
             this.loadFileButton.Name = "loadFileButton";
             this.loadFileButton.Size = new System.Drawing.Size(129, 50);
             this.loadFileButton.TabIndex = 1;
@@ -79,7 +81,7 @@
             this.layerTrackBar.Maximum = 0;
             this.layerTrackBar.Name = "layerTrackBar";
             this.layerTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.layerTrackBar.Size = new System.Drawing.Size(45, 638);
+            this.layerTrackBar.Size = new System.Drawing.Size(45, 597);
             this.layerTrackBar.TabIndex = 2;
             this.layerTrackBar.Scroll += new System.EventHandler(this.layerTrackBarScroll);
             this.layerTrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.layerTrackBarMouseUp);
@@ -94,7 +96,7 @@
             this.timeTrackBar.Minimum = 1;
             this.timeTrackBar.Name = "timeTrackBar";
             this.timeTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.timeTrackBar.Size = new System.Drawing.Size(45, 638);
+            this.timeTrackBar.Size = new System.Drawing.Size(45, 597);
             this.timeTrackBar.TabIndex = 5;
             this.timeTrackBar.Value = 1;
             this.timeTrackBar.Scroll += new System.EventHandler(this.timeTrackBarScroll);
@@ -110,7 +112,7 @@
             // layerNumberLabel
             // 
             this.layerNumberLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.layerNumberLabel.Location = new System.Drawing.Point(1558, 686);
+            this.layerNumberLabel.Location = new System.Drawing.Point(1558, 646);
             this.layerNumberLabel.Name = "layerNumberLabel";
             this.layerNumberLabel.Size = new System.Drawing.Size(99, 22);
             this.layerNumberLabel.TabIndex = 8;
@@ -150,6 +152,7 @@
             // 
             this.checkboxPanel.AccessibleName = "checkboxPanel";
             this.checkboxPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.checkboxPanel.Controls.Add(this.cBLaserIndexColor);
             this.checkboxPanel.Controls.Add(this.CbShow3dModel);
             this.checkboxPanel.Controls.Add(this.viewSelectionLabel);
             this.checkboxPanel.Controls.Add(this.highlightCheckedListBox);
@@ -200,7 +203,7 @@
             // 
             this.xTextBox.AccessibleName = "xTextBox";
             this.xTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.xTextBox.Location = new System.Drawing.Point(1600, 732);
+            this.xTextBox.Location = new System.Drawing.Point(1598, 692);
             this.xTextBox.Name = "xTextBox";
             this.xTextBox.Size = new System.Drawing.Size(59, 20);
             this.xTextBox.TabIndex = 23;
@@ -211,7 +214,7 @@
             // 
             this.yTextBox.AccessibleName = "yTextBox";
             this.yTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.yTextBox.Location = new System.Drawing.Point(1600, 758);
+            this.yTextBox.Location = new System.Drawing.Point(1598, 718);
             this.yTextBox.Name = "yTextBox";
             this.yTextBox.Size = new System.Drawing.Size(59, 20);
             this.yTextBox.TabIndex = 24;
@@ -222,7 +225,7 @@
             // 
             this.moveButton.AccessibleName = "moveButton";
             this.moveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.moveButton.Location = new System.Drawing.Point(1530, 744);
+            this.moveButton.Location = new System.Drawing.Point(1528, 704);
             this.moveButton.Name = "moveButton";
             this.moveButton.Size = new System.Drawing.Size(47, 22);
             this.moveButton.TabIndex = 25;
@@ -235,7 +238,7 @@
             this.xLabel.AccessibleName = "xLabel";
             this.xLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.xLabel.AutoSize = true;
-            this.xLabel.Location = new System.Drawing.Point(1582, 733);
+            this.xLabel.Location = new System.Drawing.Point(1580, 693);
             this.xLabel.Name = "xLabel";
             this.xLabel.Size = new System.Drawing.Size(15, 13);
             this.xLabel.TabIndex = 26;
@@ -246,7 +249,7 @@
             this.yLabel.AccessibleName = "yLabel";
             this.yLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.yLabel.AutoSize = true;
-            this.yLabel.Location = new System.Drawing.Point(1583, 758);
+            this.yLabel.Location = new System.Drawing.Point(1581, 718);
             this.yLabel.Name = "yLabel";
             this.yLabel.Size = new System.Drawing.Size(15, 13);
             this.yLabel.TabIndex = 27;
@@ -287,12 +290,34 @@
             this.partPanel.Size = new System.Drawing.Size(178, 207);
             this.partPanel.TabIndex = 22;
             // 
+            // cBLaserIndexColor
+            // 
+            this.cBLaserIndexColor.AutoSize = true;
+            this.cBLaserIndexColor.Location = new System.Drawing.Point(2, 74);
+            this.cBLaserIndexColor.Name = "cBLaserIndexColor";
+            this.cBLaserIndexColor.Size = new System.Drawing.Size(121, 17);
+            this.cBLaserIndexColor.TabIndex = 25;
+            this.cBLaserIndexColor.Text = "Highlight Laserindex";
+            this.cBLaserIndexColor.UseVisualStyleBackColor = true;
+            this.cBLaserIndexColor.CheckedChanged += new System.EventHandler(this.cBLaserIndexColor_CheckedChanged);
+            // 
+            // btnCloseFile
+            // 
+            this.btnCloseFile.Location = new System.Drawing.Point(1528, 812);
+            this.btnCloseFile.Name = "btnCloseFile";
+            this.btnCloseFile.Size = new System.Drawing.Size(128, 23);
+            this.btnCloseFile.TabIndex = 28;
+            this.btnCloseFile.Text = "Close File";
+            this.btnCloseFile.UseVisualStyleBackColor = true;
+            this.btnCloseFile.Click += new System.EventHandler(this.btnCloseFile_Click);
+            // 
             // OVFSliceViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1671, 847);
+            this.Controls.Add(this.btnCloseFile);
             this.Controls.Add(this.layerNumberLabel);
             this.Controls.Add(this.timeTrackBar);
             this.Controls.Add(this.yLabel);
@@ -341,6 +366,8 @@
         private System.Windows.Forms.Label partSelectionLabel;
         private System.Windows.Forms.Panel partPanel;
         private System.Windows.Forms.CheckBox CbShow3dModel;
+        private System.Windows.Forms.CheckBox cBLaserIndexColor;
+        private System.Windows.Forms.Button btnCloseFile;
     }
 }
 

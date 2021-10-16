@@ -22,13 +22,12 @@ namespace OVFSliceViewer
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-            //highlightCheckedListBox.SetItemChecked(0, true);//always start with highlighted  contours
             this.glCanvas.MouseWheel += new MouseEventHandler(this.MouseWheelZoom);
             _motionTracker = new MotionTracker();
 
             _canvasWrapper = new CanvasWrapper(glCanvas);
 
-            SceneController = new OVFSliceViewerBusinessLayer.Model.SceneController(_canvasWrapper);
+            SceneController = new SceneController(_canvasWrapper);
         }
         public OVFSliceViewer(bool showLoadButton) : this()
         {
@@ -54,7 +53,7 @@ namespace OVFSliceViewer
             _canvasWrapper.Init();
             SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
             SceneController.Render();
-            SetTimeTrackBar(SceneController.Scene.NumberOfLinesInWorkplane);
+            SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -63,7 +62,7 @@ namespace OVFSliceViewer
             timeTrackBar.Value = numberOfLines;
         }
 
-        private void LoadJobButtonClick(object sender, EventArgs e)
+        private async void LoadJobButtonClick(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "ovf and ilt files (*.ovf; *.ilt)|*.ovf;*.ilt|All files (*.*)|*.*";
             var result = openFileDialog1.ShowDialog();
@@ -74,9 +73,9 @@ namespace OVFSliceViewer
             }
         }
 
-        public void LoadJob(string filename)
+        public async void LoadJob(string filename)
         {
-            SceneController.LoadFile(filename);
+            await SceneController.LoadFile(filename);
 
             layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes-1, 0);
             layerTrackBar.Value = 0;
@@ -158,7 +157,7 @@ namespace OVFSliceViewer
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {
-            SetTimeTrackBar(SceneController.Scene.NumberOfLinesInWorkplane);
+            SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
         }
 
         private void canvasMouseClick(object sender, MouseEventArgs e)
@@ -167,12 +166,6 @@ namespace OVFSliceViewer
             {
                 SceneController.CenterView();
             }
-        }
-
-        private void threeDCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            //_viewerAPI.DrawThreeD = threeDCheckbox.Checked;
-            DrawWorkplane();
         }
 
         private void highlightCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -194,7 +187,6 @@ namespace OVFSliceViewer
             {
                 checkHighlightIndex = 0;
             }
-            //_viewerAPI.SetHighlightColors(checkHighlightIndex);
             DrawWorkplane();
         }
         private void gridCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -207,6 +199,7 @@ namespace OVFSliceViewer
         {
             if (Double.TryParse(xTextBox.Text, out double valX) && Double.TryParse(yTextBox.Text, out double valY))
             {
+                // ToDo: needs to be adapted to new structure
                 //_viewerAPI.MoveToPosition2D(new Vector2((float)valX, (float)valY));
                 //_viewerAPI.Draw();
             }
@@ -277,6 +270,23 @@ namespace OVFSliceViewer
             }
 
             DrawWorkplane();
+        }
+
+        private void cBLaserIndexColor_CheckedChanged(object sender, EventArgs e)
+        {
+            SceneController.Scene.SceneSettings.UseColorIndex = cBLaserIndexColor.Checked;
+            DrawWorkplane();
+        }
+
+        private void btnCloseFile_Click(object sender, EventArgs e)
+        {
+            SceneController.CloseFile();
+
+            SetTrackBarText();
+            SetTimeTrackBar(0);
+
+            layerTrackBar.Maximum = 0;
+            layerTrackBar.Value = 0;
         }
     }
 

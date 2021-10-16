@@ -1,6 +1,7 @@
 ﻿using SliceViewerBusinessLayer.Model.STL;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -15,11 +16,11 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         public STLPart Part;
 
-        public void LoadFile(FileInfo fileInfo)
+        public async Task LoadFile(FileInfo fileInfo)
         {
             var reader = new STLReader();
 
-            reader.ReadStl(fileInfo.FullName).GetAwaiter().GetResult();
+            await reader.ReadStl(fileInfo.FullName);
 
             Part = new STLPart(reader.Mesh);
         }

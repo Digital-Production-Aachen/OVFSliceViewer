@@ -4,16 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
     public class SceneController: ISceneController, IDisposable
     {
         public Camera Camera { get; protected set; }
-        private ICanvas _canvas;
+        public OVFScene Scene { get; protected set; }
 
-        public OVFScene Scene;
-        
+        private ICanvas _canvas;
 
         public SceneController(ICanvas canvas)
         {
@@ -30,25 +30,42 @@ namespace OVFSliceViewerBusinessLayer.Model
             _canvas.MakeCurrent();
             Scene.Render();
             _canvas.SwapBuffers();
-            Console.WriteLine(GL.GetError());
         }
-        
-        public OVFScene LoadFile(string path)
+        public async Task<OVFScene> LoadFile(string path)
         {
             var fileInfo = new FileInfo(path);
 
+            if (Scene != null)
+            {
+                CloseFile();
+            }
+
             var scene = new OVFScene(this);
-            
 
             if (fileInfo.Extension.ToLower() == ".ovf")
             {
-                scene.LoadFile(fileInfo);
+                await scene.LoadFile(fileInfo);
             }
 
             Scene = scene;
             return scene;
         }
 
+        public void CloseFile()
+        {
+            Scene.CloseFile();
+            Clear();
+        }
+        private void Clear()
+        {
+            if (Scene == null)
+            {
+                return;
+            }
+            _canvas.MakeCurrent();
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            _canvas.SwapBuffers();
+        }
         //public STLScene LoadFile(string path)
         //{
         //    var fileInfo = new FileInfo(path);
@@ -64,7 +81,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         //    Scene = scene;
         //    return scene;
         //}
-        
+
         public List<string> GetPartNames()
         {
             return new List<string>() { "test" };

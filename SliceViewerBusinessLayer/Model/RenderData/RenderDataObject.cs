@@ -44,7 +44,19 @@ namespace OVFSliceViewerBusinessLayer.Model
                 Range = new Range { Start = Vertices.Length, End = Vertices.Length + vertices.Count },
                 ColorIndex = colorIndex
             };
-            ColorIndexRange.Add(colorIndexRange);
+            if (ColorIndexRange.Count > 0)
+            {
+                var lastColorIndexRange = ColorIndexRange[ColorIndexRange.Count - 1];
+                if (lastColorIndexRange.ColorIndex == colorIndexRange.ColorIndex && lastColorIndexRange.Range.End == colorIndexRange.Range.Start)
+                {
+                    colorIndexRange.Range.Start = lastColorIndexRange.Range.Start;
+                    ColorIndexRange[ColorIndexRange.Count - 1] = colorIndexRange;
+                }
+            }
+            else
+            {
+                ColorIndexRange.Add(colorIndexRange);
+            }
             temp.AddRange(vertices);
             Vertices = temp.ToArray();
 

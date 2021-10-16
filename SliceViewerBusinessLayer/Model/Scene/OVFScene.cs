@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -24,22 +25,43 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         public SceneSettings SceneSettings { get; private set; } = new SceneSettings();
 
-        public int NumberOfLinesInWorkplane => OVFFileInfo.NumberOfVerticesInWorkplane[SceneSettings.CurrentWorkplane];
+        public int GetNumberOfLinesInWorkplane()
+        {
+            if (OVFFileInfo.NumberOfVerticesInWorkplane.Count != 0 && OVFFileInfo.NumberOfVerticesInWorkplane.Count >= SceneSettings.CurrentWorkplane)
+            {
+                return OVFFileInfo.NumberOfVerticesInWorkplane[SceneSettings.CurrentWorkplane];
+            }
+            return 0;
+        }
         private bool _stateChanged = false;
 
         public List<KeyValuePair<int, int>> LinesInPart { get; set; } = new List<KeyValuePair<int, int>>();
 
-        public void LoadFile(FileInfo fileInfo)
+        public async Task LoadFile(FileInfo fileInfo)
         {
             PartsInScene.Values.ToList().ForEach(x => x.Dispose());
             PartsInScene.Clear();
-            _ovfFileLoader = new OVFFileLoader(fileInfo);
+
+            _ovfFileLoader = new OVFFileLoader(null);
+            await _ovfFileLoader.OpenFile(fileInfo);
+
             OVFFileInfo = _ovfFileLoader.OVFFileInfo;
 
             foreach (var partKey in OVFFileInfo.PartKeys)
             {
                 PartsInScene.Add(partKey, new OVFPart(partKey, OVFFileInfo.PartNamesMap[partKey], SceneController, () => SceneSettings.UseColorIndex));
             }
+        }
+        public void CloseFile()
+        {
+            _ovfFileLoader.CloseFile();
+
+            PartsInScene.Values.ToList().ForEach(x => x.Dispose());
+            PartsInScene.Clear();
+
+            SceneSettings.Reset();
+
+            OVFFileInfo = new OVFFileInfo();
         }
         public void Render()
         {
@@ -71,8 +93,6 @@ namespace OVFSliceViewerBusinessLayer.Model
                 }
 
                 _stateChanged = false;
-
-                Debug.WriteLine("Seems like something went wrong here.");
             }
 
             foreach (var part in PartsInScene.Values)
@@ -82,15 +102,14 @@ namespace OVFSliceViewerBusinessLayer.Model
                     part.RenderObjects.ForEach(y => y.Render());
                 }
             }
-
-
-            Debug.WriteLine(GL.GetError());
-            Debug.WriteLine(GL.GetError());
         }
         public void LoadWorkplaneToBuffer(int index)
         {
             ResetLinesInPart();
             ResetScene();
+
+            if (!PartsInScene.Any()) return;
+
             if (SceneSettings.ShowAs3dObject) AddContourWorkplanes(index);
             AddIndexWorkplane(index);
         }
@@ -116,7 +135,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             }
 
             BindDataToAllParts();
-            SceneSettings.CurrentNumberOfDrawnLines = NumberOfLinesInWorkplane;
+            SceneSettings.CurrentNumberOfDrawnLines = GetNumberOfLinesInWorkplane();
             SceneSettings.CurrentWorkplane = index;
         }
         public void ChangeNumberOfLinesToDraw(int numberOfLinesToDraw)
@@ -207,6 +226,6 @@ namespace OVFSliceViewerBusinessLayer.Model
 
     public interface IScene
     {
-        void LoadFile(FileInfo fileInfo);
+        Task LoadFile(FileInfo fileInfo);
     }
 }

@@ -9,23 +9,26 @@ namespace OVFSliceViewerBusinessLayer.Model
 {
     public class OVFFileInfo
     {
-        public Dictionary<int, string> PartNamesMap = new Dictionary<int, string>();
-        public List<int> PartKeys;
-        public int NumberOfWorkplanes;
+        public List<int> PartKeys { get; protected set; }
+        public Dictionary<int, string> PartNamesMap { get; protected set; } = new Dictionary<int, string>();
+        public List<VectorblockDisplayData> VectorblockDisplayData { get; protected set; } = new List<VectorblockDisplayData>();
+        public List<int> NumberOfVerticesInWorkplane { get; protected set; } = new List<int>();
+        public List<int>[] ContourVectorblocksInWorkplaneLUT { get; protected set; } = new List<int>[1];
+        public int NumberOfWorkplanes { get; protected set; } = 0;
         public int NumberOfVectorblocks => VectorblockDisplayData.Count;
 
-        public List<VectorblockDisplayData> VectorblockDisplayData;
-        public List<int> NumberOfVerticesInWorkplane;
-        public List<int>[] ContourVectorblocksInWorkplaneLUT;
-
-        public OVFFileInfo(MapField<int, Part> partsMap, int numberOfWorkplanes, OVFFileReader ovfFileReader)
+        public OVFFileInfo()
+        {
+            ContourVectorblocksInWorkplaneLUT[0] = new List<int>() { 0 };
+        }
+        public async Task ReadData(MapField<int, Part> partsMap, int numberOfWorkplanes, OVFFileReader ovfFileReader)
         {
             PartKeys = partsMap.Keys.ToList();
             NumberOfWorkplanes = numberOfWorkplanes;
 
             InitContourVectorblocksInWorkplaneMap();
 
-            VectorblockDisplayData = ReadVectorblockDisplayData(numberOfWorkplanes, ovfFileReader).GetAwaiter().GetResult();
+            VectorblockDisplayData = await ReadVectorblockDisplayData(numberOfWorkplanes, ovfFileReader);
             SetNumberOfVerticesInWorkplane();
 
             foreach (var part in partsMap)

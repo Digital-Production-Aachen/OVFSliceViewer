@@ -6,5 +6,11 @@
         public bool UseColorIndex { get; set; } = true;
         public int CurrentWorkplane { get; set; }
         public int CurrentNumberOfDrawnLines { get; set; }
+
+        public void Reset()
+        {
+            CurrentWorkplane = 0;
+            CurrentNumberOfDrawnLines = 0;
+        }
     }
 }

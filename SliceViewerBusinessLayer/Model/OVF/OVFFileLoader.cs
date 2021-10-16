@@ -16,15 +16,18 @@ namespace OVFSliceViewerBusinessLayer.Model
         OVFFileReader _ovfFileReader;
         public readonly IFileReaderWriterProgress Progress;
         public Job Jobshell { get; protected set; }
-        public OVFFileLoader(FileInfo file)
+        public OVFFileLoader(IFileReaderWriterProgress fileReaderWriterProgress)
+        {
+            Progress = fileReaderWriterProgress ?? new FileReaderWriterProgress();
+        }
+        public async Task OpenFile(FileInfo file)
         {
             _fileInfo = file;
-            Progress = new FileReaderWriterProgress();
             _ovfFileReader = new OVFFileReader();
             try
             {
                 Task task = _ovfFileReader.OpenJobAsync(_fileInfo.FullName, Progress);
-                task.GetAwaiter().GetResult();
+                await task;
             }
             catch (Exception e)
             {
@@ -32,7 +35,16 @@ namespace OVFSliceViewerBusinessLayer.Model
                 throw;
             }
             Jobshell = _ovfFileReader.JobShell;
-            GetOVFFileInfo();
+            await GetOVFFileInfo();
+        }
+        public void CloseFile()
+        {
+            if (_ovfFileReader == null)
+            {
+                return;
+            }
+            _ovfFileReader.Dispose();
+            _ovfFileReader = null;
         }
 
         public WorkPlane GetWorkplaneShell(int index)
@@ -46,13 +58,14 @@ namespace OVFSliceViewerBusinessLayer.Model
 
 
         public OVFFileInfo OVFFileInfo { get; protected set; }
-        private void GetOVFFileInfo()
+        private async Task GetOVFFileInfo()
         {
             int numberOfWorkplanes = _ovfFileReader.JobShell.NumWorkPlanes;
-            OVFFileInfo = new OVFFileInfo
+            OVFFileInfo = new OVFFileInfo();
+            await OVFFileInfo.ReadData
                 (
-                    _ovfFileReader.JobShell.PartsMap, 
-                    numberOfWorkplanes, 
+                    _ovfFileReader.JobShell.PartsMap,
+                    numberOfWorkplanes,
                     _ovfFileReader
                 );
         }
