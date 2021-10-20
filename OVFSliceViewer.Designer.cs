@@ -37,6 +37,7 @@
             this.glCanvas = new OpenTK.GLControl();
             this.timeLayerLabel = new System.Windows.Forms.Label();
             this.checkboxPanel = new System.Windows.Forms.Panel();
+            this.cBLaserIndexColor = new System.Windows.Forms.CheckBox();
             this.CbShow3dModel = new System.Windows.Forms.CheckBox();
             this.viewSelectionLabel = new System.Windows.Forms.Label();
             this.highlightCheckedListBox = new System.Windows.Forms.CheckedListBox();
@@ -48,7 +49,6 @@
             this.partsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.partSelectionLabel = new System.Windows.Forms.Label();
             this.partPanel = new System.Windows.Forms.Panel();
-            this.cBLaserIndexColor = new System.Windows.Forms.CheckBox();
             this.btnCloseFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).BeginInit();
@@ -160,6 +160,17 @@
             this.checkboxPanel.Name = "checkboxPanel";
             this.checkboxPanel.Size = new System.Drawing.Size(178, 113);
             this.checkboxPanel.TabIndex = 21;
+            // 
+            // cBLaserIndexColor
+            // 
+            this.cBLaserIndexColor.AutoSize = true;
+            this.cBLaserIndexColor.Location = new System.Drawing.Point(2, 74);
+            this.cBLaserIndexColor.Name = "cBLaserIndexColor";
+            this.cBLaserIndexColor.Size = new System.Drawing.Size(121, 17);
+            this.cBLaserIndexColor.TabIndex = 25;
+            this.cBLaserIndexColor.Text = "Highlight Laserindex";
+            this.cBLaserIndexColor.UseVisualStyleBackColor = true;
+            this.cBLaserIndexColor.CheckedChanged += new System.EventHandler(this.cBLaserIndexColor_CheckedChanged);
             // 
             // CbShow3dModel
             // 
@@ -290,19 +301,9 @@
             this.partPanel.Size = new System.Drawing.Size(178, 207);
             this.partPanel.TabIndex = 22;
             // 
-            // cBLaserIndexColor
-            // 
-            this.cBLaserIndexColor.AutoSize = true;
-            this.cBLaserIndexColor.Location = new System.Drawing.Point(2, 74);
-            this.cBLaserIndexColor.Name = "cBLaserIndexColor";
-            this.cBLaserIndexColor.Size = new System.Drawing.Size(121, 17);
-            this.cBLaserIndexColor.TabIndex = 25;
-            this.cBLaserIndexColor.Text = "Highlight Laserindex";
-            this.cBLaserIndexColor.UseVisualStyleBackColor = true;
-            this.cBLaserIndexColor.CheckedChanged += new System.EventHandler(this.cBLaserIndexColor_CheckedChanged);
-            // 
             // btnCloseFile
             // 
+            this.btnCloseFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCloseFile.Location = new System.Drawing.Point(1528, 812);
             this.btnCloseFile.Name = "btnCloseFile";
             this.btnCloseFile.Size = new System.Drawing.Size(128, 23);

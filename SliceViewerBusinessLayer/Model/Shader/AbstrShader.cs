@@ -21,8 +21,11 @@ namespace OVFSliceViewerBusinessLayer.Model
         public Vector4 Color { get; set; } = new Vector4(1, 0, 0, 0);
         protected AbstrShader(string vertexPath, string fragmentPath)
         {
-            _vertexPath = vertexPath;
-            _fragmentPath = fragmentPath;
+            var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+
+            _vertexPath = path + vertexPath;
+            _fragmentPath = path + fragmentPath;
 
             CompileShader();
         }

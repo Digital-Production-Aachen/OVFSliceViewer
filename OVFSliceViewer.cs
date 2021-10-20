@@ -29,6 +29,33 @@ namespace OVFSliceViewer
 
             SceneController = new SceneController(_canvasWrapper);
         }
+        public OVFSliceViewer(string filename)
+        {
+            InitializeComponent();
+            this.DoubleBuffered = true;
+            this.glCanvas.MouseWheel += new MouseEventHandler(this.MouseWheelZoom);
+            _motionTracker = new MotionTracker();
+
+            _canvasWrapper = new CanvasWrapper(glCanvas);
+
+            SceneController = new SceneController(_canvasWrapper);
+
+            _firstLoadFileName = filename;
+
+            this.Shown += OVFSliceViewer_Shown;
+
+            //LoadJob(filename);
+        }
+
+        string _firstLoadFileName = "";
+        private void OVFSliceViewer_Shown(object sender, EventArgs e)
+        {
+            if (_firstLoadFileName != "")
+            {
+                LoadJob(_firstLoadFileName);
+            }
+        }
+
         public OVFSliceViewer(bool showLoadButton) : this()
         {
             this.loadFileButton.Visible = showLoadButton;
