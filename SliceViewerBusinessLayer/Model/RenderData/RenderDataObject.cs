@@ -52,6 +52,10 @@ namespace OVFSliceViewerBusinessLayer.Model
                     colorIndexRange.Range.Start = lastColorIndexRange.Range.Start;
                     ColorIndexRange[ColorIndexRange.Count - 1] = colorIndexRange;
                 }
+                else
+                {
+                    ColorIndexRange.Add(colorIndexRange);
+                }
             }
             else
             {
