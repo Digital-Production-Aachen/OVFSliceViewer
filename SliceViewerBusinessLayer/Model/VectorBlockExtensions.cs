@@ -39,8 +39,8 @@ namespace OVFSliceViewerBusinessLayer.Model
 
             for (int i = 3; i <= points.Count(); i += 2)
             {
-                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 2);
-                var endVertex = new Vertex(new Vector3(points[i - 1], points[i], height), 2);
+                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 0);
+                var endVertex = new Vertex(new Vector3(points[i - 1], points[i], height), 0);
 
                 vertices.Add(startVertex);
                 vertices.Add(endVertex);
@@ -69,8 +69,8 @@ namespace OVFSliceViewerBusinessLayer.Model
             var vertices = new List<Vertex>();
             for (int i = 3; i <= points.Count; i += 4)
             {
-                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 2);
-                var endVertex = new Vertex(new Vector3(points[i - 1], points[i - 0], height), 2);
+                var startVertex = new Vertex(new Vector3(points[i - 3], points[i - 2], height), 0);
+                var endVertex = new Vertex(new Vector3(points[i - 1], points[i - 0], height), 0);
 
                 vertices.Add(startVertex);
                 vertices.Add(endVertex);

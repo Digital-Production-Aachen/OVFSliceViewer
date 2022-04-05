@@ -48,10 +48,11 @@
     <Compile Include="Interfaces\IRotateable.cs" />
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Model\AbstrPart.cs" />
+    <Compile Include="Model\GCodeReader.cs" />
     <Compile Include="Model\Scene\SceneSettings.cs" />
     <Compile Include="Model\STL\STLScene.cs" />
     <Compile Include="Model\STL\STLPart.cs" />
-    <Compile Include="Model\Shader\AbstrShader.cs" />
+    <Compile Include="Model\Shader\AbstrGlProgramm.cs" />
     <Compile Include="Model\BoundingBox.cs" />
     <Compile Include="Model\RenderData\ColorIndexRange.cs" />
     <Compile Include="Model\GeometryShader.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="Model\Range.cs" />
     <Compile Include="Model\RenderData\RenderDataObject.cs" />
     <Compile Include="Model\Scene\SceneController.cs" />
-    <Compile Include="Model\Shader\Shader.cs" />
+    <Compile Include="Model\Shader\GLProgramm.cs" />
     <Compile Include="Model\RenderData\STLRenderObject.cs" />
     <Compile Include="Model\Shader\TriangleShader.cs" />
     <Compile Include="Model\STL\STLReader.cs" />
@@ -86,11 +87,18 @@
     <None Include="Classes\Shader\shader.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Classes\Shader\shader.geometry">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Classes\Shader\shader.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj">
+      <Project>{DE72F5E5-2F92-4ECC-9287-FE4BE9E1089C}</Project>
+      <Name>ILTFileReaderAdapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj">
       <Project>{662b5772-45fb-4250-b295-cf943e7ee18a}</Project>
       <Name>AbstractReaderWriter</Name>
@@ -108,5 +116,6 @@
       <Name>OVFReaderWriter</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

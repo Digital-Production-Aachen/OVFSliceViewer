@@ -99,11 +99,13 @@ namespace OVFSliceViewerBusinessLayer.Model
         }
 
         private int _vectorblockNumber = 0;
-        public void IncreaseNumberOfLinesToDraw(int numberOfLines)
+        public Vector3 IncreaseNumberOfLinesToDraw(int numberOfLines)
         {
             var renderObject = VectorBlockRenderObjectMap[_vectorblockNumber];
             renderObject.End = Math.Min(renderObject.End + numberOfLines, renderObject.Vertices.Length);
             _vectorblockNumber++;
+
+            return new Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
         }
 
         public void ResetNumberOfLinesToDraw()

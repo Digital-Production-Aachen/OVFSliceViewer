@@ -1,7 +1,9 @@
 ﻿using OpenVectorFormat;
 using OpenVectorFormat.AbstractReaderWriter;
 using OpenVectorFormat.FileReaderWriterFactory;
+using OpenVectorFormat.ILTFileReaderAdapter;
 using OpenVectorFormat.OVFReaderWriter;
+using SliceViewerBusinessLayer.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +15,7 @@ namespace OVFSliceViewerBusinessLayer.Model
     public class OVFFileLoader
     {
         FileInfo _fileInfo;
-        OVFFileReader _ovfFileReader;
+        FileReader _ovfFileReader;
         public readonly IFileReaderWriterProgress Progress;
         public Job Jobshell { get; protected set; }
         public OVFFileLoader(IFileReaderWriterProgress fileReaderWriterProgress)
@@ -23,7 +25,19 @@ namespace OVFSliceViewerBusinessLayer.Model
         public async Task OpenFile(FileInfo file)
         {
             _fileInfo = file;
-            _ovfFileReader = new OVFFileReader();
+            //if (_fileInfo.Extension.ToLower() == ".ovf")
+            //{
+            //    _ovfFileReader = new OVFFileReader();
+            //}
+            //else
+            if (_fileInfo.Extension.ToLower() == ".gcode")
+            {
+                _ovfFileReader = new GCodeReader();
+            }
+            else
+            {
+                _ovfFileReader = FileReaderFactory.CreateNewReader(_fileInfo.Extension.ToLower());
+            }
             try
             {
                 Task task = _ovfFileReader.OpenJobAsync(_fileInfo.FullName, Progress);

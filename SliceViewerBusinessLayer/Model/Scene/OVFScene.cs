@@ -63,9 +63,12 @@ namespace OVFSliceViewerBusinessLayer.Model
 
             OVFFileInfo = new OVFFileInfo();
         }
+
+        public Vector3 lastPosition;
         public void Render()
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
             GL.ShadeModel(ShadingModel.Smooth);
             GL.LineWidth(5f);
 
@@ -79,6 +82,7 @@ namespace OVFSliceViewerBusinessLayer.Model
                 var vectorBlockInfos = OVFFileInfo.GetVectorblockDisplayData(SceneSettings.CurrentWorkplane);
 
                 int numberOfVertices = 0;
+                
                 for (int i = 0; i < vectorBlockInfos.Count; i++)
                 {
                     if (numberOfVertices >= SceneSettings.CurrentNumberOfDrawnLines)
@@ -88,7 +92,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
                     var info = vectorBlockInfos[i];
 
-                    PartsInScene[info.PartKey].IncreaseNumberOfLinesToDraw(Math.Min(SceneSettings.CurrentNumberOfDrawnLines - numberOfVertices, info.NumberOfVertices));
+                    lastPosition = PartsInScene[info.PartKey].IncreaseNumberOfLinesToDraw(Math.Min(SceneSettings.CurrentNumberOfDrawnLines - numberOfVertices, info.NumberOfVertices));
                     numberOfVertices += info.NumberOfVertices;
                 }
 
@@ -108,10 +112,22 @@ namespace OVFSliceViewerBusinessLayer.Model
             ResetLinesInPart();
             ResetScene();
 
-            if (!PartsInScene.Any()) return;
+            //if (!PartsInScene.Any()) return;
 
             if (SceneSettings.ShowAs3dObject) AddContourWorkplanes(index);
-            AddIndexWorkplane(index);
+
+            if (SceneSettings.ShowAs3dObject)
+            {
+                for (int i = 0; i <= index; i++)
+                {
+                    AddIndexWorkplane(i);
+                }
+            }
+            else
+            {
+                AddIndexWorkplane(index);
+            }
+
         }
         private void AddContourWorkplanes(int index)
         {
@@ -160,10 +176,20 @@ namespace OVFSliceViewerBusinessLayer.Model
         }
         protected void AddVectorblockToParts(VectorBlock vectorblock, float height)
         {
-            var part = vectorblock.MetaData.PartKey;
+            var partkey = vectorblock.MetaData.PartKey;
+            var part = partkey;
 
+            if (!PartsInScene.ContainsKey(partkey))
+            {
+                OVFFileInfo.PartNamesMap[partkey] = $"NoPartIdentified_{partkey}";
+                OVFFileInfo.PartKeys.Add(partkey);
+                
+                PartsInScene.Add(partkey, new OVFPart(partkey, OVFFileInfo.PartNamesMap[partkey], SceneController, () => SceneSettings.UseColorIndex));
+            }
             var ovfPart = PartsInScene[part] as OVFPart;
             LinesInPart.Add(new KeyValuePair<int, int>(part, ovfPart.AddVectorblock(vectorblock, height)));
+
+            _stateChanged = true;
         }
 
         protected void ResetLinesInPart()

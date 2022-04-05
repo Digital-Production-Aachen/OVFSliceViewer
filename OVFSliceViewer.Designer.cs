@@ -50,6 +50,7 @@
             this.partSelectionLabel = new System.Windows.Forms.Label();
             this.partPanel = new System.Windows.Forms.Panel();
             this.btnCloseFile = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.layerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeTrackBar)).BeginInit();
             this.checkboxPanel.SuspendLayout();
@@ -312,12 +313,25 @@
             this.btnCloseFile.UseVisualStyleBackColor = true;
             this.btnCloseFile.Click += new System.EventHandler(this.btnCloseFile_Click);
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(12, 812);
+            this.label2.MinimumSize = new System.Drawing.Size(250, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(250, 21);
+            this.label2.TabIndex = 29;
+            this.label2.Text = "Autotext";
+            // 
             // OVFSliceViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1671, 847);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnCloseFile);
             this.Controls.Add(this.layerNumberLabel);
             this.Controls.Add(this.timeTrackBar);
@@ -369,6 +383,7 @@
         private System.Windows.Forms.CheckBox CbShow3dModel;
         private System.Windows.Forms.CheckBox cBLaserIndexColor;
         private System.Windows.Forms.Button btnCloseFile;
+        private System.Windows.Forms.Label label2;
     }
 }
 

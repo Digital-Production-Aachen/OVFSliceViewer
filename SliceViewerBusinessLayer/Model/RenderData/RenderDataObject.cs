@@ -9,7 +9,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 {
     public class RenderDataObject : IRenderData, IDisposable
     {
-        protected AbstrShader _shader;
+        protected AbstrGlProgramm _shader;
         public int Start { get; protected set; } = 0;
         public int End { get; set; } = 0;
         public Vertex[] Vertices { get; protected set; } = new Vertex[0];
@@ -30,7 +30,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         protected virtual void CreateShader(IModelViewProjection mvp)
         {
-            _shader = new Shader(this, mvp);
+            _shader = new GLProgramm(this, mvp);
         }
 
         public void AddVertices(IList<Vertex> vertices, int colorIndex)

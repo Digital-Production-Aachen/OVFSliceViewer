@@ -42,10 +42,10 @@ namespace OVFSliceViewerBusinessLayer.Model
 
             var scene = new OVFScene(this);
 
-            if (fileInfo.Extension.ToLower() == ".ovf")
-            {
+            //if (fileInfo.Extension.ToLower() == ".ovf" || fileInfo.Extension.ToLower() == ".gcode")
+            //{
                 await scene.LoadFile(fileInfo);
-            }
+            //}
 
             Scene = scene;
             return scene;
@@ -64,6 +64,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             }
             _canvas.MakeCurrent();
             GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
             _canvas.SwapBuffers();
         }
         //public STLScene LoadFile(string path)

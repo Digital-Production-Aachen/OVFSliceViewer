@@ -8,24 +8,27 @@ using System.Text;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
-    public abstract class AbstrShader : IDisposable
+    public abstract class AbstrGlProgramm : IDisposable
     {
         public int handle;
         protected string _vertexPath;
         protected string _fragmentPath;
+        protected string _geometryPath;
         protected string _vertexShaderCode;
         protected string _fragmentShaderCode;
+        protected string _geometryShaderCode;
         protected int _mvpPointer => GL.GetUniformLocation(handle, "Mvp");
 
 
         public Vector4 Color { get; set; } = new Vector4(1, 0, 0, 0);
-        protected AbstrShader(string vertexPath, string fragmentPath)
+        protected AbstrGlProgramm(string vertexPath, string fragmentPath)
         {
             var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
-
             _vertexPath = path + vertexPath;
             _fragmentPath = path + fragmentPath;
+
+            _geometryPath = path + @"\Classes\Shader\shader.geometry";
 
             CompileShader();
         }
@@ -72,6 +75,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             GL.DetachShader(handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
+
         }
         protected void ReadShader()
         {
@@ -84,6 +88,11 @@ namespace OVFSliceViewerBusinessLayer.Model
             using (StreamReader reader = new StreamReader(_fragmentPath, Encoding.UTF8))
             {
                 _fragmentShaderCode = reader.ReadToEnd();
+            }
+
+            using (StreamReader reader = new StreamReader(_geometryPath, Encoding.UTF8))
+            {
+                _geometryShaderCode = reader.ReadToEnd();
             }
 
             Debug.WriteLine(GL.GetError());
@@ -108,7 +117,7 @@ namespace OVFSliceViewerBusinessLayer.Model
                 disposedValue = true;
             }
         }
-        ~AbstrShader()
+        ~AbstrGlProgramm()
         {
             Dispose(disposing: false);
         }

@@ -3,7 +3,7 @@
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
-    public class TriangleShader: Shader
+    public class TriangleShader: GLProgramm
     {
         public TriangleShader(IRenderData renderObject, IModelViewProjection mvp) : base(renderObject, mvp) { }
 

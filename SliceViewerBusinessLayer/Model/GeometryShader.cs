@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
-    public class GeometryShader: Shader
+    public class GeometryShader: GLProgramm
     {
         public GeometryShader(IRenderData renderObject, IModelViewProjection mvp,
             string vertexPath = @"Classes/Shader/shader.vert",

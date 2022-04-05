@@ -81,6 +81,8 @@ namespace OVFSliceViewer
             SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
             SceneController.Render();
             SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
+
+            label2.Text = SceneController.Scene.lastPosition.ToString();
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -91,7 +93,7 @@ namespace OVFSliceViewer
 
         private async void LoadJobButtonClick(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "ovf and ilt files (*.ovf; *.ilt)|*.ovf;*.ilt|All files (*.*)|*.*";
+            openFileDialog1.Filter = "ovf and ilt files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.gcode|All files (*.*)|*.*";
             var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -146,6 +148,7 @@ namespace OVFSliceViewer
         {
             SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
             SceneController.Render();
+            label2.Text = SceneController.Scene.lastPosition.ToString();
         }
 
         private void canvasMouseDown(object sender, MouseEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Collections;
 using OpenVectorFormat;
+using OpenVectorFormat.AbstractReaderWriter;
 using OpenVectorFormat.OVFReaderWriter;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         {
             ContourVectorblocksInWorkplaneLUT[0] = new List<int>() { 0 };
         }
-        public async Task ReadData(MapField<int, Part> partsMap, int numberOfWorkplanes, OVFFileReader ovfFileReader)
+        public async Task ReadData(MapField<int, Part> partsMap, int numberOfWorkplanes, FileReader ovfFileReader)
         {
             PartKeys = partsMap.Keys.ToList();
             NumberOfWorkplanes = numberOfWorkplanes;
@@ -70,7 +71,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             return VectorblockDisplayData.Where(x => x.WorkplaneNumber == workplaneNumber).ToList();
         }
 
-        private async Task<List<VectorblockDisplayData>> ReadVectorblockDisplayData(int numberOfWorkplanes, OVFFileReader ovfFileReader)
+        private async Task<List<VectorblockDisplayData>> ReadVectorblockDisplayData(int numberOfWorkplanes, FileReader ovfFileReader)
         {
             List<VectorblockDisplayData> list = new List<VectorblockDisplayData>();
             for (int i = 0; i < numberOfWorkplanes; i++)

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
-    public class Shader : AbstrShader
+    public class GLProgramm : AbstrGlProgramm
     {
         protected int _vertexBuffer;
         protected int _vertexArray;
@@ -19,7 +19,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         
         protected int _colorPointer => GL.GetUniformLocation(handle, "colorIndex");
 
-        public Shader(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"\Classes\Shader\shader.vert", string fragmentPath = @"\Classes\Shader\shader.frag") : base(vertexPath, fragmentPath)
+        public GLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"\Classes\Shader\shader.vert", string fragmentPath = @"\Classes\Shader\shader.frag") : base(vertexPath, fragmentPath)
         {
             _renderObject = renderObject;
             _mvp = mvp;
@@ -32,6 +32,8 @@ namespace OVFSliceViewerBusinessLayer.Model
         public override void Render()
         {
             this.Use();
+            GL.CullFace(CullFaceMode.Back);
+            GL.Enable(EnableCap.DepthTest);
 
             if (_renderObject.UseColorIndex())
             {               
@@ -48,6 +50,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             {
                 RenderWithSingleDraw();
             }
+            //Debug.WriteLine(GL.GetError());
         }
 
         private void RenderWithSingleDraw(int colorIndex = 0)
@@ -59,12 +62,14 @@ namespace OVFSliceViewerBusinessLayer.Model
             GL.BindVertexArray(_vertexArray);
             GL.LineWidth(2.5f);
             GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
+            Debug.WriteLine(GL.GetError());
         }
         private void RenderWithMultipleDraws()
         {
             int lastColorIndex = -1;
             var mvp = _mvp.ModelViewProjection;
             GL.UniformMatrix4(_mvpPointer, false, ref mvp);
+            GL.BindVertexArray(_vertexArray);
 
             foreach (var item in _renderObject.ColorIndexRange.Where(x => x.Range.End > x.Range.Start && x.Range.Start < _renderObject.End).OrderBy(x => x.ColorIndex))
             {
@@ -73,9 +78,10 @@ namespace OVFSliceViewerBusinessLayer.Model
                     GL.Uniform1(_colorPointer, item.ColorIndex);
                     lastColorIndex = item.ColorIndex;
                 }
-                GL.BindVertexArray(_vertexArray);
+                
                 GL.LineWidth(2.5f);
-                GL.DrawArrays(_renderObject.PrimitiveType, item.Range.Start, Math.Min(item.Range.End, _renderObject.End));
+                GL.DrawArrays(_renderObject.PrimitiveType, Math.Min(item.Range.Start,_renderObject.End), Math.Max(0, Math.Min(item.Range.End, _renderObject.End) - item.Range.Start));
+                var test = Math.Min(item.Range.End, _renderObject.End) - item.Range.Start;
             }
         }
         private void CreateVertexBuffer()
