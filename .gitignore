@@ -27,3 +27,6 @@
 /.vs/OVFSliceViewer/v16/Browse.VC.opendb
 /.vs/OVFSliceViewer/DesignTimeBuild/.dtbcache.v2
 /RWTH Colors.pdf
+/bin/Release
+/*.user
+/SliceViewerBusinessLayer/bin
