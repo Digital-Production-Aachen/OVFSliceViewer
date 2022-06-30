@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
-    public class AbstrPart: IDisposable
+    public abstract class AbstrPart: IDisposable
     {
         public AbstrPart()
         {
@@ -18,6 +18,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         public string Name { get; protected set; } = "No name";
         private bool disposedValue;
 
+        public abstract void Render();
         public virtual List<RenderDataObject> RenderObjects { get; protected set; }
 
         //public virtual void AddVertices(IList<OVFSliceViewer.Classes.Vertex> vertices)
