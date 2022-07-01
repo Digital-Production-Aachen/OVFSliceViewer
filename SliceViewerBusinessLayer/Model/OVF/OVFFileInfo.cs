@@ -15,7 +15,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         public List<VectorblockDisplayData> VectorblockDisplayData { get; protected set; } = new List<VectorblockDisplayData>();
         public List<int> NumberOfVerticesInWorkplane { get; protected set; } = new List<int>();
         public List<int>[] ContourVectorblocksInWorkplaneLUT { get; protected set; } = new List<int>[1];
-        public int NumberOfWorkplanes { get; protected set; } = 0;
+        public int NumberOfWorkplanes { get; set; } = 0;
         public int NumberOfVectorblocks => VectorblockDisplayData.Count;
 
         public OVFFileInfo()

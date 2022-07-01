@@ -82,7 +82,7 @@ namespace OVFSliceViewer
             SceneController.Render();
             SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
 
-            label2.Text = SceneController.Scene.lastPosition.ToString();
+            label2.Text = SceneController.Scene.LastPosition.ToString();
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -148,7 +148,7 @@ namespace OVFSliceViewer
         {
             SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
             SceneController.Render();
-            label2.Text = SceneController.Scene.lastPosition.ToString();
+            label2.Text = SceneController.Scene.LastPosition.ToString();
         }
 
         private void canvasMouseDown(object sender, MouseEventArgs e)

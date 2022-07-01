@@ -1,6 +1,9 @@
-﻿using SliceViewerBusinessLayer.Model.STL;
+﻿using OpenTK;
+using SliceViewerBusinessLayer.Model.STL;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OVFSliceViewerBusinessLayer.Model
@@ -9,12 +12,22 @@ namespace OVFSliceViewerBusinessLayer.Model
     {
         public ISceneController SceneController { get; protected set; }
 
+        private List<STLPart> PartsInScene = new List<STLPart>();
+        IEnumerable<AbstrPart> IScene.PartsInScene => PartsInScene.AsEnumerable();
+        public SceneSettings SceneSettings { get; private set; } = new SceneSettings();
+
+        Vector3 IScene.LastPosition => Vector3.Zero;
+
+        public OVFFileInfo OVFFileInfo { get; set; } = new OVFFileInfo() { NumberOfWorkplanes = 1 }; 
+
         public STLScene(ISceneController sceneController)
         {
             SceneController = sceneController;
         }
 
-        public STLPart Part;
+        public STLScene()
+        {
+        }
 
         public async Task LoadFile(FileInfo fileInfo)
         {
@@ -22,7 +35,8 @@ namespace OVFSliceViewerBusinessLayer.Model
 
             await reader.ReadStl(fileInfo.FullName);
 
-            Part = new STLPart(reader.Mesh);
+            var part = new STLPart(reader.Mesh, SceneController, () => SceneSettings.UseColorIndex);
+            PartsInScene.Add(part);
         }
 
 
@@ -55,5 +69,26 @@ namespace OVFSliceViewerBusinessLayer.Model
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+        void IScene.CloseFile()
+        {
+            
+        }
+
+        void IScene.Render()
+        {
+            PartsInScene.ForEach(x => x.Render());
+        }
+
+        Vector2 IScene.GetCenter()
+        {
+            return Vector2.Zero;
+        }
+
+        void IScene.LoadWorkplaneToBuffer(int index){}
+
+        int IScene.GetNumberOfLinesInWorkplane(){ return 1; }
+
+        void IScene.ChangeNumberOfLinesToDraw(int numberOfLinesToDraw){}
     }
 }

@@ -50,7 +50,10 @@
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Model\AbstrPart.cs" />
     <Compile Include="Model\GCodeReader.cs" />
+    <Compile Include="Model\RenderData\STLRenderDataObject.cs" />
+    <Compile Include="Model\Scene\IScene.cs" />
     <Compile Include="Model\Scene\SceneSettings.cs" />
+    <Compile Include="Model\Shader\STLGLProgramm.cs" />
     <Compile Include="Model\STL\STLScene.cs" />
     <Compile Include="Model\STL\STLPart.cs" />
     <Compile Include="Model\Shader\AbstrGlProgramm.cs" />
@@ -69,7 +72,6 @@
     <Compile Include="Model\RenderData\RenderDataObject.cs" />
     <Compile Include="Model\Scene\SceneController.cs" />
     <Compile Include="Model\Shader\GLProgramm.cs" />
-    <Compile Include="Model\RenderData\STLRenderObject.cs" />
     <Compile Include="Model\Shader\TriangleShader.cs" />
     <Compile Include="Model\STL\STLReader.cs" />
     <Compile Include="Model\VectorblockDisplayData.cs" />

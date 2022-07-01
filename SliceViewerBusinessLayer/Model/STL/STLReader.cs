@@ -31,35 +31,25 @@ namespace SliceViewerBusinessLayer.Model.STL
             {
                 _fileHeader = reader.ReadBytes(80);
                 _length = reader.ReadUInt32();
-                PreReadingCommand();
 
                 for (int i = 0; i < _length; i++)
                 {
                     ReadTriangle(reader);
-                    AddTriangleToMesh(i + 1);
                 }
             }
-            PostReadingCommand();
             return Mesh;
         }
 
-
-        protected virtual void PreReadingCommand() { }
-        protected virtual void PostReadingCommand() { }
-
-        protected Triangle _triangle = new Triangle();
         protected void ReadTriangle(BinaryReader reader)
         {
-            _triangle.Normal = ReadVertex(reader);
-            _triangle.VertexA = ReadVertex(reader);
-            _triangle.VertexB = ReadVertex(reader);
-            _triangle.VertexC = ReadVertex(reader);
+            var triangle = new Triangle();
+            triangle.Normal = ReadVertex(reader);
+            triangle.VertexA = ReadVertex(reader);
+            triangle.VertexB = ReadVertex(reader);
+            triangle.VertexC = ReadVertex(reader);
 
             reader.ReadUInt16();
-        }
-        protected virtual void AddTriangleToMesh(int id = 0)
-        {
-            Mesh.Add(_triangle);
+            Mesh.Add(triangle);
         }
 
         Vector3 _vertex = Vector3.Zero;

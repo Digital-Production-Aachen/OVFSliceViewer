@@ -37,6 +37,8 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         public List<KeyValuePair<int, int>> LinesInPart { get; set; } = new List<KeyValuePair<int, int>>();
 
+        IEnumerable<AbstrPart> IScene.PartsInScene => PartsInScene.Values.AsEnumerable();
+
         public async Task LoadFile(FileInfo fileInfo)
         {
             PartsInScene.Values.ToList().ForEach(x => x.Dispose());
@@ -64,12 +66,10 @@ namespace OVFSliceViewerBusinessLayer.Model
             OVFFileInfo = new OVFFileInfo();
         }
 
-        public Vector3 lastPosition;
+        public Vector3 LastPosition { get; set; }
         public void Render()
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            GL.Clear(ClearBufferMask.DepthBufferBit);
-            GL.ShadeModel(ShadingModel.Smooth);
+            
             GL.LineWidth(5f);
 
             if (_stateChanged)
@@ -92,7 +92,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
                     var info = vectorBlockInfos[i];
 
-                    lastPosition = PartsInScene[info.PartKey].IncreaseNumberOfLinesToDraw(Math.Min(SceneSettings.CurrentNumberOfDrawnLines - numberOfVertices, info.NumberOfVertices));
+                    LastPosition = PartsInScene[info.PartKey].IncreaseNumberOfLinesToDraw(Math.Min(SceneSettings.CurrentNumberOfDrawnLines - numberOfVertices, info.NumberOfVertices));
                     numberOfVertices += info.NumberOfVertices;
                 }
 
@@ -248,10 +248,5 @@ namespace OVFSliceViewerBusinessLayer.Model
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-    }
-
-    public interface IScene
-    {
-        Task LoadFile(FileInfo fileInfo);
     }
 }

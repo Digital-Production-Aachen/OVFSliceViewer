@@ -1,8 +1,10 @@
+/bin
 /bin/Debug
 /bin/x64/Debug
 /obj/Debug
 /obj
 /SliceViewerBusinessLayer/obj
+/SliceViewerBusinessLayer/bin
 *.suo
 *.lock
 *.ide

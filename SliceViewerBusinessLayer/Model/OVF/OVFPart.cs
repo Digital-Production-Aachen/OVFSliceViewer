@@ -31,7 +31,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             RenderObjects.AddRange(_ovfRenderObjects);
         }
 
-        public void Render()
+        public override void Render()
         {
             RenderObjects.ForEach(x => x.Render());
         }

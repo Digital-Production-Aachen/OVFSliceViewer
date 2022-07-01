@@ -11,7 +11,7 @@ namespace OVFSliceViewerBusinessLayer.Model
     public class SceneController: ISceneController, IDisposable
     {
         public Camera Camera { get; protected set; }
-        public OVFScene Scene { get; protected set; }
+        public IScene Scene { get; protected set; }
 
         private ICanvas _canvas;
 
@@ -27,11 +27,17 @@ namespace OVFSliceViewerBusinessLayer.Model
             {
                 return;
             }
+            
             _canvas.MakeCurrent();
+            
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
+            GL.ShadeModel(ShadingModel.Smooth);
+            
             Scene.Render();
             _canvas.SwapBuffers();
         }
-        public async Task<OVFScene> LoadFile(string path)
+        public async Task<IScene> LoadFile(string path)
         {
             var fileInfo = new FileInfo(path);
 
@@ -39,13 +45,21 @@ namespace OVFSliceViewerBusinessLayer.Model
             {
                 CloseFile();
             }
+            IScene scene;
+            if (fileInfo.Extension.ToLower() == ".stl")
+            {
+                scene = new STLScene(this);
+                scene.LoadFile(fileInfo);
+            }
+            else
+            {
+                scene = new OVFScene(this);
 
-            var scene = new OVFScene(this);
-
-            //if (fileInfo.Extension.ToLower() == ".ovf" || fileInfo.Extension.ToLower() == ".gcode")
-            //{
+                //if (fileInfo.Extension.ToLower() == ".ovf" || fileInfo.Extension.ToLower() == ".gcode")
+                //{
                 await scene.LoadFile(fileInfo);
-            //}
+                //}
+            }
 
             Scene = scene;
             return scene;
@@ -102,7 +116,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         public List<AbstrPart> GetParts()
         {
-            var temp = Scene.PartsInScene.Values.ToList();
+            var temp = Scene.PartsInScene.ToList();
             return temp.Select(x => (AbstrPart)x).ToList();
         }
         protected virtual void Dispose(bool disposing)
@@ -142,5 +156,6 @@ namespace OVFSliceViewerBusinessLayer.Model
         Camera Camera { get; }
 
         List<AbstrPart> GetParts();
+       
     }
 }
