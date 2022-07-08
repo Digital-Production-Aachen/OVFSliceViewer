@@ -12,8 +12,6 @@
 *.ide-wal
 *.dll
 *.pdb
-*.frag
-*.vert
 *.exe
 *.config
 *.dylib
