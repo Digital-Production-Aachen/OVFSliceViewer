@@ -32,21 +32,21 @@ namespace OVFSliceViewerBusinessLayer.Model
             if (infoLogFrag != System.String.Empty)
                 Debug.WriteLine(infoLogFrag);
 
-            handle = GL.CreateProgram();
+            _handle = GL.CreateProgram();
 
-            GL.AttachShader(handle, VertexShader);
-            GL.AttachShader(handle, FragmentShader);
+            GL.AttachShader(_handle, VertexShader);
+            GL.AttachShader(_handle, FragmentShader);
 
-            GL.LinkProgram(handle);
-            GL.ValidateProgram(handle);
+            GL.LinkProgram(_handle);
+            GL.ValidateProgram(_handle);
 
             infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
 
             if (infoLogFrag != System.String.Empty)
                 Debug.WriteLine(infoLogFrag);
 
-            GL.DetachShader(handle, VertexShader);
-            GL.DetachShader(handle, FragmentShader);
+            GL.DetachShader(_handle, VertexShader);
+            GL.DetachShader(_handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
         }

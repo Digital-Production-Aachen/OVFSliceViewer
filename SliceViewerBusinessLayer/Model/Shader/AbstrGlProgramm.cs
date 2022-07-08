@@ -2,6 +2,7 @@
 using OpenTK.Graphics.OpenGL4;
 //using OpenTK.Mathematics;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -10,14 +11,14 @@ namespace OVFSliceViewerBusinessLayer.Model
 {
     public abstract class AbstrGlProgramm : IDisposable
     {
-        public int handle;
+        public int _handle;
         protected string _vertexPath;
         protected string _fragmentPath;
         protected string _geometryPath;
         protected string _vertexShaderCode;
         protected string _fragmentShaderCode;
         protected string _geometryShaderCode;
-        protected int _mvpPointer => GL.GetUniformLocation(handle, "Mvp");
+        protected int _mvpPointer => GL.GetUniformLocation(_handle, "Mvp");
 
 
         public Vector4 Color { get; set; } = new Vector4(1, 0, 0, 0);
@@ -46,64 +47,68 @@ namespace OVFSliceViewerBusinessLayer.Model
             GL.ShaderSource(FragmentShader, _fragmentShaderCode);
 
             GL.CompileShader(VertexShader);
-
             string infoLogVert = GL.GetShaderInfoLog(VertexShader);
             if (infoLogVert != System.String.Empty)
                 Debug.WriteLine(infoLogVert);
 
             GL.CompileShader(FragmentShader);
-
             string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
-
             if (infoLogFrag != System.String.Empty)
                 Debug.WriteLine(infoLogFrag);
 
-            handle = GL.CreateProgram();
+            _handle = GL.CreateProgram();
 
-            GL.AttachShader(handle, VertexShader);
-            GL.AttachShader(handle, FragmentShader);
 
-            GL.LinkProgram(handle);
-            GL.ValidateProgram(handle);
+            AttachShader(new List<int>() { VertexShader, FragmentShader });
+
+            //GL.AttachShader(_handle, VertexShader);
+            //GL.AttachShader(_handle, FragmentShader);
+
+            GL.LinkProgram(_handle);
+            GL.ValidateProgram(_handle);
 
             infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
 
             if (infoLogFrag != System.String.Empty)
                 Debug.WriteLine(infoLogFrag);
 
-            GL.DetachShader(handle, VertexShader);
-            GL.DetachShader(handle, FragmentShader);
+            GL.DetachShader(_handle, VertexShader);
+            GL.DetachShader(_handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
-
+        }
+        
+        protected virtual void AttachShader(List<int> shaderHandles)
+        {
+            foreach (var shaderHandle in shaderHandles)
+            {
+                GL.AttachShader(_handle, shaderHandle);
+            }
         }
         protected void ReadShader()
         {
-            using (StreamReader reader = new StreamReader(_vertexPath, Encoding.UTF8))
-            {
-                _vertexShaderCode = reader.ReadToEnd();
-            }
-
-
-            using (StreamReader reader = new StreamReader(_fragmentPath, Encoding.UTF8))
-            {
-                _fragmentShaderCode = reader.ReadToEnd();
-            }
-
-            using (StreamReader reader = new StreamReader(_geometryPath, Encoding.UTF8))
-            {
-                _geometryShaderCode = reader.ReadToEnd();
-            }
+            _vertexShaderCode = ReadShader(_vertexPath);
+            _fragmentShaderCode = ReadShader(_fragmentPath);
+            _geometryShaderCode = ReadShader(_geometryPath);
 
             Debug.WriteLine(GL.GetError());
         }
+        protected string ReadShader(string path)
+        {
+            string code;
+            using (StreamReader reader = new StreamReader(path, Encoding.UTF8))
+            {
+                code = reader.ReadToEnd();
+            }
+            return code;
+        }
         public virtual void Use()
         {
-            GL.UseProgram(handle);
+            GL.UseProgram(_handle);
         }
         public void Recompile()
         {
-            GL.DeleteProgram(handle);
+            GL.DeleteProgram(_handle);
             CompileShader();
         }
 
@@ -112,7 +117,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         {
             if (!disposedValue)
             {
-                GL.DeleteProgram(handle);
+                //GL.DeleteProgram(_handle);
 
                 disposedValue = true;
             }

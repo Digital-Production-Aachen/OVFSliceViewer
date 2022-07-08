@@ -8,5 +8,10 @@ namespace OVFSliceViewerBusinessLayer.Model
         {
             this.PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType.Triangles;
         }
+
+        protected override void CreateShader(IModelViewProjection mvp)
+        {
+            _shader = new STLGLProgramm(this, mvp);
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         protected readonly IRenderData _renderObject;
         protected IModelViewProjection _mvp;
         
-        protected int _colorPointer => GL.GetUniformLocation(handle, "colorIndex");
+        protected int _colorPointer => GL.GetUniformLocation(_handle, "colorIndex");
 
         public GLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"\Classes\Shader\shader.vert", string fragmentPath = @"\Classes\Shader\shader.frag") : base(vertexPath, fragmentPath)
         {
@@ -53,7 +53,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             //Debug.WriteLine(GL.GetError());
         }
 
-        private void RenderWithSingleDraw(int colorIndex = 0)
+        protected virtual void RenderWithSingleDraw(int colorIndex = 0)
         {
             var mvp = _mvp.ModelViewProjection;
             GL.UniformMatrix4(_mvpPointer, false, ref mvp);
@@ -64,7 +64,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
             Debug.WriteLine(GL.GetError());
         }
-        private void RenderWithMultipleDraws()
+        protected virtual void RenderWithMultipleDraws()
         {
             int lastColorIndex = -1;
             var mvp = _mvp.ModelViewProjection;

@@ -87,6 +87,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Classes\Shader\shader - Copy.geometry">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Classes\Shader\shaderSTL.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Classes\Shader\shader.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
