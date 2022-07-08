@@ -55,6 +55,5 @@ void main()
   
     //colorOut = colormap(colorIndex / 6.0);
 	gl_Position = Mvp * vec4(position, 1); 
-    fragcolor = colorOut;
-
+    outColor = colorOut;
 }
