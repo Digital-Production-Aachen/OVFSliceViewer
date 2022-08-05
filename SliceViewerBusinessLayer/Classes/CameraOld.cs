@@ -1,14 +1,15 @@
 ﻿using OpenTK;
 using System;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using System.Runtime.InteropServices;
 using OVFSliceViewerBusinessLayer.Model;
-using SliceViewerBusinessLayer.Classes;
-using System.Diagnostics;
 
 namespace OVFSliceViewerBusinessLayer.Classes
 {
     // Todo: seperate Matrix for movement and rotation
 
-    public class Camera : IZoomable, IRotateable, OVFSliceViewerBusinessLayer.Model.IModelViewProjection
+    public class CameraOld : IZoomable, IRotateable, OVFSliceViewerBusinessLayer.Model.IModelViewProjection
     {
         Vector3 _position;
         Vector3 _cameraTarget;
@@ -19,21 +20,14 @@ namespace OVFSliceViewerBusinessLayer.Classes
         protected float _aspectRatio;
         protected float _canvasWidth;
         protected float _canvasHeight;
-        protected float _zoomfactor = 1f;
-        
+        protected float _zoomfactor = 2f;
+        protected float _zNear = 0.1f;
+        protected float _zFar = 500f;
         float _yaw = 0;
         float _pitch = 0;
-
-        public float zNear { get; set; } = 0.1f;
-        public float zFar { get; set; } = 100f;
-        public float CanvasWidth => _canvasWidth;
-        public float CanvasHeight => _canvasHeight;
         public float ObjectHeight { get; set; }
         //public Vector2 CameraPosition { get { return new Vector2(_position.X, _position.Y); } set { CameraPosition = value; } }
         public Vector3 CameraDirection => _cameraTarget - _position;
-        public Vector3 CameraPosition => _position;
-
-        public Vector3 Translation => _translation;
 
         public Matrix4 RotationMatrixYaw { get; protected set; } = Matrix4.Identity;
         public Matrix4 RotationMatrixPitch { get; protected set; } = Matrix4.Identity;
@@ -45,16 +39,14 @@ namespace OVFSliceViewerBusinessLayer.Classes
                 (RotationMatrixYaw * RotationMatrixPitch * new Vector4(Vector3.UnitY, 1)).Xyz
                 );
 
-        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, zNear, zFar);
+        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, _zNear, _zFar);
 
         public Matrix4 TranslationMatrix { get; protected set; } = Matrix4.Identity;
 
         public Matrix4 ModelViewProjection => TranslationMatrix * LookAtTransformationMatrix * ProjectionMatrix;
 
-        public ViewFrustum viewFrustum;
 
-
-        public Camera(SceneController scene, float canvasWidth, float canvasHeight)
+        public CameraOld(SceneController scene, float canvasWidth, float canvasHeight)
         {
             _scene = scene;
             _canvasWidth = canvasWidth;
@@ -65,18 +57,12 @@ namespace OVFSliceViewerBusinessLayer.Classes
             _position = new Vector3(0, 0, 50f);
             _cameraTarget = Vector3.Zero;
             TranslationMatrix = Matrix4.CreateTranslation(new Vector3(0));
-            viewFrustum = new ViewFrustum(ModelViewProjection, false);
         }
         public void Resize(int width, int height)
         {
             _canvasWidth = width;
             _canvasHeight = height;
             _aspectRatio = Convert.ToSingle(_canvasWidth) / Convert.ToSingle(_canvasHeight);
-        }
-
-        public void setCameraPosition(float x, float y, float z)
-        {
-            _position = new Vector3(x, y, z);
         }
 
         public void MoveToPosition2D(Vector2 position)
@@ -105,10 +91,9 @@ namespace OVFSliceViewerBusinessLayer.Classes
             temp = temp * delta3.Xy.Length / temp.Length;
 
             _translation += temp.Xyz;
-
+            //
             var temp2 = Matrix4.CreateTranslation(_translation);//temp.Xyz);
             TranslationMatrix = temp2;
-            UpdateFrustum();
             _scene.Render();
         }
 
@@ -121,16 +106,29 @@ namespace OVFSliceViewerBusinessLayer.Classes
 
         public void Zoom(bool makeBigger, bool fastZoom = false)
         {
-            float zoom = _zoomfactor;
-            if (fastZoom)
-                zoom *= 5;
+            Vector3 newPosition;
+            var delta = (_position - _cameraTarget).Length;
+            float fastZoomFactor = fastZoom ? 5 : 1;
 
-            if (makeBigger && _position.Z > -zFar)
-                _position.Z -= zoom;
-            else if (_position.Z < zFar)
-                _position.Z += zoom;
+            if (makeBigger)
+            {
+                newPosition = _cameraTarget + (delta - _zoomfactor * fastZoomFactor) * ((_position - _cameraTarget).Normalized());
+            }
+            else
+            {
+                newPosition = _cameraTarget + (delta + _zoomfactor * fastZoomFactor) * ((_position - _cameraTarget).Normalized());
+            }
 
-            UpdateFrustum();
+            if (/*(newPosition - _cameraTarget).Length < _zNear*/ newPosition.Z <= 0)
+            {
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zNear + 0.2f);
+            }
+            else if ((newPosition - _cameraTarget).Length > _zFar)
+            {
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zFar - 0.2f);
+            }
+
+            _position = newPosition;
             _scene.Render();
         }
 
@@ -159,14 +157,7 @@ namespace OVFSliceViewerBusinessLayer.Classes
 
             RotationMatrixYaw = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, _yaw);
             RotationMatrixPitch = Matrix4.CreateFromAxisAngle(Vector3.UnitX, _pitch);
-            UpdateFrustum();
             _scene.Render();
-        }
-
-        public void UpdateFrustum()
-        {
-            viewFrustum.cameraPosition = _position;
-            viewFrustum.SetFrom(ProjectionMatrix, false);
         }
     }
 }
