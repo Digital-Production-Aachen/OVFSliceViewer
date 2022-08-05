@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using OVFSliceViewerBusinessLayer.Classes;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,10 +47,21 @@ namespace OVFSliceViewerBusinessLayer.Model
                 CloseFile();
             }
             IScene scene;
-            if (fileInfo.Extension.ToLower() == ".stl")
+            if (fileInfo.Extension.ToLower() == ".stl" || fileInfo.Extension.ToLower() == ".obj")
             {
                 scene = new STLScene(this);
                 scene.LoadFile(fileInfo);
+
+                float maxSize = 0;
+                foreach (STLPart part in scene.PartsInScene)
+                {
+                    maxSize = Math.Max(part.maxSize, maxSize); // look far largest part
+                }
+
+                // set zFar plane so that even largest part can bee seen
+                Camera.zFar = Math.Max(maxSize * 3f, 100f);
+                // set start position of camera
+                Camera.setCameraPosition(0, 0, maxSize);
             }
             else
             {
