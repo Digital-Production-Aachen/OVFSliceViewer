@@ -109,8 +109,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Geometry3SharpLight\Geometry3SharpLight.csproj">
-      <Project>{8878eacd-3955-48f2-b193-3b78c32d2bd6}</Project>
+    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj">
+      <Project>{7451d2c5-b0ea-401a-9b63-44518e728a1a}</Project>
       <Name>Geometry3SharpLight</Name>
     </ProjectReference>
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj">
