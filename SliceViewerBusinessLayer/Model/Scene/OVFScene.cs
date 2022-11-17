@@ -176,8 +176,8 @@ namespace OVFSliceViewerBusinessLayer.Model
         }
         protected void AddVectorblockToParts(VectorBlock vectorblock, float height)
         {
-            var partkey = vectorblock.MetaData.PartKey;
-            var part = partkey;
+            int partkey = -1;
+            if(vectorblock.MetaData != null) partkey = vectorblock.MetaData.PartKey;
 
             if (!PartsInScene.ContainsKey(partkey))
             {
@@ -186,8 +186,8 @@ namespace OVFSliceViewerBusinessLayer.Model
                 
                 PartsInScene.Add(partkey, new OVFPart(partkey, OVFFileInfo.PartNamesMap[partkey], SceneController, () => SceneSettings.UseColorIndex));
             }
-            var ovfPart = PartsInScene[part] as OVFPart;
-            LinesInPart.Add(new KeyValuePair<int, int>(part, ovfPart.AddVectorblock(vectorblock, height)));
+            var ovfPart = PartsInScene[partkey] as OVFPart;
+            LinesInPart.Add(new KeyValuePair<int, int>(partkey, ovfPart.AddVectorblock(vectorblock, height)));
 
             _stateChanged = true;
         }

@@ -80,12 +80,14 @@ namespace OVFSliceViewerBusinessLayer.Model
 
                 for (int j = 0; j < workplane.NumBlocks; j++)
                 {
+                    int partkey = -1;
+                    if (workplane.VectorBlocks[j].MetaData != null) partkey = workplane.VectorBlocks[j].MetaData.PartKey;
                     var vectorblockDisplayData = new VectorblockDisplayData()
                     {
                         WorkplaneNumber = i,
                         VectorblockNumber = j,
                         NumberOfVertices = GetVectorblockNumberOfVertices(workplane.VectorBlocks[j]),
-                        PartKey = workplane.VectorBlocks[j].MetaData.PartKey
+                        PartKey = partkey
                     };
 
                     list.Add(vectorblockDisplayData);

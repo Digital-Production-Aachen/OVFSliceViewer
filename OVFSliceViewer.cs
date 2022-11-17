@@ -79,8 +79,9 @@ namespace OVFSliceViewer
         {
             _canvasWrapper.Init();
             SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
-            SceneController.Render();
             SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
+            SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
+            SceneController.Render();
 
             label2.Text = SceneController.Scene.LastPosition.ToString();
         }
@@ -104,21 +105,28 @@ namespace OVFSliceViewer
 
         public async void LoadJob(string filename)
         {
-            await SceneController.LoadFile(filename);
-
-            layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes-1, 0);
-            layerTrackBar.Value = 0;
-            SetTrackBarText();
-
-            var parts = SceneController.GetParts();
-
-            ((ListBox)this.partsCheckedListBox).DataSource = parts;
-            ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
-            ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
-
-            for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
+            try
             {
-                partsCheckedListBox.SetItemChecked(i, true);
+                await SceneController.LoadFile(filename);
+
+                layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
+                layerTrackBar.Value = 0;
+                SetTrackBarText();
+
+                var parts = SceneController.GetParts();
+
+                ((ListBox)this.partsCheckedListBox).DataSource = parts;
+                ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
+                ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
+
+                for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
+                {
+                    partsCheckedListBox.SetItemChecked(i, true);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }        
         private void LoadPartNames()
