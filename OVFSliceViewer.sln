@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OVFSliceViewerBusinessLayer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliceViewerUnitTests", "..\SliceViewerUnitTests\SliceViewerUnitTests.csproj", "{E576FAC9-5161-419F-AC81-B767BAA8F99D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry3SharpLight", "Geometry3SharpLight\Geometry3SharpLight.csproj", "{7451D2C5-B0EA-401A-9B63-44518E728A1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,14 @@ Global
 		{E576FAC9-5161-419F-AC81-B767BAA8F99D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E576FAC9-5161-419F-AC81-B767BAA8F99D}.Release|x64.ActiveCfg = Release|Any CPU
 		{E576FAC9-5161-419F-AC81-B767BAA8F99D}.Release|x64.Build.0 = Release|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Debug|x64.Build.0 = Debug|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Release|x64.ActiveCfg = Release|Any CPU
+		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

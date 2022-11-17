@@ -1,21 +1,23 @@
 ﻿using OpenTK;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mesh = System.Collections.Generic.List<SliceViewerBusinessLayer.Model.STL.Triangle>;
+using Geometry3SharpLight;
+using Mesh = System.Collections.Generic.List<Geometry3SharpLight.Triangle3f>;
 
 namespace SliceViewerBusinessLayer.Model.STL
 {
-    public class Triangle
-    {
-        public Vector3 Normal;
-        public Vector3 VertexA;
-        public Vector3 VertexB;
-        public Vector3 VertexC;
-    }
+    //public class Triangle
+    //{
+    //    public Vector3 Normal;
+    //    public Vector3 VertexA;
+    //    public Vector3 VertexB;
+    //    public Vector3 VertexC;
+    //}
     public class STLReader
     {
         public Mesh Mesh { get; protected set; } = new Mesh();
@@ -42,7 +44,7 @@ namespace SliceViewerBusinessLayer.Model.STL
 
         protected void ReadTriangle(BinaryReader reader)
         {
-            var triangle = new Triangle();
+            var triangle = new Triangle3f();
             triangle.Normal = ReadVertex(reader);
             triangle.VertexA = ReadVertex(reader);
             triangle.VertexB = ReadVertex(reader);
@@ -60,6 +62,94 @@ namespace SliceViewerBusinessLayer.Model.STL
             _vertex.Z = reader.ReadSingle();
 
             return _vertex;
+        }
+
+        public async virtual Task<Mesh> ReadObj(string filePath)
+        {
+            _filePath = filePath;
+            List<Vector3> vertices = new List<Vector3>();
+            List<Vector3> normals = new List<Vector3>();
+            List<float> colors = new List<float>();
+
+            string[] lines = File.ReadLines(_filePath).ToArray();
+
+            // first read vertices and normals
+            foreach (string line in lines)
+            {
+                string edited_line = line.Replace('.', ','); // to read float we need comma notation
+                string[] parameters = edited_line.Split(new char[] { ' ' });
+
+                switch (parameters[0])
+                {
+                    case "v":
+                        float x = float.Parse(parameters[1]);
+                        float y = float.Parse(parameters[2]);
+                        float z = float.Parse(parameters[3]);
+                        vertices.Add(new Vector3(x, y, z));
+
+                        // only support colors that are specified because turning rgb colors
+                        // into colorIndex used by openGL is not possible
+                        if (parameters.Length == 7) // if colors are specified
+                        {
+                            float blue = float.Parse(parameters[6]);
+                            if (blue == 0.0f)
+                                colors.Add(1f);
+                            else if (blue == 1f)
+                                colors.Add(0.3f);
+                            else if (blue == 0.5f)
+                                colors.Add(0);
+                        }
+                        else
+                            colors.Add(0);
+
+                        break;
+
+                    case "vn":
+                        x = float.Parse(parameters[1]);
+                        y = float.Parse(parameters[2]);
+                        z = float.Parse(parameters[3]);
+                        normals.Add(new Vector3(x, y, z));
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            // creates faces (triangles) out of vertices and normals
+            foreach (string line in lines)
+            {
+                string[] parameters = line.Split(new char[] { ' ' });
+
+                if (parameters[0] == "f")
+                {
+                    Triangle3f triangle = new Triangle3f();
+
+                    // vertex 1
+                    string[] vertex_data = parameters[1].Split(new char[] { '/' });
+                    triangle.VertexA = vertices[Convert.ToInt32(vertex_data[0]) - 1];
+                    Vector3 normal = normals[Convert.ToInt32(vertex_data[2]) - 1];
+
+                    // vertex 2
+                    vertex_data = parameters[2].Split(new char[] { '/' });
+                    triangle.VertexB = vertices[Convert.ToInt32(vertex_data[0]) - 1];
+                    normal += normals[Convert.ToInt32(vertex_data[2]) - 1];
+
+                    // vertex 3
+                    vertex_data = parameters[3].Split(new char[] { '/' });
+                    triangle.VertexC = vertices[Convert.ToInt32(vertex_data[0]) - 1];
+                    normal += normals[Convert.ToInt32(vertex_data[2]) - 1];
+
+                    normal.Normalize();
+                    triangle.Normal = normal;
+
+                    triangle.colorIndex = colors[Convert.ToInt32(vertex_data[0]) - 1];
+
+                    Mesh.Add(triangle);
+                }
+            }
+
+            return Mesh;
         }
     }
 }

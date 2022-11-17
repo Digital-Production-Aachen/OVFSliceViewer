@@ -1,10 +1,12 @@
 ﻿using OpenTK;
+using SliceViewerBusinessLayer.Classes;
 using SliceViewerBusinessLayer.Model.STL;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -13,6 +15,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         public ISceneController SceneController { get; protected set; }
 
         private List<STLPart> PartsInScene = new List<STLPart>();
+        public IEnumerable<STLPart> GetPartsInScene => PartsInScene.AsEnumerable();
         IEnumerable<AbstrPart> IScene.PartsInScene => PartsInScene.AsEnumerable();
         public SceneSettings SceneSettings { get; private set; } = new SceneSettings();
 
@@ -33,7 +36,10 @@ namespace OVFSliceViewerBusinessLayer.Model
         {
             var reader = new STLReader();
 
-            await reader.ReadStl(fileInfo.FullName);
+            if (fileInfo.Extension.ToLower() == ".stl")
+                await reader.ReadStl(fileInfo.FullName);
+            else
+                await reader.ReadObj(fileInfo.FullName);
 
             var part = new STLPart(reader.Mesh, SceneController, () => SceneSettings.UseColorIndex);
             PartsInScene.Add(part);
@@ -90,5 +96,31 @@ namespace OVFSliceViewerBusinessLayer.Model
         int IScene.GetNumberOfLinesInWorkplane(){ return 1; }
 
         void IScene.ChangeNumberOfLinesToDraw(int numberOfLinesToDraw){}
+
+        public void ColorNearestHitTriangles(Vector2 position, float colorIndex, int radius)
+        {
+            var ray = SceneCollisionManager.GetRayFromScreenCoordinates(position, SceneController.Camera, radius);
+            
+            foreach (var part in PartsInScene)
+            {
+                for (int i = 0; i < ray.Length-1; i++) // for every ray direction
+                {
+                    // ray[0] is starting point
+                    var triangle = part.FindNearestHitTriangle(ray[0], ray[i+1]);
+                    if (triangle != -1) // -1 is invalid triangle id
+                    {
+                        part.ColorTriangle(triangle, colorIndex);
+                    }
+                }
+
+                part.RenderObjects[0].BindNewData();
+            }
+        }
+
+        public void ExportPartsAsObj()
+        {
+            foreach(STLPart part in PartsInScene)
+                part.ExportAsObj();
+        }
     }
 }

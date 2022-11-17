@@ -5,8 +5,11 @@ using System;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
+using System.Diagnostics;
 using OpenTK.Graphics.OpenGL;
 using OVFSliceViewerBusinessLayer.Model;
+using System.Linq;
+using SliceViewerBusinessLayer.Classes;
 
 namespace OVFSliceViewer
 {
@@ -15,6 +18,10 @@ namespace OVFSliceViewer
         SceneController SceneController;
         MotionTracker _motionTracker;
         private int checkHighlightIndex = 0;
+
+        // STL part specifics
+        private bool paintingMode = false; 
+        private int paintingRadius = 0;
         FileReader _currentFile { get; set; }
 
         CanvasWrapper _canvasWrapper;
@@ -94,7 +101,7 @@ namespace OVFSliceViewer
 
         private async void LoadJobButtonClick(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "ovf and ilt files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.gcode|All files (*.*)|*.*";
+            openFileDialog1.Filter = "ovf, ilt and stl files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.stl;*.gcode|All files (*.*)|*.*";
             var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -165,7 +172,7 @@ namespace OVFSliceViewer
 
             if (e.Button == MouseButtons.Middle || e.Button == MouseButtons.Left)
             {
-                _motionTracker.Start(position);
+                    _motionTracker.Start(position);
             }
 
             _canvasWrapper.Init();          
@@ -182,15 +189,22 @@ namespace OVFSliceViewer
 
         private void canvasMouseMove(object sender, MouseEventArgs e)
         {
-            var position = new Vector2(MousePosition.X, MousePosition.Y);
-
-            if (e.Button == MouseButtons.Middle)
+            if (paintingMode && SceneController.Scene is STLScene)
             {
-                _motionTracker.Move(position, SceneController.Camera.Move);
+                ColorSTLPart(e);
             }
-            else if (e.Button == MouseButtons.Left)
+            else
             {
-                _motionTracker.Move(position, SceneController.Camera.Rotate);
+                var position = new Vector2(MousePosition.X, MousePosition.Y);
+
+                if (e.Button == MouseButtons.Middle)
+                {
+                    _motionTracker.Move(position, SceneController.Camera.Move);
+                }
+                else if (e.Button == MouseButtons.Left)
+                {
+                     _motionTracker.Move(position, SceneController.Camera.Rotate);
+                }
             }
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
@@ -200,7 +214,11 @@ namespace OVFSliceViewer
 
         private void canvasMouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (paintingMode && SceneController.Scene is STLScene)
+            {
+                ColorSTLPart(e);
+            }
+            else if (e.Button == MouseButtons.Right)
             {
                 SceneController.CenterView();
             }
@@ -325,6 +343,50 @@ namespace OVFSliceViewer
 
             layerTrackBar.Maximum = 0;
             layerTrackBar.Value = 0;
+        }
+
+        private void ColorSTLPart(MouseEventArgs e)
+        {
+            var position = new Vector2(e.Location.X, e.Location.Y);
+            if (e.Button == MouseButtons.Right)
+            {
+                (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, 0.3f, paintingRadius);
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, 0f, paintingRadius);
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, 1f, paintingRadius);
+            }
+            SceneController.Render();
+        }
+
+        private void STLKeyActions(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if(SceneController.Scene is STLScene)
+            {
+                if (e.KeyChar == 'p')
+                {
+                    paintingMode = !paintingMode;
+                }
+                else if (e.KeyChar == 'e')
+                {
+                    (SceneController.Scene as STLScene).ExportPartsAsObj();
+                }
+                else if(e.KeyChar == '1')
+                {
+                    paintingRadius -= 1;
+                    paintingRadius = MathHelper.Clamp(paintingRadius, 0, 10);
+                }
+                else if (e.KeyChar == '2')
+                {
+                    paintingRadius += 1;
+                    paintingRadius = MathHelper.Clamp(paintingRadius, 0, 10);
+                }
+                Debug.WriteLine("Painting radius: " + paintingRadius);
+            }   
         }
     }
 

@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,10 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CameraOld.cs" />
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\Grid.cs" />
     <Compile Include="Classes\MotionTracker.cs" />
+    <Compile Include="Classes\Plane3.cs" />
+    <Compile Include="Classes\SceneCollisionManager.cs" />
     <Compile Include="Classes\Vertex.cs" />
+    <Compile Include="Classes\ViewFrustum.cs" />
     <Compile Include="Interfaces\IRotateable.cs" />
     <Compile Include="Interfaces\IZoomable.cs" />
     <Compile Include="Model\AbstrPart.cs" />
@@ -104,6 +109,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj">
+      <Project>{7451d2c5-b0ea-401a-9b63-44518e728a1a}</Project>
+      <Name>Geometry3SharpLight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj">
       <Project>{DE72F5E5-2F92-4ECC-9287-FE4BE9E1089C}</Project>
       <Name>ILTFileReaderAdapter</Name>

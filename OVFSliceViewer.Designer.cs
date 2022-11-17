@@ -138,6 +138,10 @@
             this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvasMouseMove);
             this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvasMoveMouseUp);
             this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
+            //
+            // STLViewer Actions
+            //
+            this.glCanvas.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.STLKeyActions);
             // 
             // timeLayerLabel
             // 
