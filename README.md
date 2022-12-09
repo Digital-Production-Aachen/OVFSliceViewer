@@ -1,3 +1,4 @@
 # OVFSliceViewer
+A Windows program providing a graphical user interface to open Open Vector Format files and visualize the geometry.
 
-OpenGL Viewer for OVF format
+Only vector data can be displayed. Right now there is no support for curves.
