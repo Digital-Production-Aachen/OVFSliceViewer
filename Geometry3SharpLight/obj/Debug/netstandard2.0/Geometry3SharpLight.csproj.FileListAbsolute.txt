@@ -1,9 +1,0 @@
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\bin\Debug\netstandard2.0\Geometry3SharpLight.deps.json
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\bin\Debug\netstandard2.0\Geometry3SharpLight.dll
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\bin\Debug\netstandard2.0\Geometry3SharpLight.pdb
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\obj\Debug\netstandard2.0\Geometry3SharpLight.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\obj\Debug\netstandard2.0\Geometry3SharpLight.AssemblyInfoInputs.cache
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\obj\Debug\netstandard2.0\Geometry3SharpLight.AssemblyInfo.cs
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\obj\Debug\netstandard2.0\Geometry3SharpLight.csproj.CoreCompileInputs.cache
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\obj\Debug\netstandard2.0\Geometry3SharpLight.dll
-C:\Users\lukas\source\repos\AutomatedBuildChain\OVFSlicer\Geometry3SharpLight\obj\Debug\netstandard2.0\Geometry3SharpLight.pdb

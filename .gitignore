@@ -1,10 +1,13 @@
+/.vs
 /bin
-/bin/Debug
-/bin/x64/Debug
-/obj/Debug
 /obj
+/*.user
 /SliceViewerBusinessLayer/obj
 /SliceViewerBusinessLayer/bin
+/OVFSliceViewerBusinessLayer/bin
+/OVFSliceViewerBusinessLayer/obj
+/Geometry3SharpLight/obj
+/Geometry3SharpLight/bin
 *.suo
 *.lock
 *.ide
@@ -18,19 +21,5 @@
 *.so
 *.testlog
 *.manifest
-
-/.vs/OVFSliceViewer/v16/Browse.VC.db
-/.vs/OVFSliceViewer/v16/Browse.VC.db-shm
-/.vs/OVFSliceViewer/v16/Browse.VC.db-wal
-/.vs/OVFSliceViewer/v16/Browse.VC.opendb
-OVFSliceViewer.csproj.user
-/.vs/OVFSliceViewer/DesignTimeBuild/.dtbcache.v2
 /RWTH Colors.pdf
-/bin/Release
-/*.user
-/SliceViewerBusinessLayer/bin
-/.vs/OVFSliceViewer/FileContentIndex/5e03a4cd-8ca8-4683-8190-bbc6b1f8e341.vsidx
-/.vs/OVFSliceViewer/FileContentIndex/dd4405dc-e0b0-4235-9fb3-ac4bdbb901b8.vsidx
-/.vs/OVFSliceViewer/v17/.futdcache.v2
-/.vs/ProjectEvaluation/ovfsliceviewer.metadata.v5.1
-/.vs/ProjectEvaluation/ovfsliceviewer.projects.v5.1
+

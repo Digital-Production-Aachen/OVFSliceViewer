@@ -2,6 +2,7 @@
 using OpenTK;
 using OpenVectorFormat.AbstractReaderWriter;
 using System;
+using System.IO;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
@@ -10,6 +11,8 @@ using OpenTK.Graphics.OpenGL;
 using OVFSliceViewerBusinessLayer.Model;
 using System.Linq;
 using SliceViewerBusinessLayer.Classes;
+using System.Collections.Generic;
+using System.Drawing.Text;
 
 namespace OVFSliceViewer
 {
@@ -20,11 +23,27 @@ namespace OVFSliceViewer
         private int checkHighlightIndex = 0;
 
         // STL part specifics
-        private bool paintingMode = false; 
         private int paintingRadius = 0;
         FileReader _currentFile { get; set; }
+        private PaintFunction _currentPaintFunction = PaintFunction.None;
 
         CanvasWrapper _canvasWrapper;
+        enum PaintFunction
+        {
+            None,
+            Erase,
+            NoSupport,
+            Accessibility,
+            FunctionalArea
+        }
+        private Dictionary<PaintFunction, float> _functionColorDictionary = new Dictionary<PaintFunction, float>()
+        {
+
+            {PaintFunction.Erase, 0f},
+            {PaintFunction.NoSupport, 0.9f},
+            {PaintFunction.Accessibility, 0.5f},
+            {PaintFunction.FunctionalArea, 0.64f}
+        };
         public OVFSliceViewer()
         {
             InitializeComponent();
@@ -108,6 +127,7 @@ namespace OVFSliceViewer
                 var filename = openFileDialog1.FileNames[0];
                 LoadJob(filename);
             }
+            
         }
 
         public async void LoadJob(string filename)
@@ -115,14 +135,18 @@ namespace OVFSliceViewer
             try
             {
                 await SceneController.LoadFile(filename);
-
                 layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
                 layerTrackBar.Value = 0;
                 SetTrackBarText();
 
                 var parts = SceneController.GetParts();
+                bool isStl = Path.GetExtension(filename) == ".stl";
+                exportButton.Enabled = isStl;
+                if (!isStl)
+                {
+                    ((ListBox)this.partsCheckedListBox).DataSource = parts;
+                }
 
-                ((ListBox)this.partsCheckedListBox).DataSource = parts;
                 ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
                 ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
 
@@ -133,7 +157,7 @@ namespace OVFSliceViewer
             }
             catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }        
         private void LoadPartNames()
@@ -189,7 +213,7 @@ namespace OVFSliceViewer
 
         private void canvasMouseMove(object sender, MouseEventArgs e)
         {
-            if (paintingMode && SceneController.Scene is STLScene)
+            if ( _currentPaintFunction!= PaintFunction.None && SceneController.Scene is STLScene && e.Button == MouseButtons.Right)
             {
                 ColorSTLPart(e);
             }
@@ -214,7 +238,7 @@ namespace OVFSliceViewer
 
         private void canvasMouseClick(object sender, MouseEventArgs e)
         {
-            if (paintingMode && SceneController.Scene is STLScene)
+            if (_currentPaintFunction != PaintFunction.None && SceneController.Scene is STLScene)
             {
                 ColorSTLPart(e);
             }
@@ -347,31 +371,23 @@ namespace OVFSliceViewer
 
         private void ColorSTLPart(MouseEventArgs e)
         {
-            var position = new Vector2(e.Location.X, e.Location.Y);
-            if (e.Button == MouseButtons.Right)
+            if(_currentPaintFunction != PaintFunction.None)
             {
-                (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, 0.3f, paintingRadius);
+                //var position = new Vector2(Cursor.Position.X, Cursor.Position.Y);
+                var position = new Vector2(e.Location.X, e.Location.Y);
+                if (e.Button == MouseButtons.Right)
+                {
+                    (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, _functionColorDictionary[_currentPaintFunction], paintingRadius);
+                }
+                SceneController.Render();
             }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, 0f, paintingRadius);
-            }
-            else if (e.Button == MouseButtons.Left)
-            {
-                (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, 1f, paintingRadius);
-            }
-            SceneController.Render();
         }
 
         private void STLKeyActions(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
             if(SceneController.Scene is STLScene)
             {
-                if (e.KeyChar == 'p')
-                {
-                    paintingMode = !paintingMode;
-                }
-                else if (e.KeyChar == 'e')
+                if (e.KeyChar == 'e')
                 {
                     (SceneController.Scene as STLScene).ExportPartsAsObj();
                 }
@@ -387,6 +403,42 @@ namespace OVFSliceViewer
                 }
                 Debug.WriteLine("Painting radius: " + paintingRadius);
             }   
+        }
+
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+            (SceneController.Scene as STLScene).ExportPartsAsObj();
+        }
+
+        private void paintFunctrionCheckedListBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void paintFunctrionCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            Dictionary<int, PaintFunction> guiToEnumDict = new Dictionary<int, PaintFunction>()
+            {
+                {0, PaintFunction.NoSupport },
+                {1, PaintFunction.Accessibility },
+                {2, PaintFunction.FunctionalArea },
+                {3, PaintFunction.Erase }
+            };
+            //paintingMode
+
+            if (e.NewValue == CheckState.Checked && paintFunctrionCheckedListBox.CheckedItems.Count > 0)
+            {
+                paintFunctrionCheckedListBox.ItemCheck -= paintFunctrionCheckedListBox_ItemCheck;
+                paintFunctrionCheckedListBox.SetItemChecked(paintFunctrionCheckedListBox.CheckedIndices[0], false);
+                paintFunctrionCheckedListBox.ItemCheck += paintFunctrionCheckedListBox_ItemCheck;
+            }
+            _currentPaintFunction = guiToEnumDict[e.Index];
+            if(e.NewValue == CheckState.Unchecked)
+            {
+                _currentPaintFunction = PaintFunction.None;
+            }
+            //MessageBox.Show(paintFunctrionCheckedListBox.Items[e.Index].ToString());
         }
     }
 
