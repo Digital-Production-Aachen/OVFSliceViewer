@@ -1,95 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8215D0F3-61F8-4D56-BE81-476FD8E257D1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SliceViewerBusinessLayer</RootNamespace>
     <AssemblyName>SliceViewerBusinessLayer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyTitle>SliceViewerBusinessLayer</AssemblyTitle>
+    <Company>Microsoft</Company>
+    <Product>SliceViewerBusinessLayer</Product>
+    <Copyright>Copyright © Microsoft 2021</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CameraOld.cs" />
-    <Compile Include="Classes\Camera.cs" />
-    <Compile Include="Classes\Grid.cs" />
-    <Compile Include="Classes\MotionTracker.cs" />
-    <Compile Include="Classes\Plane3.cs" />
-    <Compile Include="Classes\SceneCollisionManager.cs" />
-    <Compile Include="Classes\Vertex.cs" />
-    <Compile Include="Classes\ViewFrustum.cs" />
-    <Compile Include="Interfaces\IRotateable.cs" />
-    <Compile Include="Interfaces\IZoomable.cs" />
-    <Compile Include="Model\AbstrPart.cs" />
-    <Compile Include="Model\GCodeReader.cs" />
-    <Compile Include="Model\RenderData\STLRenderDataObject.cs" />
-    <Compile Include="Model\Scene\IScene.cs" />
-    <Compile Include="Model\Scene\SceneSettings.cs" />
-    <Compile Include="Model\Shader\STLGLProgramm.cs" />
-    <Compile Include="Model\STL\STLScene.cs" />
-    <Compile Include="Model\STL\STLPart.cs" />
-    <Compile Include="Model\Shader\AbstrGlProgramm.cs" />
-    <Compile Include="Model\BoundingBox.cs" />
-    <Compile Include="Model\RenderData\ColorIndexRange.cs" />
-    <Compile Include="Model\GeometryShader.cs" />
-    <Compile Include="Model\ICanvas.cs" />
-    <Compile Include="Model\IModelViewProjection.cs" />
-    <Compile Include="Model\RenderData\IRenderData.cs" />
-    <Compile Include="Model\OVF\OVFFileInfo.cs" />
-    <Compile Include="Model\OVF\OVFFileLoader.cs" />
-    <Compile Include="Model\OVF\OVFPart.cs" />
-    <Compile Include="Model\OVF\OVFRenderObject.cs" />
-    <Compile Include="Model\Scene\OVFScene.cs" />
-    <Compile Include="Model\Range.cs" />
-    <Compile Include="Model\RenderData\RenderDataObject.cs" />
-    <Compile Include="Model\Scene\SceneController.cs" />
-    <Compile Include="Model\Shader\GLProgramm.cs" />
-    <Compile Include="Model\Shader\TriangleShader.cs" />
-    <Compile Include="Model\STL\STLReader.cs" />
-    <Compile Include="Model\VectorblockDisplayData.cs" />
-    <Compile Include="Model\VectorBlockExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Google.Protobuf">
-      <Version>3.19.1</Version>
-    </PackageReference>
-    <PackageReference Include="OpenTK.GLControl">
-      <Version>3.1.0</Version>
-    </PackageReference>
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="OpenTK.GLControl" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Classes\Shader\shader - Copy.geometry">
@@ -109,31 +44,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj">
-      <Project>{7451d2c5-b0ea-401a-9b63-44518e728a1a}</Project>
-      <Name>Geometry3SharpLight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj">
-      <Project>{DE72F5E5-2F92-4ECC-9287-FE4BE9E1089C}</Project>
-      <Name>ILTFileReaderAdapter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj">
-      <Project>{662b5772-45fb-4250-b295-cf943e7ee18a}</Project>
-      <Name>AbstractReaderWriter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj">
-      <Project>{beb4b8d5-c1e1-459a-b15e-cf222e585723}</Project>
-      <Name>FileReaderWriterFactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj">
-      <Project>{f704f525-35d2-4138-8f95-14f8f5a0ad92}</Project>
-      <Name>OVFDefinition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj">
-      <Project>{d0488e66-2536-45f7-b298-ddbe80a1daee}</Project>
-      <Name>OVFReaderWriter</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

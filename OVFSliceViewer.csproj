@@ -1,18 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{131DF945-694C-44EE-93E8-91506D8EC2BE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>LayerViewer</RootNamespace>
     <AssemblyName>LayerViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net48</TargetFramework>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\OVFViewer\</PublishUrl>
     <Install>true</Install>
@@ -29,45 +23,31 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <AssemblyTitle>LayerViewer</AssemblyTitle>
+    <Company>Microsoft</Company>
+    <Product>LayerViewer</Product>
+    <Copyright>Copyright © Microsoft 2020</Copyright>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
@@ -86,63 +66,50 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CanvasWrapper.cs" />
-    <Compile Include="CustomControls\ColorProgressBar.cs">
+    <Compile Update="CustomControls\ColorProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="OVFSliceViewer.cs">
+    <Compile Update="OVFSliceViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OVFSliceViewer.Designer.cs">
+    <Compile Update="OVFSliceViewer.Designer.cs">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="ProgressStatus.cs">
+    <Compile Update="ProgressStatus.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProgressStatus.Designer.cs">
+    <Compile Update="ProgressStatus.Designer.cs">
       <DependentUpon>ProgressStatus.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="OVFSliceViewer.resx">
+    <EmbeddedResource Update="OVFSliceViewer.resx">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgressStatus.resx">
+    <EmbeddedResource Update="ProgressStatus.resx">
       <DependentUpon>ProgressStatus.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -152,59 +119,331 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="OpenTK" Version="3.1.0" />
+    <PackageReference Include="OpenTK.GLControl" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf">
-      <Version>3.19.1</Version>
-    </PackageReference>
-    <PackageReference Include="OpenTK">
-      <Version>3.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="OpenTK.GLControl">
-      <Version>3.1.0</Version>
-    </PackageReference>
+    <ProjectReference Include="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
+    <ProjectReference Include="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
+    <ProjectReference Include="OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
+    <ProjectReference Include="OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
+    <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerBusinessLayer.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj">
-      <Project>{662B5772-45FB-4250-B295-CF943E7EE18A}</Project>
-      <Name>AbstractReaderWriter</Name>
-    </ProjectReference>
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj">
-      <Project>{BEB4B8D5-C1E1-459A-B15E-CF222E585723}</Project>
-      <Name>FileReaderWriterFactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj">
-      <Project>{f704f525-35d2-4138-8f95-14f8f5a0ad92}</Project>
-      <Name>OVFDefinition</Name>
-    </ProjectReference>
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj">
-      <Project>{D0488E66-2536-45F7-B298-DDBE80A1DAEE}</Project>
-      <Name>OVFReaderWriter</Name>
-    </ProjectReference>
-    <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerBusinessLayer.csproj">
-      <Project>{8215d0f3-61f8-4d56-be81-476fd8e257d1}</Project>
-      <Name>OVFSliceViewerBusinessLayer</Name>
-    </ProjectReference>
+    <Compile Remove="Classes\Camera.cs" />
+    <Compile Remove="Classes\ColorDictionary.cs" />
+    <Compile Remove="Classes\FileHandlerProgress.cs" />
+    <Compile Remove="Classes\Grid.cs" />
+    <Compile Remove="Classes\JobViewer.cs" />
+    <Compile Remove="Classes\MotionTracker.cs" />
+    <Compile Remove="Classes\Vertex.cs" />
+    <Compile Remove="Interfaces\IRotateable.cs" />
+    <Compile Remove="Interfaces\IZoomable.cs" />
+    <Compile Remove="Model\AbstrPart.cs" />
+    <Compile Remove="Model\AbstrShader.cs" />
+    <Compile Remove="Model\BoundingBox.cs" />
+    <Compile Remove="Model\ColorIndexRange.cs" />
+    <Compile Remove="Model\GeometryShader.cs" />
+    <Compile Remove="Model\ICanvas.cs" />
+    <Compile Remove="Model\IModelViewProjection.cs" />
+    <Compile Remove="Model\IRenderData.cs" />
+    <Compile Remove="Model\OVFFileInfo.cs" />
+    <Compile Remove="Model\OVFFileLoader.cs" />
+    <Compile Remove="Model\OVFPart.cs" />
+    <Compile Remove="Model\OVFRenderObject.cs" />
+    <Compile Remove="Model\OVFScene.cs" />
+    <Compile Remove="Model\Range.cs" />
+    <Compile Remove="Model\RenderDataObject.cs" />
+    <Compile Remove="Model\SceneController.cs" />
+    <Compile Remove="Model\Shader.cs" />
+    <Compile Remove="Model\STLRenderObject.cs" />
+    <Compile Remove="Model\TriangleShader.cs" />
+    <Compile Remove="Model\VectorblockDisplayData.cs" />
+    <Compile Remove="Model\VectorBlockExtensions.cs" />
+    <Compile Remove="Classes\Shader\Shader.cs" />
+    <Compile Remove="Geometry3SharpLight\intersection\IntersectionUtil.cs" />
+    <Compile Remove="Geometry3SharpLight\intersection\IntrLine3AxisAlignedBox3.cs" />
+    <Compile Remove="Geometry3SharpLight\intersection\IntrRay3AxisAlignedBox3.cs" />
+    <Compile Remove="Geometry3SharpLight\intersection\IntrRay3Triangle3.cs" />
+    <Compile Remove="Geometry3SharpLight\math\AxisAlignedBox3f.cs" />
+    <Compile Remove="Geometry3SharpLight\math\DVector.cs" />
+    <Compile Remove="Geometry3SharpLight\math\Interval1d.cs" />
+    <Compile Remove="Geometry3SharpLight\math\Line3.cs" />
+    <Compile Remove="Geometry3SharpLight\math\Ray3.cs" />
+    <Compile Remove="Geometry3SharpLight\math\Triangle3.cs" />
+    <Compile Remove="Geometry3SharpLight\spatial\AABBTree3.cs" />
+    <Compile Remove="OpenVectorFormat\OVFFileConverterGUI\ConverterForm.cs" />
+    <Compile Remove="OpenVectorFormat\OVFFileConverterGUI\ConverterForm.Designer.cs" />
+    <Compile Remove="OpenVectorFormat\OVFFileConverterGUI\Program.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\Camera.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\CameraOld.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\Grid.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\MotionTracker.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\Plane3.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\SceneCollisionManager.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\Vertex.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Classes\ViewFrustum.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Interfaces\IRotateable.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Interfaces\IZoomable.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\AbstrPart.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\BoundingBox.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\GCodeReader.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\GeometryShader.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\ICanvas.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\IModelViewProjection.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Range.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\VectorblockDisplayData.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\VectorBlockExtensions.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Properties\AssemblyInfo.cs" />
+    <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
+    <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
+    <Compile Remove="obj\x64\Release\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\CheckAction.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\CheckerConfig.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\CheckerResult.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\ErrorHandlingMode.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\OverallResult.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\PlausibilityChecker.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityCheckerUnitTests\PlausibilityCheckerunitTest.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\FileReader.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\FileWriter.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\IFileReaderWriterProgress.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\IReader.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\IWriter.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileConverter.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderFactory.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterProgress.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileWriterFactory.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactoryGRPCWrapper\Config.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactoryGRPCWrapper\GRPCFileReaderImplementation.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactoryGRPCWrapper\GRPCFileWriterImplementation.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactoryGRPCWrapper\GRPCHelperFunctionsImplementation.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactoryGRPCWrapper\Program.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactoryGRPCWrapper\Startup.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\Main.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\ProtoUtils.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\VectorBlockExtensions.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\MemoryReaderWriter.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\UnitTests\ASPHelperUtils.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\UnitTests\ASPUnitTest.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\UnitTests\FileReaderWriterProgressDummy.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\UnitTests\TestAbstractVectorFileHandler.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\UnitTests\TestGRPCWrapper.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\UnitTests\TestIltCli.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\UnitTests\TestOVF.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\OVF\OVFFileInfo.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\OVF\OVFFileLoader.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\OVF\OVFPart.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\OVF\OVFRenderObject.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\RenderData\ColorIndexRange.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\RenderData\IRenderData.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\RenderData\RenderDataObject.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\RenderData\STLRenderDataObject.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Scene\IScene.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Scene\OVFScene.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Scene\SceneController.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Scene\SceneSettings.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Shader\AbstrGlProgramm.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Shader\GLProgramm.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Shader\STLGLProgramm.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\Shader\TriangleShader.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\STL\STLPart.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\STL\STLReader.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\Model\STL\STLScene.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\obj\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\obj\Debug\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\obj\Release\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="Geometry3SharpLight\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="Geometry3SharpLight\obj\Debug\netstandard2.0\Geometry3SharpLight.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\ContourIndexNotFoundException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\IncoherentNumberOfVectorBlocksException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\IncoherentNumberOfWorkPlanesException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\IncoherentWorkPlaneNumberingException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\LineSequenceNotClosedException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\MarkingParamsKeyNotFoundException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\OVFPlausibilityCheckerException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\PartKeyNotFoundException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\PatchKeyNotFoundException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\VectorBlockEmptyException.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\Exceptions\WorkPlaneEmptyException.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\FileReaderWriter\Contract.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\FileReaderWriter\FileReaderWriterProgressDummy.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\FileReaderWriter\OVFFileReader.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\FileReaderWriter\OVFFileWriter.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\FileReaderWriter\PlausibilityCheckOVFFile.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\obj\Debug\net461\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
+    <Compile Remove="SliceViewerBusinessLayer\obj\Debug\net461\OVFSliceViewerBusinessLayer.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\ASPCommand.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\ASPFileReader.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\ASPFileWriter.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\DataFormatType.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\Direction.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IBuildJob.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\ICLIFile.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IDimension.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IFileAccess.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IGeometry.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IHatch.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IHatches.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IHeader.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\ILayer.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IModelSection.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IModelSectionParams.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IPart.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IPoint2D.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IPolyline.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IUserData.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\IVectorBlock.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\PartArea.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\VectorClass.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\UnitTestILTFileReader\FileAccessTest.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Debug\net46\PlausibilityChecker.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Debug\netstandard2.0\PlausibilityChecker.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Release\net46\PlausibilityChecker.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\PlausibilityChecker\PlausibilityChecker\obj\Release\netstandard2.0\PlausibilityChecker.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Controller\CliFileAccess.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Controller\IltFileAccess.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Controller\ModelSection.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Controller\readHelper.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Controller\SliFileAccess.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Dimension.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Geometry.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Hatch.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Hatches.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Header.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Layer.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\ModelSectionParams.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Part.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Point2D.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\Polyline.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\UserData.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Model\VectorBlock.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\Properties\AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\Properties\AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\Properties\AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\UnitTestILTFileReader\Properties\AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\Debug\net46\AbstractReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\Debug\netstandard2.0\AbstractReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\Debug\net46\FileReaderWriterFactory.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\Debug\netstandard2.0\FileReaderWriterFactory.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\net46\OpenVectorFormat.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\net46\OpenVectorFormatGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\net46\OVFDefinition.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\net46\OvfLut.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\net46\OvfLutGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\netstandard2.0\OpenVectorFormat.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\netstandard2.0\OpenVectorFormatGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\netstandard2.0\OVFDefinition.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\netstandard2.0\OvfLut.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Debug\netstandard2.0\OvfLutGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\net46\OpenVectorFormat.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\net46\OpenVectorFormatGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\net46\OVFDefinition.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\net46\OvfLut.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\net46\OvfLutGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\netstandard2.0\OpenVectorFormat.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\netstandard2.0\OpenVectorFormatGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\netstandard2.0\OVFDefinition.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\netstandard2.0\OvfLut.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFDefinition\obj\Release\netstandard2.0\OvfLutGrpc.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\Debug\net46\OVFReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\Debug\netstandard2.0\OVFReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Debug\net46\AbstractReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Debug\netstandard2.0\AbstractReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Release\net46\AbstractReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\obj\x64\Release\netstandard2.0\AbstractReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Debug\net46\FileReaderWriterFactory.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Debug\netstandard2.0\FileReaderWriterFactory.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Release\net46\FileReaderWriterFactory.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\obj\x64\Release\netstandard2.0\FileReaderWriterFactory.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Debug\net46\OVFReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Debug\netstandard2.0\OVFReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Release\net46\OVFReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\OVFReaderWriter\obj\x64\Release\netstandard2.0\OVFReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\Debug\net46\ASPFileReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\Debug\netstandard2.0\ASPFileReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\Debug\net46\ILTFileReader.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\Debug\netstandard2.0\ILTFileReader.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\Debug\net46\ILTFileReaderAdapter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\Debug\netstandard2.0\ILTFileReaderAdapter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\Debug\net46\ILTFileReaderInterfaces.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\Debug\netstandard2.0\ILTFileReaderInterfaces.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Debug\net46\ASPFileReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Debug\netstandard2.0\ASPFileReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Release\net46\ASPFileReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\ASP\ASPFileReaderWriter\obj\x64\Release\netstandard2.0\ASPFileReaderWriter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Debug\net46\ILTFileReader.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Debug\netstandard2.0\ILTFileReader.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Release\net46\ILTFileReader.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\iltFileReader\obj\x64\Release\netstandard2.0\ILTFileReader.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Debug\net46\ILTFileReaderAdapter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Debug\netstandard2.0\ILTFileReaderAdapter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Release\net46\ILTFileReaderAdapter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\obj\x64\Release\netstandard2.0\ILTFileReaderAdapter.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Debug\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Debug\net46\ILTFileReaderInterfaces.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Debug\netstandard2.0\ILTFileReaderInterfaces.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Release\net46\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Release\net46\ILTFileReaderInterfaces.AssemblyInfo.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Release\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
+    <Compile Remove="OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderInterfaces\obj\x64\Release\netstandard2.0\ILTFileReaderInterfaces.AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
