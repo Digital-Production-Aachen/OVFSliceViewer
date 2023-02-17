@@ -9,6 +9,7 @@ using OpenTK;
 using Geometry3SharpLight;
 using System.Diagnostics;
 using SliceViewerBusinessLayer.Classes;
+using OpenTK.Mathematics;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {

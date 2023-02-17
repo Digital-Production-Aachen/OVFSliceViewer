@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Collections;
 using OpenTK;
+using OpenTK.Mathematics;
 using OpenVectorFormat;
 using System;
 using System.Collections.Generic;
@@ -99,13 +100,13 @@ namespace OVFSliceViewerBusinessLayer.Model
         }
 
         private int _vectorblockNumber = 0;
-        public Vector3 IncreaseNumberOfLinesToDraw(int numberOfLines)
+        public OpenTK.Mathematics.Vector3 IncreaseNumberOfLinesToDraw(int numberOfLines)
         {
             var renderObject = VectorBlockRenderObjectMap[_vectorblockNumber];
             renderObject.End = Math.Min(renderObject.End + numberOfLines, renderObject.Vertices.Length);
             _vectorblockNumber++;
 
-            return new Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
+            return new OpenTK.Mathematics.Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
         }
 
         public void ResetNumberOfLinesToDraw()

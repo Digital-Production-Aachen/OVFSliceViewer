@@ -1,6 +1,5 @@
 ﻿using OpenTK;
 using System;
-using System.Windows.Media.Media3D;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;

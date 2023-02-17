@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using OpenTK;
 using System.Globalization;
 using System.Diagnostics;
+using OpenTK.Mathematics;
 
 namespace SliceViewerBusinessLayer.Model
 {

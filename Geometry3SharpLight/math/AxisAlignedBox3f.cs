@@ -2,6 +2,7 @@
 
 using System;
 using OpenTK;
+using OpenTK.Mathematics;
 
 namespace Geometry3SharpLight
 {

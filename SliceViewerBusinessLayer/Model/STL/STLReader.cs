@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Geometry3SharpLight;
 using Mesh = System.Collections.Generic.List<Geometry3SharpLight.Triangle3f>;
+using OpenTK.Mathematics;
 
 namespace SliceViewerBusinessLayer.Model.STL
 {

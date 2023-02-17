@@ -1,3 +1,6 @@
 [submodule "OpenVectorFormat"]
 	path = OpenVectorFormat
 	url = https://github.com/Digital-Production-Aachen/OpenVectorFormatTools.git
+[submodule "GLControl"]
+	path = GLControl
+	url = https://github.com/opentk/GLControl.git

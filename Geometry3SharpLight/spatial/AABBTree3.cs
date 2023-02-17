@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK;
 using System.Diagnostics;
+using OpenTK.Mathematics;
 
 namespace Geometry3SharpLight
 {

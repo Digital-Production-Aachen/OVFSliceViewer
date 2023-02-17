@@ -26,7 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.19.1" />
-    <PackageReference Include="OpenTK.GLControl" Version="3.1.0" />
+    <PackageReference Include="OpenTK" Version="4.7.5" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Classes\Shader\shader - Copy.geometry">
@@ -52,5 +52,8 @@
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

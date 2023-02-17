@@ -13,6 +13,9 @@ using System.Linq;
 using SliceViewerBusinessLayer.Classes;
 using System.Collections.Generic;
 using System.Drawing.Text;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using OpenTK.Mathematics;
+using OpenTK.WinForms;
 
 namespace OVFSliceViewer
 {
@@ -54,8 +57,19 @@ namespace OVFSliceViewer
             _canvasWrapper = new CanvasWrapper(glCanvas);
 
             SceneController = new SceneController(_canvasWrapper);
+
+            
+
+            this.KeyDown += _canvasWrapper.KeyDown;
+            this.KeyUp += _canvasWrapper.KeyUp;
+            this.KeyPreview = true;
+
+            //_input = _canvasWrapper.Canvas.EnableNativeInput();
+            _canvasWrapper.Canvas.KeyDown += _canvasWrapper.KeyDown;
+            _canvasWrapper.Canvas.KeyUp += _canvasWrapper.KeyUp;
         }
-        public OVFSliceViewer(string filename)
+
+        public OVFSliceViewer(string filename):this()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
@@ -67,9 +81,9 @@ namespace OVFSliceViewer
             SceneController = new SceneController(_canvasWrapper);
 
             _firstLoadFileName = filename;
-
             this.Shown += OVFSliceViewer_Shown;
 
+            //_canvasWrapper.Canvas.DisableNativeInput();
             //LoadJob(filename);
         }
 
@@ -94,9 +108,8 @@ namespace OVFSliceViewer
 
         private void MouseWheelZoom(object sender, MouseEventArgs e)
         {
-            var keyboardState = OpenTK.Input.Keyboard.GetState();
             //keyboardState.IsKeyDown(OpenTK.Input.Key.ControlLeft)
-            var fastZoom = keyboardState.IsKeyDown(OpenTK.Input.Key.ControlLeft) || keyboardState.IsKeyDown(OpenTK.Input.Key.ControlRight);
+            var fastZoom = _canvasWrapper.IsKeyPressed(System.Windows.Forms.Keys.ControlKey) || _canvasWrapper.IsKeyPressed(System.Windows.Forms.Keys.RControlKey);
             SceneController.Camera.Zoom(e.Delta > 0, fastZoom);
             
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -136,6 +149,10 @@ namespace OVFSliceViewer
         {
             try
             {
+                //this.KeyDown += _canvasWrapper.KeyDown;
+                //this.KeyUp += _canvasWrapper.KeyUp;
+                //this.KeyPreview = true;
+
                 await SceneController.LoadFile(filename);
                 layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
                 layerTrackBar.Value = 0;
@@ -235,6 +252,8 @@ namespace OVFSliceViewer
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {
+            if (SceneController.Scene is null)
+                return;
             SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
         }
 
@@ -464,6 +483,21 @@ namespace OVFSliceViewer
                 _currentPaintFunction = PaintFunction.None;
             }
             //MessageBox.Show(paintFunctrionCheckedListBox.Items[e.Index].ToString());
+        }
+
+        private void OVFSliceViewer_KeyDown(object sender, KeyEventArgs e)
+        {
+            _canvasWrapper.KeyDown(sender, e);
+        }
+
+        private void OVFSliceViewer_KeyUp(object sender, KeyEventArgs e)
+        {
+            _canvasWrapper.KeyUp(sender, e);
+        }
+
+        private void OVFSliceViewer_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+
         }
     }
 
