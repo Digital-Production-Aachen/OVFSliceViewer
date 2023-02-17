@@ -3,12 +3,14 @@
     <ProjectGuid>{8215D0F3-61F8-4D56-BE81-476FD8E257D1}</ProjectGuid>
     <RootNamespace>SliceViewerBusinessLayer</RootNamespace>
     <AssemblyName>SliceViewerBusinessLayer</AssemblyName>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AssemblyTitle>SliceViewerBusinessLayer</AssemblyTitle>
     <Company>Microsoft</Company>
     <Product>SliceViewerBusinessLayer</Product>
     <Copyright>Copyright © Microsoft 2021</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugType>full</DebugType>

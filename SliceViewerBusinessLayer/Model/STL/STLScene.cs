@@ -117,10 +117,6 @@ namespace OVFSliceViewerBusinessLayer.Model
             }
         }
 
-        public void ExportPartsAsObj()
-        {
-            foreach(STLPart part in PartsInScene)
-                part.ExportAsObj();
-        }
+        
     }
 }

@@ -4,7 +4,8 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>LayerViewer</RootNamespace>
     <AssemblyName>LayerViewer</AssemblyName>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -19,7 +20,6 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -83,18 +83,15 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="CustomControls\ColorProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="OVFSliceViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="CustomControls\ColorProgressBar.cs" />
+    <Compile Update="OVFSliceViewer.cs" />
     <Compile Update="OVFSliceViewer.Designer.cs">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </Compile>
-    <Compile Update="ProgressStatus.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="ProgressStatus.cs" />
     <Compile Update="ProgressStatus.Designer.cs">
       <DependentUpon>ProgressStatus.cs</DependentUpon>
     </Compile>

@@ -94,7 +94,9 @@ namespace OVFSliceViewer
 
         private void MouseWheelZoom(object sender, MouseEventArgs e)
         {
-            var fastZoom = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl);
+            var keyboardState = OpenTK.Input.Keyboard.GetState();
+            //keyboardState.IsKeyDown(OpenTK.Input.Key.ControlLeft)
+            var fastZoom = keyboardState.IsKeyDown(OpenTK.Input.Key.ControlLeft) || keyboardState.IsKeyDown(OpenTK.Input.Key.ControlRight);
             SceneController.Camera.Zoom(e.Delta > 0, fastZoom);
             
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -389,7 +391,7 @@ namespace OVFSliceViewer
             {
                 if (e.KeyChar == 'e')
                 {
-                    (SceneController.Scene as STLScene).ExportPartsAsObj();
+                    ExportPartsAsObj();
                 }
                 else if(e.KeyChar == '1')
                 {
@@ -405,9 +407,32 @@ namespace OVFSliceViewer
             }   
         }
 
+        private void ExportPartsAsObj()
+        {
+            if (!(SceneController.Scene is STLScene))
+                return;
+            foreach (STLPart part in SceneController.Scene.PartsInScene)
+                ExportAsObj(part);
+        }
+        private void ExportAsObj(STLPart part)
+        {
+            string path;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "obj files (*.obj)|*.obj|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                path = saveFileDialog.FileName;
+                part.WriteAsObj(path);
+            }
+        }
+
         private void exportButton_Click(object sender, EventArgs e)
         {
-            (SceneController.Scene as STLScene).ExportPartsAsObj();
+            ExportPartsAsObj();
         }
 
         private void paintFunctrionCheckedListBox_SelectedValueChanged(object sender, EventArgs e)
