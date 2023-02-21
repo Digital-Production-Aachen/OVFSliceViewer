@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using OpenVectorFormat.AbstractReaderWriter;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -37,6 +38,13 @@ namespace OVFSliceViewerBusinessLayer.Model
             
             Scene.Render();
             _canvas.SwapBuffers();
+        }
+        public async Task<IScene> LoadFile(FileReader file)
+        {
+            var scene = new OVFScene(this);
+            await scene.LoadFile(file);
+            Scene = scene;
+            return scene;
         }
         public async Task<IScene> LoadFile(string path)
         {
@@ -161,13 +169,5 @@ namespace OVFSliceViewerBusinessLayer.Model
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-    }
-
-    public interface ISceneController
-    {
-        Camera Camera { get; }
-
-        List<AbstrPart> GetParts();
-       
     }
 }

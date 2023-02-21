@@ -92,7 +92,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             return Vector2.Zero;
         }
 
-        void IScene.LoadWorkplaneToBuffer(int index){}
+        Task IScene.LoadWorkplaneToBuffer(int index){ return Task.CompletedTask; }
 
         int IScene.GetNumberOfLinesInWorkplane(){ return 1; }
 

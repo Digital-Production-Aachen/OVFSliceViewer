@@ -1,20 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{8215D0F3-61F8-4D56-BE81-476FD8E257D1}</ProjectGuid>
     <RootNamespace>SliceViewerBusinessLayer</RootNamespace>
     <AssemblyName>SliceViewerBusinessLayer</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
-	<Platforms>AnyCPU;x64</Platforms>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AssemblyTitle>SliceViewerBusinessLayer</AssemblyTitle>
     <Company>Microsoft</Company>
     <Product>SliceViewerBusinessLayer</Product>
     <Copyright>Copyright © Microsoft 2021</Copyright>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
@@ -45,11 +39,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

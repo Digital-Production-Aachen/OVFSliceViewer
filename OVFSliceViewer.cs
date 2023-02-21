@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Drawing.Text;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Mathematics;
-using OpenTK.WinForms;
+//using OpenTK.WinForms;
 
 namespace OVFSliceViewer
 {
@@ -68,7 +68,7 @@ namespace OVFSliceViewer
             _canvasWrapper.Canvas.KeyDown += _canvasWrapper.KeyDown;
             _canvasWrapper.Canvas.KeyUp += _canvasWrapper.KeyUp;
         }
-
+        
         public OVFSliceViewer(string filename):this()
         {
             InitializeComponent();
@@ -149,36 +149,41 @@ namespace OVFSliceViewer
         {
             try
             {
-                //this.KeyDown += _canvasWrapper.KeyDown;
-                //this.KeyUp += _canvasWrapper.KeyUp;
-                //this.KeyPreview = true;
-
                 await SceneController.LoadFile(filename);
-                layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
-                layerTrackBar.Value = 0;
-                SetTrackBarText();
-
-                var parts = SceneController.GetParts();
-                bool isStl = Path.GetExtension(filename) == ".stl";
-                exportButton.Enabled = isStl;
-                if (!isStl)
-                {
-                    ((ListBox)this.partsCheckedListBox).DataSource = parts;
-                }
-
-                ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
-                ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
-
-                for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
-                {
-                    partsCheckedListBox.SetItemChecked(i, true);
-                }
-            }
+                AfterLoadJob(filename);
+        }
             catch (Exception e)
             {
                 MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }        
+}       
+        public async void LoadJob(FileReader reader)
+        {
+            await SceneController.LoadFile(reader);
+            AfterLoadJob("");
+        }
+        private void AfterLoadJob(string filename)
+        {
+            layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
+            layerTrackBar.Value = 0;
+            SetTrackBarText();
+
+            var parts = SceneController.GetParts();
+            bool isStl = Path.GetExtension(filename) == ".stl";
+            exportButton.Enabled = isStl;
+            if (!isStl)
+            {
+                ((ListBox)this.partsCheckedListBox).DataSource = parts;
+            }
+
+                ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
+            ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
+
+            for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
+            {
+                partsCheckedListBox.SetItemChecked(i, true);
+            }
+        }
         private void LoadPartNames()
         {
             var names = SceneController.GetPartNames();

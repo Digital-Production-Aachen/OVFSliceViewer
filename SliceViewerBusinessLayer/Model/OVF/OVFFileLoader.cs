@@ -25,22 +25,19 @@ namespace OVFSliceViewerBusinessLayer.Model
         public async Task OpenFile(FileInfo file)
         {
             _fileInfo = file;
-            //if (_fileInfo.Extension.ToLower() == ".ovf")
-            //{
-            //    _ovfFileReader = new OVFFileReader();
-            //}
-            //else
+            FileReader reader;
+
             if (_fileInfo.Extension.ToLower() == ".gcode")
             {
-                _ovfFileReader = new GCodeReader();
+                reader = new GCodeReader();
             }
             else
             {
-                _ovfFileReader = FileReaderFactory.CreateNewReader(_fileInfo.Extension.ToLower());
+                reader = FileReaderFactory.CreateNewReader(_fileInfo.Extension.ToLower());
             }
             try
             {
-                Task task = _ovfFileReader.OpenJobAsync(_fileInfo.FullName, Progress);
+                Task task = reader.OpenJobAsync(_fileInfo.FullName, Progress);
                 await task;
             }
             catch (Exception e)
@@ -48,6 +45,12 @@ namespace OVFSliceViewerBusinessLayer.Model
                 var temp = e;
                 throw;
             }
+            await OpenFile(reader);
+        }
+        public async Task OpenFile(FileReader reader)
+        {
+            _ovfFileReader = reader;
+
             Jobshell = _ovfFileReader.JobShell;
             await GetOVFFileInfo();
         }
@@ -78,9 +81,8 @@ namespace OVFSliceViewerBusinessLayer.Model
             OVFFileInfo = new OVFFileInfo();
             await OVFFileInfo.ReadData
                 (
-                    _ovfFileReader.JobShell.PartsMap,
-                    numberOfWorkplanes,
-                    _ovfFileReader
+                _ovfFileReader,
+                numberOfWorkplanes
                 );
         }
 

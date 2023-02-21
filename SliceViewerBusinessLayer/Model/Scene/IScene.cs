@@ -14,7 +14,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         void Render();
         Vector2 GetCenter();
         IEnumerable<AbstrPart> PartsInScene { get; }
-        void LoadWorkplaneToBuffer(int index);
+        Task LoadWorkplaneToBuffer(int index);
         int GetNumberOfLinesInWorkplane();
         Vector3 LastPosition { get; }
         OVFFileInfo OVFFileInfo { get; }
