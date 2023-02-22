@@ -82,7 +82,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             await OVFFileInfo.ReadData
                 (
                 _ovfFileReader,
-                numberOfWorkplanes
+                1
                 );
         }
 

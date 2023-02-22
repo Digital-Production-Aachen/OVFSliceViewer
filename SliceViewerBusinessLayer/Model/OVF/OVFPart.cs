@@ -106,7 +106,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             renderObject.End = Math.Min(renderObject.End + numberOfLines, renderObject.Vertices.Length);
             _vectorblockNumber++;
 
-            return new OpenTK.Mathematics.Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
+            return new Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
         }
 
         public void ResetNumberOfLinesToDraw()
