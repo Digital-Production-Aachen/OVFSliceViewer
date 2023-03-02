@@ -118,13 +118,21 @@ namespace OVFSliceViewer
 
         private void DrawWorkplane()
         {
-            _canvasWrapper.Init();
-            SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
-            SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
-            SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
-            SceneController.Render();
+            try
+            {
+                _canvasWrapper.Init();
+                SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
+                SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
+                SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
+                SceneController.Render();
 
-            label2.Text = SceneController.Scene.LastPosition.ToString();
+                label2.Text = SceneController.Scene.LastPosition.ToString();
+            }
+            catch (Exception e)
+            {
+
+            }
+            
         }
 
         private void SetTimeTrackBar(int numberOfLines)

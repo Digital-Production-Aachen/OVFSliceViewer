@@ -35,8 +35,18 @@ namespace OVFSliceViewerBusinessLayer.Model
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
             GL.ShadeModel(ShadingModel.Smooth);
+
+            try
+            {
+                Scene.Render();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+                throw;
+            }
+
             
-            Scene.Render();
             _canvas.SwapBuffers();
         }
         public async Task<IScene> LoadFile(FileReader file)
