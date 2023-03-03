@@ -106,7 +106,10 @@ namespace OVFSliceViewerBusinessLayer.Model
             renderObject.End = Math.Min(renderObject.End + numberOfLines, renderObject.Vertices.Length);
             _vectorblockNumber++;
 
-            return new Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
+            if(renderObject.Vertices.Length > 0)
+                return new Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
+            else
+                return new Vector3();
         }
 
         public void ResetNumberOfLinesToDraw()
