@@ -120,7 +120,7 @@ namespace OVFSliceViewer
 
         private async void LoadJobButtonClick(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "ovf, ilt and stl files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.stl;*.gcode|All files (*.*)|*.*";
+            openFileDialog1.Filter = "ovf, ilt and stl files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.stl;*.obj;*.gcode|All files (*.*)|*.*";
             var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -140,9 +140,9 @@ namespace OVFSliceViewer
                 SetTrackBarText();
 
                 var parts = SceneController.GetParts();
-                bool isStl = Path.GetExtension(filename) == ".stl";
-                exportButton.Enabled = isStl;
-                if (!isStl)
+                bool isStlOrObj = Path.GetExtension(filename) == ".stl" || Path.GetExtension(filename) == ".obj";
+                exportButton.Enabled = isStlOrObj;
+                if (!isStlOrObj)
                 {
                     ((ListBox)this.partsCheckedListBox).DataSource = parts;
                 }

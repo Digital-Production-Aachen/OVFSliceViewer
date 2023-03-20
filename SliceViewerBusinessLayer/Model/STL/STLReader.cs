@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Geometry3SharpLight;
 using Mesh = System.Collections.Generic.List<Geometry3SharpLight.Triangle3f>;
+using System.Text.RegularExpressions;
 
 namespace SliceViewerBusinessLayer.Model.STL
 {
@@ -87,17 +88,28 @@ namespace SliceViewerBusinessLayer.Model.STL
                         float z = float.Parse(parameters[3]);
                         vertices.Add(new Vector3(x, y, z));
 
+
                         // only support colors that are specified because turning rgb colors
                         // into colorIndex used by openGL is not possible
                         if (parameters.Length == 7) // if colors are specified
                         {
-                            float blue = float.Parse(parameters[6]);
-                            if (blue == 0.0f)
-                                colors.Add(1f);
-                            else if (blue == 1f)
-                                colors.Add(0.3f);
-                            else if (blue == 0.5f)
+                            Vector3 color = new Vector3(float.Parse(parameters[4]), float.Parse(parameters[5]), float.Parse(parameters[6]));
+                            if (Equals(color, new Vector3(0.9f, 0, 0)))
+                            {
+                                colors.Add(0.9f);
+                            }
+                            else if (Equals(color, new Vector3(0.5f, 1, 0.5f)))
+                            {
+                                colors.Add(0.5f);
+                            }
+                            else if (Equals(color, new Vector3(1, 239f / 255f, 0)))
+                            {
+                                colors.Add(0.64f);
+                            }
+                            else
+                            {
                                 colors.Add(0);
+                            }
                         }
                         else
                             colors.Add(0);
@@ -150,6 +162,12 @@ namespace SliceViewerBusinessLayer.Model.STL
             }
 
             return Mesh;
+        }
+        public static bool Equals(Vector3 a, Vector3 b, float epsilon = 1e-1f)
+        {
+            return Math.Abs(a.X - b.X) < epsilon
+            && Math.Abs(a.Y - b.Y) < epsilon
+                && Math.Abs(a.Z - b.Z) < epsilon;
         }
     }
 }
