@@ -56,16 +56,19 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="CustomControls\**" />
     <Compile Remove="Geometry3SharpLight\**" />
     <Compile Remove="GLControl\**" />
     <Compile Remove="OpenVectorFormat\**" />
     <Compile Remove="OVFSliceViewerBusinessLayer\**" />
     <Compile Remove="SliceViewerBusinessLayer\**" />
+    <EmbeddedResource Remove="CustomControls\**" />
     <EmbeddedResource Remove="Geometry3SharpLight\**" />
     <EmbeddedResource Remove="GLControl\**" />
     <EmbeddedResource Remove="OpenVectorFormat\**" />
     <EmbeddedResource Remove="OVFSliceViewerBusinessLayer\**" />
     <EmbeddedResource Remove="SliceViewerBusinessLayer\**" />
+    <None Remove="CustomControls\**" />
     <None Remove="Geometry3SharpLight\**" />
     <None Remove="GLControl\**" />
     <None Remove="OpenVectorFormat\**" />
@@ -89,20 +92,12 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="CustomControls\ColorProgressBar.cs" />
     <Compile Update="OVFSliceViewer.cs" />
     <Compile Update="OVFSliceViewer.Designer.cs">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
     </Compile>
-    <Compile Update="ProgressStatus.cs" />
-    <Compile Update="ProgressStatus.Designer.cs">
-      <DependentUpon>ProgressStatus.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Update="OVFSliceViewer.resx">
       <DependentUpon>OVFSliceViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ProgressStatus.resx">
-      <DependentUpon>ProgressStatus.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -122,10 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="GLControl\OpenTK.WinForms\OpenTK.WinForms.csproj" />
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
-    <ProjectReference Include="OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
     <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerCore.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -164,5 +155,10 @@
     <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
     <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Remove="obj\x64\Release\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="ProgressStatus.cs" />
+    <Compile Remove="ProgressStatus.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="ProgressStatus.resx" />
   </ItemGroup>
 </Project>

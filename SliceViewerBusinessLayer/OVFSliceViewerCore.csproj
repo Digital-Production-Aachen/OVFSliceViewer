@@ -46,11 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
-    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
