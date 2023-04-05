@@ -121,7 +121,6 @@
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
     <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
-    <ProjectReference Include="..\ProtoToWindowsForms\ProtoToWindowsForms\ProtoToWindowsForms.csproj" />
     <ProjectReference Include="GLControl\OpenTK.WinForms\OpenTK.WinForms.csproj" />
     <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerBusinessLayerSlicer.csproj" />
   </ItemGroup>
