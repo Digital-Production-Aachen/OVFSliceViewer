@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Drawing.Text;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Mathematics;
+using System.Threading.Tasks;
 //using OpenTK.WinForms;
 
 namespace OVFSliceViewer
@@ -165,8 +166,9 @@ namespace OVFSliceViewer
                 MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 }       
-        public async void LoadJob(FileReader reader)
+        public async Task LoadJob(FileReader reader)
         {
+            _currentFile = reader;
             await SceneController.LoadFile(reader);
             AfterLoadJob("");
         }
@@ -511,6 +513,18 @@ namespace OVFSliceViewer
         private void OVFSliceViewer_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
 
+        }
+
+        private async void btnReload_Click(object sender, EventArgs e)
+        {
+            if(SceneController.Scene is OVFScene)
+            {
+                var currentWorkplane = layerTrackBar.Value;
+
+                await LoadJob(_currentFile);
+                layerTrackBar.Value = currentWorkplane;
+                DrawWorkplane();
+            }
         }
     }
 

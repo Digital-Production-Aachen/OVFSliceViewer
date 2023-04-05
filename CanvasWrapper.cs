@@ -20,15 +20,14 @@ namespace OVFSliceViewer
         {
             _canvas = gl;
             _canvas.Show();
-
             //gl.PreviewKeyDown += KeyDown;
         }
 
-        public void KeyDown(Object sender, System.Windows.Forms.KeyEventArgs e)
+        public void KeyDown(Object sender, KeyEventArgs e)
         {
             _pressedKeys[e.KeyCode] = true;
         }
-        public void KeyUp(Object sender, System.Windows.Forms.KeyEventArgs e)
+        public void KeyUp(Object sender, KeyEventArgs e)
         {
             _pressedKeys[e.KeyCode] = false;
         }
@@ -43,6 +42,8 @@ namespace OVFSliceViewer
         public void Init()
         {
             MakeCurrent();
+            GL.Enable(EnableCap.DepthTest);
+            GL.DepthFunc(DepthFunction.Always);
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         }
 

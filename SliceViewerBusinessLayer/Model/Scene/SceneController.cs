@@ -68,7 +68,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             if (fileInfo.Extension.ToLower() == ".stl" || fileInfo.Extension.ToLower() == ".obj")
             {
                 scene = new STLScene(this);
-                scene.LoadFile(fileInfo);
+                await scene.LoadFile(fileInfo);
 
                 float maxSize = 0;
                 foreach (STLPart part in scene.PartsInScene)

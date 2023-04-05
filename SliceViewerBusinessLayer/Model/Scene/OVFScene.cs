@@ -21,6 +21,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             SceneController = sceneController;
         }
         protected OVFFileLoader _ovfFileLoader;
+        protected FileReader _reader;
         public OVFFileInfo OVFFileInfo { get; protected set; }
 
         public Dictionary<int, OVFPart> PartsInScene = new Dictionary<int, OVFPart>();
@@ -53,12 +54,21 @@ namespace OVFSliceViewerBusinessLayer.Model
         }
         public async Task LoadFile(FileReader reader)
         {
+            _reader = reader;
             PartsInScene.Values.ToList().ForEach(x => x.Dispose());
             PartsInScene.Clear();
 
             _ovfFileLoader = new OVFFileLoader(null);
             await _ovfFileLoader.OpenFile(reader);
             LoadFileInfos();
+        }
+        public WorkPlane GetWorkplane()
+        {
+            return _ovfFileLoader.GetWorkplane(SceneSettings.CurrentWorkplane);
+        }
+        public Job GetJob()
+        {
+            return _ovfFileLoader.Jobshell;
         }
         private void LoadFileInfos()
         {
