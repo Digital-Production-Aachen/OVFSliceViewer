@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>SliceViewerBusinessLayer</RootNamespace>
+    <AssemblyName>SliceViewerBusinessLayer</AssemblyName>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <AssemblyTitle>SliceViewerBusinessLayer</AssemblyTitle>
+    <Company>Microsoft</Company>
+    <Product>SliceViewerBusinessLayer</Product>
+    <Copyright>Copyright © Microsoft 2021</Copyright>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="OpenTK" Version="4.7.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Classes\Shader\shader - Copy.geometry">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Classes\Shader\shaderSTL.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Classes\Shader\shader.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Classes\Shader\shader.geometry">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Classes\Shader\shader.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\3rdPartyFormatAdapters\CLI_ILT\ILTFileReaderAdapter\ILTFileReaderAdapter.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
+    <ProjectReference Include="..\..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

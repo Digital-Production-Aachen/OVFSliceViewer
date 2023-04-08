@@ -1,25 +1,28 @@
 ﻿using OpenTK;
 using System;
-using System.Windows.Media.Media3D;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
+using LayerViewer.Model;
 
 namespace OVFSliceViewer
 {
     // Todo: seperate Matrix for movement and rotation
 
-    public class Camera : IZoomable, IRotateable
+    public class Camera : IZoomable, IRotateable, LayerViewer.Model.IModelViewProjection
     {
         Vector3 _position;    
         Vector3 _cameraTarget;
         Vector3 _translation = new Vector3();
 
+        protected SceneController _scene;
         protected float _fieldOfView;
         protected float _aspectRatio;
         protected float _canvasWidth;
         protected float _canvasHeight;
-        protected float _zoomfactor = 1f;
+        protected float _zoomfactor = 2f;
+        protected float _zNear = 0.1f;
+        protected float _zFar = 500f;
         float _yaw = 0;
         float _pitch = 0;
         public float ObjectHeight { get; set; }
@@ -34,11 +37,15 @@ namespace OVFSliceViewer
                 (RotationMatrixYaw * RotationMatrixPitch * new Vector4(Vector3.UnitY, 1)).Xyz
                 );
 
-        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, 0.1f, 200f);
+        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, _zNear, _zFar);
 
         public Matrix4 TranslationMatrix { get; protected set; } = Matrix4.Identity;
-        public Camera(float canvasWidth, float canvasHeight)
+
+        public Matrix4 ModelViewProjection => TranslationMatrix * LookAtTransformationMatrix * ProjectionMatrix;
+
+        public Camera(SceneController scene, float canvasWidth, float canvasHeight)
         {
+            _scene = scene;
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
             _fieldOfView = ((float)Math.PI / 180) * 80;
@@ -46,6 +53,13 @@ namespace OVFSliceViewer
             _aspectRatio = Convert.ToSingle(_canvasWidth) / Convert.ToSingle(_canvasHeight);
             _position = new Vector3(0, 0, 50f);
             _cameraTarget = Vector3.Zero;
+            TranslationMatrix = Matrix4.CreateTranslation(new Vector3(0));
+        }
+        public void Resize(System.Drawing.Size size)
+        {
+            _canvasWidth = size.Width;
+            _canvasHeight = size.Height;
+            _aspectRatio = Convert.ToSingle(_canvasWidth) / Convert.ToSingle(_canvasHeight);
         }
         
         public void MoveToPosition2D(Vector2 position)
@@ -59,15 +73,25 @@ namespace OVFSliceViewer
             }
             _translation = new Vector3(-position);
             TranslationMatrix = Matrix4.CreateTranslation(_translation);
+            _scene.Render();
         }
         public void Move(Vector2 delta) // Basically it moves Camera and focus (target)
         {
+            if (delta.Length < 0.00001)
+            {
+                return;
+            }
             var delta3 = new Vector3(-delta);
             delta3 = ConvertToCanvasCoordinates(delta3);
 
-            _translation += delta3;
+            var temp = (RotationMatrixYaw * new Vector4(delta3));
+            temp = temp * delta3.Xy.Length / temp.Length;
 
-            TranslationMatrix = Matrix4.CreateTranslation((RotationMatrixYaw * new Vector4(_translation)).Xyz);
+            _translation += temp.Xyz;
+            //
+            var temp2 = Matrix4.CreateTranslation(_translation);//temp.Xyz);
+            TranslationMatrix = temp2;
+            _scene.Render();
         }
 
         protected Vector3 ConvertToCanvasCoordinates(Vector3 delta)
@@ -91,22 +115,24 @@ namespace OVFSliceViewer
                 newPosition = _cameraTarget + (delta + _zoomfactor) * ((_position - _cameraTarget).Normalized());
             }
 
-            if ((newPosition - _cameraTarget).Length < 0.1f)
+            if (/*(newPosition - _cameraTarget).Length < _zNear*/ newPosition.Z <= 0)
             {
-                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * 0.11f;
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zNear + 0.2f);
             }
-            else if ((newPosition - _cameraTarget).Length > 100f)
+            else if ((newPosition - _cameraTarget).Length > _zFar)
             {
-                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * 99f;
+                newPosition = _cameraTarget + (_position - _cameraTarget).Normalized() * (_zFar - 0.2f);
             }
 
             _position = newPosition;
+            _scene.Render();
         }
 
         public void ChangeHeight(float deltaZ)
         {
             ObjectHeight += deltaZ;
             _position.Z += deltaZ;
+            _scene.Render();
         }
 
         public void Rotate(Vector2 delta)
@@ -127,6 +153,7 @@ namespace OVFSliceViewer
 
             RotationMatrixYaw = Matrix4.CreateFromAxisAngle(Vector3.UnitZ, _yaw);
             RotationMatrixPitch = Matrix4.CreateFromAxisAngle(Vector3.UnitX, _pitch);
+            _scene.Render();
         }
     }
 }

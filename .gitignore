@@ -1,7 +1,13 @@
-/bin/Debug
-/bin/x64/Debug
-/obj/Debug
+/.vs
+/bin
 /obj
+/*.user
+/SliceViewerBusinessLayer/obj
+/SliceViewerBusinessLayer/bin
+/OVFSliceViewerBusinessLayer/bin
+/OVFSliceViewerBusinessLayer/obj
+/Geometry3SharpLight/obj
+/Geometry3SharpLight/bin
 *.suo
 *.lock
 *.ide
@@ -9,9 +15,11 @@
 *.ide-wal
 *.dll
 *.pdb
-*.frag
-*.vert
 *.exe
 *.config
 *.dylib
 *.so
+*.testlog
+*.manifest
+/RWTH Colors.pdf
+
