@@ -1,6 +1,6 @@
 ﻿// Modified file from https://github.com/gradientspace/geometry3Sharp
 
-using OpenTK;
+using OpenTK.Mathematics;
 
 namespace Geometry3SharpLight
 {

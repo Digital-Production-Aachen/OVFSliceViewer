@@ -3,6 +3,7 @@ using System;
 using OVFSliceViewerBusinessLayer.Model;
 using SliceViewerBusinessLayer.Classes;
 using System.Diagnostics;
+using OpenTK.Mathematics;
 
 namespace OVFSliceViewerBusinessLayer.Classes
 {

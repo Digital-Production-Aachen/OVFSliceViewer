@@ -13,6 +13,10 @@ using System.Linq;
 using SliceViewerBusinessLayer.Classes;
 using System.Collections.Generic;
 using System.Drawing.Text;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using OpenTK.Mathematics;
+using System.Threading.Tasks;
+//using OpenTK.WinForms;
 
 namespace OVFSliceViewer
 {
@@ -54,8 +58,19 @@ namespace OVFSliceViewer
             _canvasWrapper = new CanvasWrapper(glCanvas);
 
             SceneController = new SceneController(_canvasWrapper);
+
+            
+
+            this.KeyDown += _canvasWrapper.KeyDown;
+            this.KeyUp += _canvasWrapper.KeyUp;
+            this.KeyPreview = true;
+
+            //_input = _canvasWrapper.Canvas.EnableNativeInput();
+            _canvasWrapper.Canvas.KeyDown += _canvasWrapper.KeyDown;
+            _canvasWrapper.Canvas.KeyUp += _canvasWrapper.KeyUp;
         }
-        public OVFSliceViewer(string filename)
+        
+        public OVFSliceViewer(string filename):this()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
@@ -67,9 +82,9 @@ namespace OVFSliceViewer
             SceneController = new SceneController(_canvasWrapper);
 
             _firstLoadFileName = filename;
-
             this.Shown += OVFSliceViewer_Shown;
 
+            //_canvasWrapper.Canvas.DisableNativeInput();
             //LoadJob(filename);
         }
 
@@ -94,7 +109,8 @@ namespace OVFSliceViewer
 
         private void MouseWheelZoom(object sender, MouseEventArgs e)
         {
-            var fastZoom = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl);
+            //keyboardState.IsKeyDown(OpenTK.Input.Key.ControlLeft)
+            var fastZoom = _canvasWrapper.IsKeyPressed(System.Windows.Forms.Keys.ControlKey) || _canvasWrapper.IsKeyPressed(System.Windows.Forms.Keys.RControlKey);
             SceneController.Camera.Zoom(e.Delta > 0, fastZoom);
             
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -103,13 +119,21 @@ namespace OVFSliceViewer
 
         private void DrawWorkplane()
         {
-            _canvasWrapper.Init();
-            SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
-            SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
-            SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
-            SceneController.Render();
+            try
+            {
+                _canvasWrapper.Init();
+                SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
+                SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
+                SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
+                SceneController.Render();
 
-            label2.Text = SceneController.Scene.LastPosition.ToString();
+                label2.Text = SceneController.Scene.LastPosition.ToString();
+            }
+            catch (Exception e)
+            {
+
+            }
+            
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -135,9 +159,24 @@ namespace OVFSliceViewer
             try
             {
                 await SceneController.LoadFile(filename);
-                layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
-                layerTrackBar.Value = 0;
-                SetTrackBarText();
+                AfterLoadJob(filename);
+        }
+            catch (Exception e)
+            {
+                MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+}       
+        public async Task LoadJob(FileReader reader)
+        {
+            _currentFile = reader;
+            await SceneController.LoadFile(reader);
+            AfterLoadJob("");
+        }
+        private void AfterLoadJob(string filename)
+        {
+            layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
+            layerTrackBar.Value = 0;
+            SetTrackBarText();
 
                 var parts = SceneController.GetParts();
                 bool isStlOrObj = Path.GetExtension(filename) == ".stl" || Path.GetExtension(filename) == ".obj";
@@ -148,18 +187,13 @@ namespace OVFSliceViewer
                 }
 
                 ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
-                ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
+            ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
 
-                for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
-                {
-                    partsCheckedListBox.SetItemChecked(i, true);
-                }
-            }
-            catch (Exception e)
+            for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
             {
-                MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                partsCheckedListBox.SetItemChecked(i, true);
             }
-        }        
+        }
         private void LoadPartNames()
         {
             var names = SceneController.GetPartNames();
@@ -233,6 +267,8 @@ namespace OVFSliceViewer
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {
+            if (SceneController.Scene is null)
+                return;
             SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
         }
 
@@ -268,11 +304,6 @@ namespace OVFSliceViewer
                 checkHighlightIndex = 0;
             }
             DrawWorkplane();
-        }
-        private void gridCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            //_viewerAPI.ShowGrid = gridCheckbox.Checked;
-            //_viewerAPI.Draw();
         }
 
         private void moveButton_Click(object sender, EventArgs e)
@@ -332,26 +363,6 @@ namespace OVFSliceViewer
             SceneController.Render();
         }
 
-        private void CbShow3dModel_CheckedChanged(object sender, EventArgs e)
-        {
-            SceneController.Scene.SceneSettings.ShowAs3dObject = CbShow3dModel.Checked;
-
-            if (SceneController.Scene.SceneSettings.ShowAs3dObject)
-            {
-                layerTrackBar.Enabled = false;
-                layerTrackBar.Value = layerTrackBar.Maximum;
-                timeTrackBar.Enabled = false;
-                SceneController.Scene.SceneSettings.UseColorIndex = false;
-            }
-            else
-            {
-                timeTrackBar.Enabled = true;
-                layerTrackBar.Enabled = true;
-            }
-
-            DrawWorkplane();
-        }
-
         private void cBLaserIndexColor_CheckedChanged(object sender, EventArgs e)
         {
             SceneController.Scene.SceneSettings.UseColorIndex = cBLaserIndexColor.Checked;
@@ -373,7 +384,6 @@ namespace OVFSliceViewer
         {
             if(_currentPaintFunction != PaintFunction.None)
             {
-                //var position = new Vector2(Cursor.Position.X, Cursor.Position.Y);
                 var position = new Vector2(e.Location.X, e.Location.Y);
                 if (e.Button == MouseButtons.Right)
                 {
@@ -389,7 +399,7 @@ namespace OVFSliceViewer
             {
                 if (e.KeyChar == 'e')
                 {
-                    (SceneController.Scene as STLScene).ExportPartsAsObj();
+                    ExportPartsAsObj();
                 }
                 else if(e.KeyChar == '1')
                 {
@@ -405,15 +415,32 @@ namespace OVFSliceViewer
             }   
         }
 
-        private void exportButton_Click(object sender, EventArgs e)
+        private void ExportPartsAsObj()
         {
-            (SceneController.Scene as STLScene).ExportPartsAsObj();
+            if (!(SceneController.Scene is STLScene))
+                return;
+            foreach (STLPart part in SceneController.Scene.PartsInScene)
+                ExportAsObj(part);
+        }
+        private void ExportAsObj(STLPart part)
+        {
+            string path;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "obj files (*.obj)|*.obj|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                path = saveFileDialog.FileName;
+                part.WriteAsObj(path);
+            }
         }
 
-        private void paintFunctrionCheckedListBox_SelectedValueChanged(object sender, EventArgs e)
+        private void exportButton_Click(object sender, EventArgs e)
         {
-
-
+            ExportPartsAsObj();
         }
 
         private void paintFunctrionCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -438,7 +465,33 @@ namespace OVFSliceViewer
             {
                 _currentPaintFunction = PaintFunction.None;
             }
-            //MessageBox.Show(paintFunctrionCheckedListBox.Items[e.Index].ToString());
+        }
+
+        private void OVFSliceViewer_KeyDown(object sender, KeyEventArgs e)
+        {
+            _canvasWrapper.KeyDown(sender, e);
+        }
+
+        private void OVFSliceViewer_KeyUp(object sender, KeyEventArgs e)
+        {
+            _canvasWrapper.KeyUp(sender, e);
+        }
+
+        private void OVFSliceViewer_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+
+        }
+
+        private async void btnReload_Click(object sender, EventArgs e)
+        {
+            if(SceneController.Scene is OVFScene)
+            {
+                var currentWorkplane = layerTrackBar.Value;
+
+                await LoadJob(_currentFile);
+                layerTrackBar.Value = currentWorkplane;
+                DrawWorkplane();
+            }
         }
     }
 

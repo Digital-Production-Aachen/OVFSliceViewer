@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using OpenTK.Mathematics;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -91,7 +92,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             return Vector2.Zero;
         }
 
-        void IScene.LoadWorkplaneToBuffer(int index){}
+        Task IScene.LoadWorkplaneToBuffer(int index){ return Task.CompletedTask; }
 
         int IScene.GetNumberOfLinesInWorkplane(){ return 1; }
 
@@ -117,10 +118,6 @@ namespace OVFSliceViewerBusinessLayer.Model
             }
         }
 
-        public void ExportPartsAsObj()
-        {
-            foreach(STLPart part in PartsInScene)
-                part.ExportAsObj();
-        }
+        
     }
 }

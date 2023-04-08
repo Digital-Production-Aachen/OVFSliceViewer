@@ -3,20 +3,47 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 using System.Drawing;
 using System;
+using OpenTK.WinForms;
+using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace OVFSliceViewer
 {
     public class CanvasWrapper : OVFSliceViewerBusinessLayer.Model.ICanvas
     {
         GLControl _canvas;
+        public GLControl Canvas => _canvas;
+
+        Dictionary<Keys, bool> _pressedKeys = new Dictionary<Keys, bool>();
+
         public CanvasWrapper(GLControl gl)
         {
             _canvas = gl;
             _canvas.Show();
+            //gl.PreviewKeyDown += KeyDown;
         }
+
+        public void KeyDown(Object sender, KeyEventArgs e)
+        {
+            _pressedKeys[e.KeyCode] = true;
+        }
+        public void KeyUp(Object sender, KeyEventArgs e)
+        {
+            _pressedKeys[e.KeyCode] = false;
+        }
+        public bool IsKeyPressed(Keys key)
+        {
+            if (_pressedKeys.ContainsKey(key))
+                return _pressedKeys[key];
+            else
+                return false;
+        }
+
         public void Init()
         {
             MakeCurrent();
+            GL.Enable(EnableCap.DepthTest);
+            GL.DepthFunc(DepthFunction.Always);
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         }
 

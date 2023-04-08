@@ -2,6 +2,7 @@
 // Modified file from https://sourceforge.net/p/irrlicht/code/HEAD/tree/trunk/include/SViewFrustum.h
 
 using OpenTK;
+using OpenTK.Mathematics;
 
 namespace SliceViewerBusinessLayer.Classes
 {

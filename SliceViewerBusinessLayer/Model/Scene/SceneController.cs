@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using OpenVectorFormat.AbstractReaderWriter;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -34,9 +35,26 @@ namespace OVFSliceViewerBusinessLayer.Model
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
             GL.ShadeModel(ShadingModel.Smooth);
+
+            try
+            {
+                Scene.Render();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+                throw;
+            }
+
             
-            Scene.Render();
             _canvas.SwapBuffers();
+        }
+        public async Task<IScene> LoadFile(FileReader file)
+        {
+            var scene = new OVFScene(this);
+            await scene.LoadFile(file);
+            Scene = scene;
+            return scene;
         }
         public async Task<IScene> LoadFile(string path)
         {
@@ -50,7 +68,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             if (fileInfo.Extension.ToLower() == ".stl" || fileInfo.Extension.ToLower() == ".obj")
             {
                 scene = new STLScene(this);
-                scene.LoadFile(fileInfo);
+                await scene.LoadFile(fileInfo);
 
                 float maxSize = 0;
                 foreach (STLPart part in scene.PartsInScene)
@@ -161,13 +179,5 @@ namespace OVFSliceViewerBusinessLayer.Model
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-    }
-
-    public interface ISceneController
-    {
-        Camera Camera { get; }
-
-        List<AbstrPart> GetParts();
-       
     }
 }

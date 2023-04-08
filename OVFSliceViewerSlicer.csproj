@@ -1,0 +1,164 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>LayerViewer</RootNamespace>
+    <AssemblyName>LayerViewer</AssemblyName>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\OVFViewer\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <AssemblyTitle>LayerViewer</AssemblyTitle>
+    <Company>Microsoft</Company>
+    <Product>LayerViewer</Product>
+    <Copyright>Copyright © Microsoft 2020</Copyright>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>73F0CF75F9BC4BEBED7E84792A7C70ED9CCB66F2</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>OVFSliceViewer_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Geometry3SharpLight\**" />
+    <Compile Remove="GLControl\**" />
+    <Compile Remove="OpenVectorFormat\**" />
+    <Compile Remove="OVFSliceViewerBusinessLayer\**" />
+    <Compile Remove="SliceViewerBusinessLayer\**" />
+    <EmbeddedResource Remove="Geometry3SharpLight\**" />
+    <EmbeddedResource Remove="GLControl\**" />
+    <EmbeddedResource Remove="OpenVectorFormat\**" />
+    <EmbeddedResource Remove="OVFSliceViewerBusinessLayer\**" />
+    <EmbeddedResource Remove="SliceViewerBusinessLayer\**" />
+    <None Remove="Geometry3SharpLight\**" />
+    <None Remove="GLControl\**" />
+    <None Remove="OpenVectorFormat\**" />
+    <None Remove="OVFSliceViewerBusinessLayer\**" />
+    <None Remove="SliceViewerBusinessLayer\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="CustomControls\ColorProgressBar.cs" />
+    <Compile Update="OVFSliceViewer.cs" />
+    <Compile Update="OVFSliceViewer.Designer.cs">
+      <DependentUpon>OVFSliceViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ProgressStatus.cs" />
+    <Compile Update="ProgressStatus.Designer.cs">
+      <DependentUpon>ProgressStatus.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="OVFSliceViewer.resx">
+      <DependentUpon>OVFSliceViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ProgressStatus.resx">
+      <DependentUpon>ProgressStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="OpenTK" Version="4.7.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\AbstractReaderWriter\AbstractReaderWriter.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\FileReaderWriterFactory\FileReaderWriterFactory.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFDefinition\OVFDefinition.csproj" />
+    <ProjectReference Include="..\OpenVectorFormat\ReaderWriter\OVFReaderWriter\OVFReaderWriter.csproj" />
+    <ProjectReference Include="GLControl\OpenTK.WinForms\OpenTK.WinForms.csproj" />
+    <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerBusinessLayerSlicer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Classes\Camera.cs" />
+    <Compile Remove="Classes\ColorDictionary.cs" />
+    <Compile Remove="Classes\FileHandlerProgress.cs" />
+    <Compile Remove="Classes\Grid.cs" />
+    <Compile Remove="Classes\JobViewer.cs" />
+    <Compile Remove="Classes\MotionTracker.cs" />
+    <Compile Remove="Classes\Vertex.cs" />
+    <Compile Remove="Interfaces\IRotateable.cs" />
+    <Compile Remove="Interfaces\IZoomable.cs" />
+    <Compile Remove="Model\AbstrPart.cs" />
+    <Compile Remove="Model\AbstrShader.cs" />
+    <Compile Remove="Model\BoundingBox.cs" />
+    <Compile Remove="Model\ColorIndexRange.cs" />
+    <Compile Remove="Model\GeometryShader.cs" />
+    <Compile Remove="Model\ICanvas.cs" />
+    <Compile Remove="Model\IModelViewProjection.cs" />
+    <Compile Remove="Model\IRenderData.cs" />
+    <Compile Remove="Model\OVFFileInfo.cs" />
+    <Compile Remove="Model\OVFFileLoader.cs" />
+    <Compile Remove="Model\OVFPart.cs" />
+    <Compile Remove="Model\OVFRenderObject.cs" />
+    <Compile Remove="Model\OVFScene.cs" />
+    <Compile Remove="Model\Range.cs" />
+    <Compile Remove="Model\RenderDataObject.cs" />
+    <Compile Remove="Model\SceneController.cs" />
+    <Compile Remove="Model\Shader.cs" />
+    <Compile Remove="Model\STLRenderObject.cs" />
+    <Compile Remove="Model\TriangleShader.cs" />
+    <Compile Remove="Model\VectorblockDisplayData.cs" />
+    <Compile Remove="Model\VectorBlockExtensions.cs" />
+    <Compile Remove="Classes\Shader\Shader.cs" />
+    <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
+    <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+    <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
+    <Compile Remove="obj\x64\Release\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
+  </ItemGroup>
+</Project>

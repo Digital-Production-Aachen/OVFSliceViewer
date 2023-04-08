@@ -1,6 +1,6 @@
 ﻿using OVFSliceViewerBusinessLayer.Classes;
 using SliceViewerBusinessLayer.Model.STL;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System;
 using System.Text;
 using System.IO;
@@ -9,6 +9,7 @@ using OpenTK;
 using Geometry3SharpLight;
 using System.Diagnostics;
 using SliceViewerBusinessLayer.Classes;
+using OpenTK.Mathematics;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -98,23 +99,9 @@ namespace OVFSliceViewerBusinessLayer.Model
             RenderObjects[0].Vertices[triId * 3 + 2] = vertex;
         }
 
-        public void ExportAsObj()
-        {
-            string path;
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
+        
 
-            saveFileDialog.Filter = "obj files (*.obj)|*.obj|All files (*.*)|*.*";
-            saveFileDialog.FilterIndex = 1;
-            saveFileDialog.RestoreDirectory = true;
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                path = saveFileDialog.FileName;
-                WriteAsObj(path);
-            }
-        }
-
-        private void WriteAsObj(string path)
+        public void WriteAsObj(string path)
         {
             StringWriter vertices = new StringWriter();
             StringWriter verticesNormals = new StringWriter();

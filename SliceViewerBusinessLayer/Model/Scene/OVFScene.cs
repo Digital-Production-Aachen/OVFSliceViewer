@@ -1,6 +1,8 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using OpenVectorFormat;
+using OpenVectorFormat.AbstractReaderWriter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +21,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             SceneController = sceneController;
         }
         protected OVFFileLoader _ovfFileLoader;
+        protected FileReader _reader;
         public OVFFileInfo OVFFileInfo { get; protected set; }
 
         public Dictionary<int, OVFPart> PartsInScene = new Dictionary<int, OVFPart>();
@@ -27,7 +30,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         public int GetNumberOfLinesInWorkplane()
         {
-            if (OVFFileInfo.NumberOfVerticesInWorkplane.Count != 0 && OVFFileInfo.NumberOfVerticesInWorkplane.Count >= SceneSettings.CurrentWorkplane)
+            if (OVFFileInfo.NumberOfVerticesInWorkplane.ContainsKey(SceneSettings.CurrentWorkplane))
             {
                 return OVFFileInfo.NumberOfVerticesInWorkplane[SceneSettings.CurrentWorkplane];
             }
@@ -46,6 +49,29 @@ namespace OVFSliceViewerBusinessLayer.Model
 
             _ovfFileLoader = new OVFFileLoader(null);
             await _ovfFileLoader.OpenFile(fileInfo);
+
+            LoadFileInfos();
+        }
+        public async Task LoadFile(FileReader reader)
+        {
+            _reader = reader;
+            PartsInScene.Values.ToList().ForEach(x => x.Dispose());
+            PartsInScene.Clear();
+
+            _ovfFileLoader = new OVFFileLoader(null);
+            await _ovfFileLoader.OpenFile(reader);
+            LoadFileInfos();
+        }
+        public WorkPlane GetWorkplane()
+        {
+            return _ovfFileLoader.GetWorkplane(SceneSettings.CurrentWorkplane);
+        }
+        public Job GetJob()
+        {
+            return _ovfFileLoader.Jobshell;
+        }
+        private void LoadFileInfos()
+        {
 
             OVFFileInfo = _ovfFileLoader.OVFFileInfo;
 
@@ -80,7 +106,6 @@ namespace OVFSliceViewerBusinessLayer.Model
                 }
 
                 var vectorBlockInfos = OVFFileInfo.GetVectorblockDisplayData(SceneSettings.CurrentWorkplane);
-
                 int numberOfVertices = 0;
                 
                 for (int i = 0; i < vectorBlockInfos.Count; i++)
@@ -107,12 +132,14 @@ namespace OVFSliceViewerBusinessLayer.Model
                 }
             }
         }
-        public void LoadWorkplaneToBuffer(int index)
+        public async Task LoadWorkplaneToBuffer(int index)
         {
             ResetLinesInPart();
             ResetScene();
 
             //if (!PartsInScene.Any()) return;
+
+            await OVFFileInfo.ReadWorkplane(index);
 
             if (SceneSettings.ShowAs3dObject) AddContourWorkplanes(index);
 
