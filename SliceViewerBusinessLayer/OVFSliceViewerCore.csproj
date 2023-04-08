@@ -45,7 +45,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj" />
+    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpSliceViewer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

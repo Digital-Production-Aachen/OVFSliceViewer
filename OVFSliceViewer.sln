@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OVFSliceViewerGUI", "OVFSli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OVFSliceViewerCore", "SliceViewerBusinessLayer\OVFSliceViewerCore.csproj", "{8215D0F3-61F8-4D56-BE81-476FD8E257D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry3SharpLight", "Geometry3SharpLight\Geometry3SharpLight.csproj", "{7451D2C5-B0EA-401A-9B63-44518E728A1A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTK.WinForms", "GLControl\OpenTK.WinForms\OpenTK.WinForms.csproj", "{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry3SharpSliceViewer", "Geometry3SharpLight\Geometry3SharpSliceViewer.csproj", "{7451D2C5-B0EA-401A-9B63-44518E728A1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,14 +41,6 @@ Global
 		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Release|x64.ActiveCfg = Release|Any CPU
 		{7451D2C5-B0EA-401A-9B63-44518E728A1A}.Release|x64.Build.0 = Release|Any CPU
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Debug|x64.ActiveCfg = Debug|x64
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Debug|x64.Build.0 = Debug|x64
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Release|x64.ActiveCfg = Release|Any CPU
-		{98CE7D61-9A14-4E84-BB2E-53E2CD59DDA6}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

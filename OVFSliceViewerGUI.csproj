@@ -117,7 +117,6 @@
     <PackageReference Include="OpenVectorFormat" Version="1.4.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="GLControl\OpenTK.WinForms\OpenTK.WinForms.csproj" />
     <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerCore.csproj" />
   </ItemGroup>
   <ItemGroup>
