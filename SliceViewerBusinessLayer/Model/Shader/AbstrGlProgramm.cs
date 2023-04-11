@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using SliceViewerBusinessLayer.Model.Shader;
 //using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         public int _handle;
         //protected string _vertexPath;
         //protected string _fragmentPath;
-        protected string _geometryPath;
+        //protected string _geometryPath;
         protected string _vertexShaderCode;
         protected string _fragmentShaderCode;
         protected string _geometryShaderCode;
@@ -30,7 +31,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             _vertexShaderCode = vertexShader;
             _fragmentShaderCode = fragmentShader;
 
-            _geometryPath = path + @"\Classes\Shader\shader.geometry";
+            _geometryShaderCode = GeometryShaderCode.Shader;
 
             CompileShader();
         }
@@ -90,7 +91,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         {
             //_vertexShaderCode = ReadShader(_vertexPath);
             //_fragmentShaderCode = ReadShader(_fragmentPath);
-            _geometryShaderCode = ReadShader(_geometryPath);
+            //_geometryShaderCode = ReadShader(_geometryPath);
 
             Debug.WriteLine(GL.GetError());
         }
