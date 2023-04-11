@@ -10,6 +10,7 @@ package:
     - $commitMessage = git log --format=%B -n 1 HEAD
     - $pattern = 'v\d+\.\d+\.\d+'
     - if ($commitMessage -match $pattern) { $VERSION_NUMBER = $commitMessage } else {exit 0}
+    - dotnet nuget remove source "DAP${CI_PROJECT_ID}"
     - dotnet nuget add source https://git.rwth-aachen.de/api/v4/groups/24884/-/packages/nuget/index.json --name DAP${CI_PROJECT_ID} --username gitlab-ci-token --password $CI_JOB_TOKEN --store-password-in-clear-text
     - dotnet build OVFSliceViewer.sln
     - $VERSION_NUMBER = $VERSION_NUMBER[0].Substring(1)
