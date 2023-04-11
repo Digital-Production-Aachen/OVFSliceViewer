@@ -6,9 +6,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 {
     public class GeometryShader: GLProgramm
     {
-        public GeometryShader(IRenderData renderObject, IModelViewProjection mvp,
-            string vertexPath = @"Classes/Shader/shader.vert",
-            string fragmentPath = @"Classes/Shader/shader.frag") : base(renderObject, mvp, vertexPath, fragmentPath){}
+        public GeometryShader(IRenderData renderObject, IModelViewProjection mvp,string vertexPath,string fragmentPath) : base(renderObject, mvp, vertexPath, fragmentPath){}
 
         protected override void CompileShader()
         {

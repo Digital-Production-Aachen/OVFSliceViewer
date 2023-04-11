@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OVFSliceViewerBusinessLayer.Classes;
+using SliceViewerBusinessLayer.Model.Shader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         protected virtual void CreateShader(IModelViewProjection mvp)
         {
-            _shader = new GLProgramm(this, mvp);
+            _shader = new GLProgramm(this, mvp, VertexShader.Shader, FragmentShader.Shader);
         }
 
         public void AddVertices(IList<Vertex> vertices, int colorIndex)

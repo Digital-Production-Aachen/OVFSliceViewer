@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using SliceViewerBusinessLayer.Model.Shader;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -7,7 +8,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 {
     public class STLGLProgramm : GLProgramm
     {
-        public STLGLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = "\\Classes\\Shader\\shaderSTL.vert", string fragmentPath = "\\Classes\\Shader\\shader.frag", string geometryPath = "\\Classes\\Shader\\shader.geometry") : base(renderObject, mvp, vertexPath, fragmentPath)
+        public STLGLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader, string geometryPath = "\\Classes\\Shader\\shader.geometry") : base(renderObject, mvp, vertexShader, fragmentShader)
         {
             _geometryPath = geometryPath;
         }

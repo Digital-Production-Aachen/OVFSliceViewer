@@ -19,7 +19,7 @@ namespace OVFSliceViewerBusinessLayer.Model
         
         protected int _colorPointer => GL.GetUniformLocation(_handle, "colorIndex");
 
-        public GLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexPath = @"\Classes\Shader\shader.vert", string fragmentPath = @"\Classes\Shader\shader.frag") : base(vertexPath, fragmentPath)
+        public GLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader) : base(vertexShader, fragmentShader)
         {
             _renderObject = renderObject;
             _mvp = mvp;

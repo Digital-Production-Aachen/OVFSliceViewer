@@ -13,8 +13,8 @@ namespace OVFSliceViewerBusinessLayer.Model
     public abstract class AbstrGlProgramm : IDisposable
     {
         public int _handle;
-        protected string _vertexPath;
-        protected string _fragmentPath;
+        //protected string _vertexPath;
+        //protected string _fragmentPath;
         protected string _geometryPath;
         protected string _vertexShaderCode;
         protected string _fragmentShaderCode;
@@ -23,12 +23,12 @@ namespace OVFSliceViewerBusinessLayer.Model
 
 
         public Vector4 Color { get; set; } = new Vector4(1, 0, 0, 0);
-        protected AbstrGlProgramm(string vertexPath, string fragmentPath)
+        protected AbstrGlProgramm(string vertexShader, string fragmentShader)
         {
             var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
-            _vertexPath = path + vertexPath;
-            _fragmentPath = path + fragmentPath;
+            _vertexShaderCode = vertexShader;
+            _fragmentShaderCode = fragmentShader;
 
             _geometryPath = path + @"\Classes\Shader\shader.geometry";
 
@@ -88,8 +88,8 @@ namespace OVFSliceViewerBusinessLayer.Model
         }
         protected void ReadShader()
         {
-            _vertexShaderCode = ReadShader(_vertexPath);
-            _fragmentShaderCode = ReadShader(_fragmentPath);
+            //_vertexShaderCode = ReadShader(_vertexPath);
+            //_fragmentShaderCode = ReadShader(_fragmentPath);
             _geometryShaderCode = ReadShader(_geometryPath);
 
             Debug.WriteLine(GL.GetError());

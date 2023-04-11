@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Mathematics;
+using SliceViewerBusinessLayer.Model.Shader;
 using System;
 
 namespace OVFSliceViewerBusinessLayer.Model
@@ -35,7 +36,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         protected override void CreateShader(IModelViewProjection mvp)
         {
-            _shader = new GeometryShader(this, mvp);
+            _shader = new GeometryShader(this, mvp, VertexShader.Shader, FragmentShader.Shader);
         }
     }
 }

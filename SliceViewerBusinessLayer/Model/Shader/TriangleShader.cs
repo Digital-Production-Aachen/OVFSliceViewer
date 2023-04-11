@@ -5,7 +5,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 {
     public class TriangleShader: GLProgramm
     {
-        public TriangleShader(IRenderData renderObject, IModelViewProjection mvp) : base(renderObject, mvp) { }
+        public TriangleShader(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader) : base(renderObject, mvp, vertexShader, fragmentShader) { }
 
         protected override void CreateVertexArray()
         {

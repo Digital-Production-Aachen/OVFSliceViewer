@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SliceViewerBusinessLayer.Model.Shader;
+using System;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -11,7 +12,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         protected override void CreateShader(IModelViewProjection mvp)
         {
-            _shader = new STLGLProgramm(this, mvp);
+            _shader = new STLGLProgramm(this, mvp, STLShader.Shader, FragmentShader.Shader);
         }
     }
 }
