@@ -10,12 +10,13 @@ package:
     - $commitMessage = git log --format=%B -n 1 HEAD
     - $pattern = 'v\d+\.\d+\.\d+'
     - if ($commitMessage -match $pattern) { $VERSION_NUMBER = $commitMessage } else {exit 0}
-    - dotnet nuget remove source "DAP${CI_PROJECT_ID}"
+    - dotnet nuget list source | findstr "DAP${CI_PROJECT_ID}" && dotnet nuget remove source "DAP${CI_PROJECT_ID}"
     - dotnet nuget add source https://git.rwth-aachen.de/api/v4/groups/24884/-/packages/nuget/index.json --name DAP${CI_PROJECT_ID} --username gitlab-ci-token --password $CI_JOB_TOKEN --store-password-in-clear-text
     - dotnet build OVFSliceViewer.sln
     - $VERSION_NUMBER = $VERSION_NUMBER[0].Substring(1)
     - echo $VERSION_NUMBER
     - dotnet pack OVFSliceViewer.sln -c Release  --output "$PWD\bin\" /p:DebugType=embedded /p:DebugSymbols=true /p:EmbedAllSources=true /p:Version=$VERSION_NUMBER 
+    - dotnet nuget list source | findstr "NuGet${CI_PROJECT_ID}" && dotnet nuget remove source "NuGet${CI_PROJECT_ID}"
     - dotnet nuget add source "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/nuget/index.json" --name "NuGet${CI_PROJECT_ID}" --username gitlab-ci-token --password $CI_JOB_TOKEN
     - dotnet nuget push $PWD\bin\*.nupkg --source "NuGet${CI_PROJECT_ID}"
     - dotnet nuget remove source "NuGet${CI_PROJECT_ID}"
