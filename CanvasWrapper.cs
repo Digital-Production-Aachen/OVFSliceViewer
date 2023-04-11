@@ -42,8 +42,8 @@ namespace OVFSliceViewer
         public void Init()
         {
             MakeCurrent();
-            GL.Enable(EnableCap.DepthTest);
-            GL.DepthFunc(DepthFunction.Always);
+            //GL.Enable(EnableCap.DepthTest);
+            //GL.DepthFunc(DepthFunction.Always);
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         }
 
