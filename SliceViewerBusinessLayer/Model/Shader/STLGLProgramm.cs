@@ -10,7 +10,7 @@ namespace OVFSliceViewerBusinessLayer.Model
     {
         public STLGLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader, string geometryPath = "\\Classes\\Shader\\shader.geometry") : base(renderObject, mvp, vertexShader, fragmentShader)
         {
-            _geometryPath = geometryPath;
+            //_geometryPath = geometryPath;
         }
 
         protected int _cameraPositionPointer => GL.GetUniformLocation(_handle, "cameraPosition");
