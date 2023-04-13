@@ -65,7 +65,8 @@ namespace OVFSliceViewerBusinessLayer.Model
                 CloseFile();
             }
             IScene scene;
-            if (fileInfo.Extension.ToLower() == ".stl" || fileInfo.Extension.ToLower() == ".obj")
+
+            if (FileHasNoParts(fileInfo))
             {
                 scene = new STLScene(this);
                 await scene.LoadFile(fileInfo);
@@ -178,6 +179,11 @@ namespace OVFSliceViewerBusinessLayer.Model
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public static bool FileHasNoParts(FileInfo file)
+        {
+            return file.Extension.ToLower() == ".stl" || file.Extension.ToLower() == ".obj" || file.Extension.ToLower() == ".lgdff";
         }
     }
 }

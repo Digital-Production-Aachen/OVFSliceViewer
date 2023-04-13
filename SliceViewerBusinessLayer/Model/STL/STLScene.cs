@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using OpenTK.Mathematics;
+using AutomatedBuildChain.Proto;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -39,8 +40,10 @@ namespace OVFSliceViewerBusinessLayer.Model
 
             if (fileInfo.Extension.ToLower() == ".stl")
                 await reader.ReadStl(fileInfo.FullName);
-            else
+            else if (fileInfo.Extension.ToLower() == ".obj")
                 await reader.ReadObj(fileInfo.FullName);
+            else if(fileInfo.Extension.ToLower() == ".lgdff")
+                await reader.ReadLgdff(fileInfo.FullName);
 
             var part = new STLPart(reader.Mesh, SceneController, () => SceneSettings.UseColorIndex);
             PartsInScene.Add(part);
@@ -98,7 +101,7 @@ namespace OVFSliceViewerBusinessLayer.Model
 
         void IScene.ChangeNumberOfLinesToDraw(int numberOfLinesToDraw){}
 
-        public void ColorNearestHitTriangles(Vector2 position, float colorIndex, int radius)
+        public void ColorNearestHitTriangles(Vector2 position, float colorIndex, int radius, Nullable<LABEL> label = null)
         {
             var ray = SceneCollisionManager.GetRayFromScreenCoordinates(position, SceneController.Camera, radius);
             
@@ -111,6 +114,7 @@ namespace OVFSliceViewerBusinessLayer.Model
                     if (triangle != -1) // -1 is invalid triangle id
                     {
                         part.ColorTriangle(triangle, colorIndex);
+                        part.SetLabelForTriangle(triangle, label);
                     }
                 }
 

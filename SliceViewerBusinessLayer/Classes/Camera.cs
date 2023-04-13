@@ -4,11 +4,12 @@ using OVFSliceViewerBusinessLayer.Model;
 using SliceViewerBusinessLayer.Classes;
 using System.Diagnostics;
 using OpenTK.Mathematics;
+using AutomatedBuildChain.Proto;
 
 namespace OVFSliceViewerBusinessLayer.Classes
 {
     // Todo: seperate Matrix for movement and rotation
-
+    
     public class Camera : IZoomable, IRotateable, OVFSliceViewerBusinessLayer.Model.IModelViewProjection
     {
         Vector3 _position;

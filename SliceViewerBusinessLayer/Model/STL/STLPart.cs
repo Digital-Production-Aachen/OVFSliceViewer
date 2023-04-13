@@ -10,18 +10,28 @@ using Geometry3SharpLight;
 using System.Diagnostics;
 using SliceViewerBusinessLayer.Classes;
 using OpenTK.Mathematics;
+using AutomatedBuildChain.Proto;
+using Google.Protobuf;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
-    
-    public class STLPart: AbstrPart
+
+    public class STLPart : AbstrPart
     {
         private List<Triangle3f> _triangles;
         private STLRenderDataObject _renderData;
         private AABBTree3 spatial;
+        private Dictionary<LABEL, List<int>> _functionalTriangleIDs = new()
+        {
+            {LABEL.NoSupport, new List<int>()},
+            {LABEL.Accessibility, new List<int>()},
+            {LABEL.FunctionalArea, new List<int>() } 
+        };
 
         // essentially the length of the longest edges from a bounding box
         public float maxSize = 0;
+
+        public Dictionary<LABEL, List<int>> FunctionalTriangleIDs { get => _functionalTriangleIDs; set => _functionalTriangleIDs = value; }
 
         public STLPart(List<Triangle3f> triangles, ISceneController scene, Func<bool> useColorIndex)
         {
@@ -56,7 +66,7 @@ namespace OVFSliceViewerBusinessLayer.Model
                 maxZ = Math.Max(maxZ, Max(triangle.VertexA.Z, triangle.VertexB.Z, triangle.VertexC.Z));
             }
 
-            maxSize = Max( maxX - minX, maxY - minY, maxZ - minZ );
+            maxSize = Max(maxX - minX, maxY - minY, maxZ - minZ);
 
             _renderData.AddVertices(vertices, 0);
 
@@ -72,6 +82,12 @@ namespace OVFSliceViewerBusinessLayer.Model
         public static float Max(float a, float b, float c)
         {
             return Math.Max(a, Math.Max(b, c));
+        }
+
+        public void SetLabelForTriangle(int triID, Nullable<LABEL> label)
+        {
+            if (label == null) return;
+            FunctionalTriangleIDs[(LABEL)label].Add(triID);
         }
 
         public override void Render()
@@ -99,7 +115,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             RenderObjects[0].Vertices[triId * 3 + 2] = vertex;
         }
 
-        
+
 
         public void WriteAsObj(string path)
         {
@@ -123,10 +139,9 @@ namespace OVFSliceViewerBusinessLayer.Model
                 verticesNormals.Write("vn {0} {1} {2}\n", n.X, n.Y, n.Z);
 
                 // write face/triangle
-                faces.Write("f {0}//{1} {2}//{3} {4}//{5}\n", (triId * 3 + 1), (triId + 1),(triId * 3 + 2),
+                faces.Write("f {0}//{1} {2}//{3} {4}//{5}\n", (triId * 3 + 1), (triId + 1), (triId * 3 + 2),
                                                               (triId + 1), (triId * 3 + 3), (triId + 1));
             }
-
 
             if (!File.Exists(path))
             {
@@ -147,6 +162,50 @@ namespace OVFSliceViewerBusinessLayer.Model
                 }
             }
         }
+
+        public void WriteAsLgdff(string path)
+        {
+            StringWriter vertices = new StringWriter();
+            StringWriter verticesNormals = new StringWriter();
+            StringWriter faces = new StringWriter();
+
+            for (int triId = 0; triId < _triangles.Count; triId++)
+            {
+                // write vertices
+                for (int i = 0; i < 3; i++)
+                {
+                    var vertex = RenderObjects[0].Vertices[triId * 3 + i];
+                    Vector3 v = vertex.Position;
+                    Vector3 c = ColorMap(vertex.ColorIndex);
+                    vertices.Write("v {0} {1} {2} {3} {4} {5}\n", v.X, v.Y, v.Z, c.X, c.Y, c.Z);
+                }
+
+                // write normals
+                Vector3 n = _triangles[triId].Normal;
+                verticesNormals.Write("vn {0} {1} {2}\n", n.X, n.Y, n.Z);
+
+                // write face/triangle
+                faces.Write("f {0}//{1} {2}//{3} {4}//{5}\n", (triId * 3 + 1), (triId + 1), (triId * 3 + 2),
+                                                              (triId + 1), (triId * 3 + 3), (triId + 1));
+            }
+
+
+            if (!File.Exists(path))
+            {
+                string s = vertices.ToString()+verticesNormals.ToString()+faces.ToString();
+                s = s.Replace(',', '.');
+
+                LabeledGeometryDefinitionFileFormat lgdff = new LabeledGeometryDefinitionFileFormat();
+                lgdff.Obj = ByteString.CopyFrom(Encoding.ASCII.GetBytes(s));
+
+
+                using (var output = File.Create(path))
+                {
+                    lgdff.WriteTo(output);
+                }
+            }
+        }
+
 
         // colorMap function used to display color in opengl
         private Vector3 ColorMap(float colorIndex)

@@ -10,6 +10,10 @@ using Geometry3SharpLight;
 using Mesh = System.Collections.Generic.List<Geometry3SharpLight.Triangle3f>;
 using OpenTK.Mathematics;
 using System.Text.RegularExpressions;
+using AutomatedBuildChain.Proto;
+using Google.Protobuf.Collections;
+using Google.Protobuf;
+using OVFSliceViewerBusinessLayer.Model;
 
 namespace SliceViewerBusinessLayer.Model.STL
 {
@@ -69,11 +73,15 @@ namespace SliceViewerBusinessLayer.Model.STL
         public async virtual Task<Mesh> ReadObj(string filePath)
         {
             _filePath = filePath;
+            string[] lines = File.ReadLines(_filePath).ToArray();
+            return await ReadObj(lines);
+
+        }
+        public async virtual Task<Mesh> ReadObj(string[] lines)
+        {
             List<Vector3> vertices = new List<Vector3>();
             List<Vector3> normals = new List<Vector3>();
             List<float> colors = new List<float>();
-
-            string[] lines = File.ReadLines(_filePath).ToArray();
 
             // first read vertices and normals
             foreach (string line in lines)
@@ -164,6 +172,29 @@ namespace SliceViewerBusinessLayer.Model.STL
 
             return Mesh;
         }
+        public async virtual Task<Mesh> ReadLgdff(string filePath, STLPart part = null)
+        {
+            LabeledGeometryDefinitionFileFormat protoFile;
+
+            using (var input = File.OpenRead(filePath))
+            {
+                protoFile = LabeledGeometryDefinitionFileFormat.Parser.ParseFrom(input);
+            }
+
+            string objString = Encoding.ASCII.GetString(protoFile.Obj.ToByteArray());
+            string[] objLines = objString.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            var obj = await ReadObj(objLines);
+
+            Dictionary<LABEL, List<int>> labelMap = new Dictionary<LABEL, List<int>>();
+            foreach (var label in protoFile.Map)
+            {
+                labelMap.Add(label.Label, label.TriangleIDs.ToList());
+            }
+            part.FunctionalTriangleIDs = labelMap;
+            return obj;
+        }
+
+
         public static bool Equals(Vector3 a, Vector3 b, float epsilon = 1e-1f)
         {
             return Math.Abs(a.X - b.X) < epsilon
