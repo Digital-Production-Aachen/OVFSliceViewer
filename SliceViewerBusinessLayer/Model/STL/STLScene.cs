@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using OpenTK.Mathematics;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class STLScene : IScene, IDisposable
     {

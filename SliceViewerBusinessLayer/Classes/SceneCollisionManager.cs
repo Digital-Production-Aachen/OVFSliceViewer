@@ -4,7 +4,7 @@
 using System;
 using OpenTK;
 using OpenTK.Mathematics;
-using OVFSliceViewerBusinessLayer.Classes;
+using OVFSliceViewerCore.Classes;
 
 namespace SliceViewerBusinessLayer.Classes
 {

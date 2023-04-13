@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     //ToDo new Class SceneState which handles currentworkplane, state etc.
     public class OVFScene : IScene, IDisposable

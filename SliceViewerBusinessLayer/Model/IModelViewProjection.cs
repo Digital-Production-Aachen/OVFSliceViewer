@@ -1,7 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Mathematics;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public interface IModelViewProjection
     {

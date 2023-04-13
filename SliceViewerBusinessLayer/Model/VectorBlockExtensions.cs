@@ -1,12 +1,12 @@
 ﻿using OpenTK;
 using OpenTK.Mathematics;
 using OpenVectorFormat;
-using OVFSliceViewerBusinessLayer.Classes;
+using OVFSliceViewerCore.Classes;
 using System.Collections.Generic;
 using System.Linq;
 using static OpenVectorFormat.VectorBlock.Types;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public static class VectorBlockExtensions
     {

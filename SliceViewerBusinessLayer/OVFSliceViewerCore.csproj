@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{8215D0F3-61F8-4D56-BE81-476FD8E257D1}</ProjectGuid>
-    <RootNamespace>SliceViewerBusinessLayer</RootNamespace>
-    <AssemblyName>SliceViewerBusinessLayer</AssemblyName>
+    <RootNamespace>OVFSliceViewerCore</RootNamespace>
+    <AssemblyName>OVFSliceViewerCore</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
 	<Platforms>AnyCPU;x64</Platforms>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>

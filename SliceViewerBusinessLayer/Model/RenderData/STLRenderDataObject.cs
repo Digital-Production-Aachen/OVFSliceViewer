@@ -1,7 +1,7 @@
 ﻿using SliceViewerBusinessLayer.Model.Shader;
 using System;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class STLRenderDataObject : RenderDataObject
     {

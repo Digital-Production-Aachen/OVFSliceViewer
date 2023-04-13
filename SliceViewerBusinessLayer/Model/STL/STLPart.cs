@@ -1,4 +1,4 @@
-﻿using OVFSliceViewerBusinessLayer.Classes;
+﻿using OVFSliceViewerCore.Classes;
 using SliceViewerBusinessLayer.Model.STL;
 //using System.Windows.Forms;
 using System;
@@ -11,7 +11,7 @@ using System.Diagnostics;
 using SliceViewerBusinessLayer.Classes;
 using OpenTK.Mathematics;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     
     public class STLPart: AbstrPart

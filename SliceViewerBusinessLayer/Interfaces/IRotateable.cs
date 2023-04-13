@@ -1,7 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Mathematics;
 
-namespace OVFSliceViewerBusinessLayer
+namespace OVFSliceViewerCore
 {
     public interface IRotateable
     {

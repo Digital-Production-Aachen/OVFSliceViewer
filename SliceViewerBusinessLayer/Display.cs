@@ -7,8 +7,8 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Diagnostics;
-using OVFSliceViewerBusinessLayer.Model;
-using OVFSliceViewerBusinessLayer.Classes;
+using OVFSliceViewerCore.Model;
+using OVFSliceViewerCore.Classes;
 using OpenVectorFormat.AbstractReaderWriter;
 
 namespace SliceViewerBusinessLayer

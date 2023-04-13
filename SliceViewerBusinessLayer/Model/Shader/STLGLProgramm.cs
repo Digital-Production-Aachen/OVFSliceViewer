@@ -4,7 +4,7 @@ using SliceViewerBusinessLayer.Model.Shader;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class STLGLProgramm : GLProgramm
     {

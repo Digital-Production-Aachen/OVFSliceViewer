@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 //using OpenTK.Mathematics;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class TriangleShader: GLProgramm
     {

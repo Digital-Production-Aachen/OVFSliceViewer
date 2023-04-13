@@ -1,5 +1,5 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using OVFSliceViewerBusinessLayer.Classes;
+using OVFSliceViewerCore.Classes;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OpenVectorFormat.AbstractReaderWriter;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class SceneController: ISceneController, IDisposable
     {

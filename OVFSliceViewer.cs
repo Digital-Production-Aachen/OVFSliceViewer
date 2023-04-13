@@ -1,5 +1,4 @@
-﻿using OVFSliceViewerBusinessLayer.Classes;
-using OpenTK;
+﻿using OpenTK;
 using OpenVectorFormat.AbstractReaderWriter;
 using System;
 using System.IO;
@@ -8,9 +7,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
 using OpenTK.Graphics.OpenGL;
-using OVFSliceViewerBusinessLayer.Model;
+using OVFSliceViewerCore.Model;
 using System.Linq;
-using SliceViewerBusinessLayer.Classes;
+using OVFSliceViewerCore.Classes;
 using System.Collections.Generic;
 using System.Drawing.Text;
 using OpenTK.Windowing.GraphicsLibraryFramework;

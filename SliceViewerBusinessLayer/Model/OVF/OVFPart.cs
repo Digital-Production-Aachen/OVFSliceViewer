@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using static OpenVectorFormat.VectorBlock.Types;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class OVFPart : AbstrPart
     {

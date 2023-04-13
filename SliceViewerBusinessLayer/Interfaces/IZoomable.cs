@@ -1,4 +1,4 @@
-﻿namespace OVFSliceViewerBusinessLayer
+﻿namespace OVFSliceViewerCore
 {
     public interface IZoomable
     {

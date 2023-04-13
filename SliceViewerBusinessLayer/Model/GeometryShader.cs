@@ -2,7 +2,7 @@
 //using OpenTK.Mathematics;
 using System.Diagnostics;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class GeometryShader: GLProgramm
     {

@@ -1,12 +1,12 @@
 ﻿using OpenTK.Graphics.OpenGL4;
-using OVFSliceViewerBusinessLayer.Classes;
+using OVFSliceViewerCore.Classes;
 using SliceViewerBusinessLayer.Model.Shader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class RenderDataObject : IRenderData, IDisposable
     {

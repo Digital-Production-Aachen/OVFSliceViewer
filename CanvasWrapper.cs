@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace OVFSliceViewer
 {
-    public class CanvasWrapper : OVFSliceViewerBusinessLayer.Model.ICanvas
+    public class CanvasWrapper : OVFSliceViewerCore.Model.ICanvas
     {
         GLControl _canvas;
         public GLControl Canvas => _canvas;
