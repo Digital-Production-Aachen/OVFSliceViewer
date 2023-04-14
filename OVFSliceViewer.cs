@@ -447,14 +447,37 @@ namespace OVFSliceViewer
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 path = saveFileDialog.FileName;
-                //part.WriteAsObj(path);
+                part.WriteAsObj(path);
+            }
+        }
+
+        private void ExportPartsAsLgdff()
+        {
+            if (!(SceneController.Scene is STLScene))
+                return;
+            foreach (STLPart part in SceneController.Scene.PartsInScene)
+                ExportAsObj(part);
+        }
+        private void ExportAsLgdff(STLPart part)
+        {
+            string path;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "lgdff files (*.lgdff)|*.lgdff|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                path = saveFileDialog.FileName;
                 part.WriteAsLgdff(path);
             }
         }
 
         private void exportButton_Click(object sender, EventArgs e)
         {
-            ExportPartsAsObj();
+            //ExportPartsAsObj();
+            ExportPartsAsLgdff();
         }
 
         private void paintFunctrionCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
