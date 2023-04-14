@@ -172,7 +172,7 @@ namespace SliceViewerBusinessLayer.Model.STL
 
             return Mesh;
         }
-        public async virtual Task<Mesh> ReadLgdff(string filePath, STLPart part = null)
+        public async virtual Task<Mesh> ReadLgdff(string filePath, Dictionary<LABEL, List<int>> labelMap)
         {
             LabeledGeometryDefinitionFileFormat protoFile;
 
@@ -185,12 +185,10 @@ namespace SliceViewerBusinessLayer.Model.STL
             string[] objLines = objString.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             var obj = await ReadObj(objLines);
 
-            Dictionary<LABEL, List<int>> labelMap = new Dictionary<LABEL, List<int>>();
             foreach (var label in protoFile.Map)
             {
                 labelMap.Add(label.Label, label.TriangleIDs.ToList());
             }
-            part.FunctionalTriangleIDs = labelMap;
             return obj;
         }
 

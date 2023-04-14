@@ -12,6 +12,7 @@ using SliceViewerBusinessLayer.Classes;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
 using Google.Protobuf;
+using System.Linq;
 
 namespace OVFSliceViewerBusinessLayer.Model
 {
@@ -203,7 +204,7 @@ namespace OVFSliceViewerBusinessLayer.Model
                 {
                     LabelMap lm = new LabelMap();
                     lm.Label = label;
-                    lm.TriangleIDs.AddRange(FunctionalTriangleIDs[label]);
+                    lm.TriangleIDs.AddRange(FunctionalTriangleIDs[label].Distinct());
 
                     labels.Add(lm);
                 }
