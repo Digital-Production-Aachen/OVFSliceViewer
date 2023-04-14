@@ -197,7 +197,18 @@ namespace OVFSliceViewerBusinessLayer.Model
 
                 LabeledGeometryDefinitionFileFormat lgdff = new LabeledGeometryDefinitionFileFormat();
                 lgdff.Obj = ByteString.CopyFrom(Encoding.ASCII.GetBytes(s));
+                List<LabelMap> labels = new List<LabelMap>();
 
+                foreach(var label in FunctionalTriangleIDs.Keys)
+                {
+                    LabelMap lm = new LabelMap();
+                    lm.Label = label;
+                    lm.TriangleIDs.AddRange(FunctionalTriangleIDs[label]);
+
+                    labels.Add(lm);
+                }
+
+                lgdff.Map.AddRange(labels);
 
                 using (var output = File.Create(path))
                 {
