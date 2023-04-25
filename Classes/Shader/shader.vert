@@ -44,9 +44,13 @@ void main()
 	vec4 colorMinPower = vec4(0,1,0,0);
     //float colorIndex = 0;
 
-    if (powerCoefficient <= 1.0)
+    if (powerCoefficient == 1.0)
     {
         colorOut = vec4(1, 0, 0, 0);
+    }
+    else if (powerCoefficient <= 1)
+    {
+        colorOut = colormap(powerCoefficient);
     }
     else
     {

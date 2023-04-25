@@ -5,6 +5,7 @@
     <AssemblyName>OVFSliceViewerCore</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
 	<Platforms>AnyCPU;x64</Platforms>
+	  <PackageId>DAP.OVFSliceViewer.$(AssemblyName)</PackageId>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AssemblyTitle>SliceViewerBusinessLayer</AssemblyTitle>
     <Company>Microsoft</Company>
