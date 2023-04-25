@@ -80,8 +80,7 @@ namespace OVFSliceViewerCore.Model
 
                 for (int j = 0; j < workplane.NumBlocks; j++)
                 {
-                    int partkey = -1;
-                    if (workplane.VectorBlocks[j].MetaData != null) partkey = workplane.VectorBlocks[j].MetaData.PartKey;
+                    int partkey = workplane.VectorBlocks[j].MetaData?.PartKey ?? -1;
                     var vectorblockDisplayData = new VectorblockDisplayData()
                     {
                         WorkplaneNumber = i,
@@ -91,7 +90,7 @@ namespace OVFSliceViewerCore.Model
                     };
 
                     list.Add(vectorblockDisplayData);
-                    if (workplane.VectorBlocks[j].LpbfMetadata.PartArea == VectorBlock.Types.PartArea.Contour)
+                    if (workplane.VectorBlocks[j].LpbfMetadata?.PartArea == VectorBlock.Types.PartArea.Contour)
                     {
                         ContourVectorblocksInWorkplaneLUT[i].Add(j);
                     }
