@@ -153,6 +153,11 @@ namespace OVFSliceViewer
             
         }
 
+        public async void ShowJob(FileReader fileReader)
+        {
+            this.Show();
+            await LoadJob(fileReader);
+        }
         public async void LoadJob(string filename)
         {
             try
