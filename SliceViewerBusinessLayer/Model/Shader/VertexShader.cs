@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SliceViewerBusinessLayer.Model.Shader
 {
-    public static class VertexShader
+    public class VertexShader: AbstrShader
     {
-        public static string Shader =>
+        protected VertexShader() {
+            Shader =
             @"
 #version 330 core
 uniform mat4 Mvp; 
@@ -70,5 +71,7 @@ void main()
 
 }
 ";
+        }
+        private static VertexShader _instance = new VertexShader();
     }
 }

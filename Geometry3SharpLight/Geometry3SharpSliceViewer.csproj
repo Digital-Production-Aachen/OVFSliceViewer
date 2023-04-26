@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+	  <IsPackable>false</IsPackable>
 	  <PackageId>DAP.OVFSliceViewer.$(AssemblyName)</PackageId>
   </PropertyGroup>
 
