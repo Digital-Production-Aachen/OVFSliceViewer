@@ -37,17 +37,25 @@ namespace OVFSliceViewerBusinessLayer.Model
         public async Task LoadFile(FileInfo fileInfo)
         {
             var reader = new STLReader();
+            bool isLgdff = fileInfo.Extension.ToLower() == ".lgdff";
             Dictionary<LABEL, List<int>> labelMap = new Dictionary<LABEL, List<int>>();
 
             if (fileInfo.Extension.ToLower() == ".stl")
                 await reader.ReadStl(fileInfo.FullName);
+
             else if (fileInfo.Extension.ToLower() == ".obj")
                 await reader.ReadObj(fileInfo.FullName);
-            else if(fileInfo.Extension.ToLower() == ".lgdff")
+
+            else if(isLgdff)
+            {
                 await reader.ReadLgdff(fileInfo.FullName, labelMap);
+            }
 
             var part = new STLPart(reader.Mesh, SceneController, () => SceneSettings.UseColorIndex);
-            part.FunctionalTriangleIDs = labelMap;
+            if (isLgdff)
+            {
+                part.FunctionalTriangleIDs = labelMap;
+            }
             PartsInScene.Add(part);
         }
 
