@@ -456,7 +456,7 @@ namespace OVFSliceViewer
             if (!(SceneController.Scene is STLScene))
                 return;
             foreach (STLPart part in SceneController.Scene.PartsInScene)
-                ExportAsObj(part);
+                ExportAsLgdff(part);
         }
         private void ExportAsLgdff(STLPart part)
         {
