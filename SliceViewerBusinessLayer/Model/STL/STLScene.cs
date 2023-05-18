@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using OpenTK.Mathematics;
+using AutomatedBuildChain.Proto;
 
 namespace OVFSliceViewerCore.Model
 {
@@ -36,13 +37,25 @@ namespace OVFSliceViewerCore.Model
         public async Task LoadFile(FileInfo fileInfo)
         {
             var reader = new STLReader();
+            bool isLgdff = fileInfo.Extension.ToLower() == ".lgdff";
+            Dictionary<LABEL, List<int>> labelMap = new Dictionary<LABEL, List<int>>();
 
             if (fileInfo.Extension.ToLower() == ".stl")
                 await reader.ReadStl(fileInfo.FullName);
-            else
+
+            else if (fileInfo.Extension.ToLower() == ".obj")
                 await reader.ReadObj(fileInfo.FullName);
 
+            else if(isLgdff)
+            {
+                await reader.ReadLgdff(fileInfo.FullName, labelMap);
+            }
+
             var part = new STLPart(reader.Mesh, SceneController, () => SceneSettings.UseColorIndex);
+            if (isLgdff)
+            {
+                part.FunctionalTriangleIDs = labelMap;
+            }
             PartsInScene.Add(part);
         }
 
@@ -98,7 +111,7 @@ namespace OVFSliceViewerCore.Model
 
         void IScene.ChangeNumberOfLinesToDraw(int numberOfLinesToDraw){}
 
-        public void ColorNearestHitTriangles(Vector2 position, float colorIndex, int radius)
+        public void ColorNearestHitTriangles(Vector2 position, float colorIndex, int radius, Nullable<LABEL> label = null)
         {
             var ray = SceneCollisionManager.GetRayFromScreenCoordinates(position, SceneController.Camera, radius);
             
@@ -111,6 +124,7 @@ namespace OVFSliceViewerCore.Model
                     if (triangle != -1) // -1 is invalid triangle id
                     {
                         part.ColorTriangle(triangle, colorIndex);
+                        part.SetLabelForTriangle(triangle, label);
                     }
                 }
 

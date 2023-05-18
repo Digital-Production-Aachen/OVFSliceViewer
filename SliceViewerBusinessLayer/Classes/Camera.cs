@@ -4,6 +4,7 @@ using OVFSliceViewerCore.Model;
 using SliceViewerBusinessLayer.Classes;
 using System.Diagnostics;
 using OpenTK.Mathematics;
+using AutomatedBuildChain.Proto;
 
 namespace OVFSliceViewerCore.Classes
 {

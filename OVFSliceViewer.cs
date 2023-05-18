@@ -15,7 +15,7 @@ using System.Drawing.Text;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Mathematics;
 using System.Threading.Tasks;
-//using OpenTK.WinForms;
+using AutomatedBuildChain.Proto;
 
 namespace OVFSliceViewer
 {
@@ -47,6 +47,14 @@ namespace OVFSliceViewer
             {PaintFunction.Accessibility, 0.5f},
             {PaintFunction.FunctionalArea, 0.64f}
         };
+
+        private Dictionary<PaintFunction, LABEL> _colorToFunctionDictionary = new Dictionary<PaintFunction, LABEL>()
+        {
+            {PaintFunction.NoSupport, LABEL.NoSupport},
+            {PaintFunction.Accessibility, LABEL.Accessibility},
+            {PaintFunction.FunctionalArea, LABEL.FunctionalArea}
+        };
+
         public OVFSliceViewer()
         {
             InitializeComponent();
@@ -58,7 +66,7 @@ namespace OVFSliceViewer
 
             SceneController = new SceneController(_canvasWrapper);
 
-            
+
 
             this.KeyDown += _canvasWrapper.KeyDown;
             this.KeyUp += _canvasWrapper.KeyUp;
@@ -68,8 +76,8 @@ namespace OVFSliceViewer
             _canvasWrapper.Canvas.KeyDown += _canvasWrapper.KeyDown;
             _canvasWrapper.Canvas.KeyUp += _canvasWrapper.KeyUp;
         }
-        
-        public OVFSliceViewer(string filename):this()
+
+        public OVFSliceViewer(string filename) : this()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
@@ -111,7 +119,7 @@ namespace OVFSliceViewer
             //keyboardState.IsKeyDown(OpenTK.Input.Key.ControlLeft)
             var fastZoom = _canvasWrapper.IsKeyPressed(System.Windows.Forms.Keys.ControlKey) || _canvasWrapper.IsKeyPressed(System.Windows.Forms.Keys.RControlKey);
             SceneController.Camera.Zoom(e.Delta > 0, fastZoom);
-            
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SceneController.Render();
         }
@@ -132,7 +140,7 @@ namespace OVFSliceViewer
             {
 
             }
-            
+
         }
 
         private void SetTimeTrackBar(int numberOfLines)
@@ -143,14 +151,14 @@ namespace OVFSliceViewer
 
         private async void LoadJobButtonClick(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "ovf, ilt and stl files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.stl;*.obj;*.gcode|All files (*.*)|*.*";
+            openFileDialog1.Filter = "ovf, ilt and stl files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.stl;*.obj;*.lgdff;*.gcode|All files (*.*)|*.*";
             var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
                 var filename = openFileDialog1.FileNames[0];
                 LoadJob(filename);
             }
-            
+
         }
 
         public async void ShowJob(FileReader fileReader)
@@ -164,12 +172,12 @@ namespace OVFSliceViewer
             {
                 await SceneController.LoadFile(filename);
                 AfterLoadJob(filename);
-        }
+            }
             catch (Exception e)
             {
                 MessageBox.Show("Datei konnte nicht gelesen werden!", "Fehler beim Laden einer Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-}       
+        }
         public async Task LoadJob(FileReader reader)
         {
             _currentFile = reader;
@@ -182,13 +190,16 @@ namespace OVFSliceViewer
             layerTrackBar.Value = 0;
             SetTrackBarText();
 
-                var parts = SceneController.GetParts();
-                bool isStlOrObj = Path.GetExtension(filename) == ".stl" || Path.GetExtension(filename) == ".obj";
-                exportButton.Enabled = isStlOrObj;
-                if (!isStlOrObj)
-                {
-                    ((ListBox)this.partsCheckedListBox).DataSource = parts;
-                }
+            var parts = SceneController.GetParts();
+            SceneController.FileHasNoParts(new FileInfo(filename));
+
+            bool hasNoParts = SceneController.FileHasNoParts(new FileInfo(filename));
+
+            exportButton.Enabled = hasNoParts;
+            if (!hasNoParts)
+            {
+                ((ListBox)this.partsCheckedListBox).DataSource = parts;
+            }
 
                 ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
             ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
@@ -201,7 +212,7 @@ namespace OVFSliceViewer
         private void LoadPartNames()
         {
             var names = SceneController.GetPartNames();
-            if(_currentFile.CacheState != CacheState.NotCached)
+            if (_currentFile.CacheState != CacheState.NotCached)
             {
                 partsCheckedListBox.Items.Clear();
                 foreach (var name in names)
@@ -234,10 +245,10 @@ namespace OVFSliceViewer
 
             if (e.Button == MouseButtons.Middle || e.Button == MouseButtons.Left)
             {
-                    _motionTracker.Start(position);
+                _motionTracker.Start(position);
             }
 
-            _canvasWrapper.Init();          
+            _canvasWrapper.Init();
         }
 
         private void canvasMoveMouseUp(object sender, MouseEventArgs e)
@@ -251,7 +262,7 @@ namespace OVFSliceViewer
 
         private void canvasMouseMove(object sender, MouseEventArgs e)
         {
-            if ( _currentPaintFunction!= PaintFunction.None && SceneController.Scene is STLScene && e.Button == MouseButtons.Right)
+            if (_currentPaintFunction != PaintFunction.None && SceneController.Scene is STLScene && e.Button == MouseButtons.Right)
             {
                 ColorSTLPart(e);
             }
@@ -265,7 +276,7 @@ namespace OVFSliceViewer
                 }
                 else if (e.Button == MouseButtons.Left)
                 {
-                     _motionTracker.Move(position, SceneController.Camera.Rotate);
+                    _motionTracker.Move(position, SceneController.Camera.Rotate);
                 }
             }
         }
@@ -386,12 +397,14 @@ namespace OVFSliceViewer
 
         private void ColorSTLPart(MouseEventArgs e)
         {
-            if(_currentPaintFunction != PaintFunction.None)
+            if (_currentPaintFunction != PaintFunction.None)
             {
                 var position = new Vector2(e.Location.X, e.Location.Y);
                 if (e.Button == MouseButtons.Right)
                 {
-                    (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, _functionColorDictionary[_currentPaintFunction], paintingRadius);
+
+                    Nullable<LABEL> curlabel = (_colorToFunctionDictionary.ContainsKey(_currentPaintFunction)) ? _colorToFunctionDictionary[_currentPaintFunction] : null;
+                    (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, _functionColorDictionary[_currentPaintFunction], paintingRadius, curlabel);
                 }
                 SceneController.Render();
             }
@@ -399,13 +412,13 @@ namespace OVFSliceViewer
 
         private void STLKeyActions(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
-            if(SceneController.Scene is STLScene)
+            if (SceneController.Scene is STLScene)
             {
                 if (e.KeyChar == 'e')
                 {
                     ExportPartsAsObj();
                 }
-                else if(e.KeyChar == '1')
+                else if (e.KeyChar == '1')
                 {
                     paintingRadius -= 1;
                     paintingRadius = MathHelper.Clamp(paintingRadius, 0, 10);
@@ -416,7 +429,7 @@ namespace OVFSliceViewer
                     paintingRadius = MathHelper.Clamp(paintingRadius, 0, 10);
                 }
                 Debug.WriteLine("Painting radius: " + paintingRadius);
-            }   
+            }
         }
 
         private void ExportPartsAsObj()
@@ -442,9 +455,33 @@ namespace OVFSliceViewer
             }
         }
 
+        private void ExportPartsAsLgdff()
+        {
+            if (!(SceneController.Scene is STLScene))
+                return;
+            foreach (STLPart part in SceneController.Scene.PartsInScene)
+                ExportAsLgdff(part);
+        }
+        private void ExportAsLgdff(STLPart part)
+        {
+            string path;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "lgdff files (*.lgdff)|*.lgdff|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                path = saveFileDialog.FileName;
+                part.WriteAsLgdff(path);
+            }
+        }
+
         private void exportButton_Click(object sender, EventArgs e)
         {
-            ExportPartsAsObj();
+            //ExportPartsAsObj();
+            ExportPartsAsLgdff();
         }
 
         private void paintFunctrionCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -465,7 +502,7 @@ namespace OVFSliceViewer
                 paintFunctrionCheckedListBox.ItemCheck += paintFunctrionCheckedListBox_ItemCheck;
             }
             _currentPaintFunction = guiToEnumDict[e.Index];
-            if(e.NewValue == CheckState.Unchecked)
+            if (e.NewValue == CheckState.Unchecked)
             {
                 _currentPaintFunction = PaintFunction.None;
             }
@@ -488,7 +525,7 @@ namespace OVFSliceViewer
 
         private async void btnReload_Click(object sender, EventArgs e)
         {
-            if(SceneController.Scene is OVFScene)
+            if (SceneController.Scene is OVFScene)
             {
                 var currentWorkplane = layerTrackBar.Value;
 

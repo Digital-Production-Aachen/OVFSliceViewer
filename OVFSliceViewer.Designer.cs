@@ -350,7 +350,7 @@
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(154, 26);
             this.exportButton.TabIndex = 30;
-            this.exportButton.Text = "Export STL-File as Obj";
+            this.exportButton.Text = "Export STL-File as Lgdff";
             this.exportButton.UseVisualStyleBackColor = true;
             this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 

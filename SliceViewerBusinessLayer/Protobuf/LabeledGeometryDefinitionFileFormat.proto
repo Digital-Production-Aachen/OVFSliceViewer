@@ -1,0 +1,21 @@
+syntax = "proto3";
+package AutomatedBuildChain.Proto;
+
+enum LABEL
+{
+	NO_SUPPORT = 0;
+    ACCESSIBILITY = 1;
+    FUNCTIONAL_AREA = 2;
+}
+
+message LabelMap
+{
+	LABEL label = 1;
+	repeated int32 triangleIDs = 2;
+}
+
+message LabeledGeometryDefinitionFileFormat
+{
+	bytes obj = 1;
+	repeated LabelMap map = 2;
+}
