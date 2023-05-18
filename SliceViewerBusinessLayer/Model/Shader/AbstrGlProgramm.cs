@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using SliceViewerBusinessLayer.Model.Shader;
 //using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public abstract class AbstrGlProgramm : IDisposable
     {
         public int _handle;
-        protected string _vertexPath;
-        protected string _fragmentPath;
-        protected string _geometryPath;
+        //protected string _vertexPath;
+        //protected string _fragmentPath;
+        //protected string _geometryPath;
         protected string _vertexShaderCode;
         protected string _fragmentShaderCode;
         protected string _geometryShaderCode;
@@ -23,14 +24,14 @@ namespace OVFSliceViewerBusinessLayer.Model
 
 
         public Vector4 Color { get; set; } = new Vector4(1, 0, 0, 0);
-        protected AbstrGlProgramm(string vertexPath, string fragmentPath)
+        protected AbstrGlProgramm(string vertexShader, string fragmentShader)
         {
             var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
-            _vertexPath = path + vertexPath;
-            _fragmentPath = path + fragmentPath;
+            _vertexShaderCode = vertexShader;
+            _fragmentShaderCode = fragmentShader;
 
-            _geometryPath = path + @"\Classes\Shader\shader.geometry";
+            _geometryShaderCode = GeometryShaderCode.Shader;
 
             CompileShader();
         }
@@ -88,9 +89,9 @@ namespace OVFSliceViewerBusinessLayer.Model
         }
         protected void ReadShader()
         {
-            _vertexShaderCode = ReadShader(_vertexPath);
-            _fragmentShaderCode = ReadShader(_fragmentPath);
-            _geometryShaderCode = ReadShader(_geometryPath);
+            //_vertexShaderCode = ReadShader(_vertexPath);
+            //_fragmentShaderCode = ReadShader(_fragmentPath);
+            //_geometryShaderCode = ReadShader(_geometryPath);
 
             Debug.WriteLine(GL.GetError());
         }

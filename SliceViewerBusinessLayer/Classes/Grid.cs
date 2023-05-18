@@ -2,7 +2,7 @@
 using OpenTK;
 using OpenTK.Mathematics;
 
-namespace OVFSliceViewerBusinessLayer.Classes
+namespace OVFSliceViewerCore.Classes
 {
     public class Grid
     {

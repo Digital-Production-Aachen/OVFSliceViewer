@@ -1,10 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{8215D0F3-61F8-4D56-BE81-476FD8E257D1}</ProjectGuid>
-    <RootNamespace>SliceViewerBusinessLayer</RootNamespace>
-    <AssemblyName>SliceViewerBusinessLayer</AssemblyName>
+    <RootNamespace>OVFSliceViewerCore</RootNamespace>
+    <AssemblyName>OVFSliceViewerCore</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
 	<Platforms>AnyCPU;x64</Platforms>
+	  <PackageId>DAP.OVFSliceViewer.$(AssemblyName)</PackageId>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AssemblyTitle>SliceViewerBusinessLayer</AssemblyTitle>
     <Company>Microsoft</Company>
@@ -24,13 +25,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.19.1" />
-	<PackageReference Include="Grpc.Tools" Version="2.42.0">
+    <PackageReference Include="Grpc.Tools" Version="2.42.0">
 	    <PrivateAssets>all</PrivateAssets>
-		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	</PackageReference>
+		    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+    <PackageReference Include="OpenGlGuiLibrary" Version="1.0.2" />
     <PackageReference Include="OpenTK" Version="4.7.5" />
     <PackageReference Include="OpenVectorFormat" Version="1.4.2" />
-	<Protobuf Include=".\Protobuf\LabeledGeometryDefinitionFileFormat.proto" />
+    <Protobuf Include=".\Protobuf\LabeledGeometryDefinitionFileFormat.proto" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Classes\Shader\shader - Copy.geometry">
@@ -50,7 +52,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpLight.csproj" />
+    <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpSliceViewer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

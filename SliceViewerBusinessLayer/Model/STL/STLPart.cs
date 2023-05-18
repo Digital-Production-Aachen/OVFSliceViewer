@@ -1,4 +1,4 @@
-﻿using OVFSliceViewerBusinessLayer.Classes;
+﻿using OVFSliceViewerCore.Classes;
 using SliceViewerBusinessLayer.Model.STL;
 //using System.Windows.Forms;
 using System;
@@ -14,7 +14,7 @@ using AutomatedBuildChain.Proto;
 using Google.Protobuf;
 using System.Linq;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
 
     public class STLPart : AbstrPart

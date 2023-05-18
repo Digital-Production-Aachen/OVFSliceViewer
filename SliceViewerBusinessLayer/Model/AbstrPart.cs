@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public abstract class AbstrPart: IDisposable
     {

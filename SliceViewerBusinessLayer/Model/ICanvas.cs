@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public interface ICanvas
     {

@@ -1,7 +1,7 @@
-﻿using OVFSliceViewerBusinessLayer.Classes;
+﻿using OVFSliceViewerCore.Classes;
 using System.Collections.Generic;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public interface ISceneController
     {

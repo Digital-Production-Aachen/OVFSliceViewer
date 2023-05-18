@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using static OpenVectorFormat.VectorBlock.Types;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class OVFPart : AbstrPart
     {
@@ -65,7 +65,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             OVFRenderObject contourTarget;
             OVFRenderObject volumeTarget;
 
-            if (vectorBlock.LpbfMetadata.StructureType != StructureType.Support)
+            if (vectorBlock.LpbfMetadata?.StructureType != StructureType.Support)
             {
                 contourTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.Contour);
                 volumeTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.Volume);
@@ -76,8 +76,8 @@ namespace OVFSliceViewerBusinessLayer.Model
                 volumeTarget = _ovfRenderObjects.First(x => x.Type == OVFRenderObject.ViewerPartArea.SupportVolume);
             }
 
-            OVFRenderObject target = contourTarget;
-            switch (vectorBlock.LpbfMetadata.PartArea)
+            OVFRenderObject target = volumeTarget;
+            switch (vectorBlock.LpbfMetadata?.PartArea)
             {
                 case VectorBlock.Types.PartArea.Volume:
                     target = volumeTarget;

@@ -10,7 +10,7 @@ using System.Diagnostics;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class STLScene : IScene, IDisposable
     {

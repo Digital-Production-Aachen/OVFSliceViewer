@@ -3,10 +3,11 @@
     <ProjectGuid>{131DF945-694C-44EE-93E8-91506D8EC2BE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OVFSliceViewer</RootNamespace>
-    <AssemblyName>OVFSliceViewer</AssemblyName>
+    <AssemblyName>OVFSliceViewerGUI</AssemblyName>
     <TargetFramework>net6.0-windows</TargetFramework>
 	<Platforms>AnyCPU;x64</Platforms>
     <UseWindowsForms>true</UseWindowsForms>
+	  <PackageId>DAP.OVFSliceViewer.$(AssemblyName)</PackageId>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -117,9 +118,6 @@
     <PackageReference Include="OpenVectorFormat" Version="1.4.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerCore.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Classes\Camera.cs" />
     <Compile Remove="Classes\ColorDictionary.cs" />
     <Compile Remove="Classes\FileHandlerProgress.cs" />
@@ -160,5 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="ProgressStatus.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="SliceViewerBusinessLayer\OVFSliceViewerCore.csproj" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace OVFSliceViewerBusinessLayer.Model
+﻿namespace OVFSliceViewerCore.Model
 {
     public struct Range
     {

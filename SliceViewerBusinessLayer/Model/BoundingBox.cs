@@ -2,7 +2,7 @@
 using OpenTK.Mathematics;
 using System.Collections.Generic;
 
-namespace OVFSliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Model
 {
     public class BoundingBox
     {
@@ -24,7 +24,7 @@ namespace OVFSliceViewerBusinessLayer.Model
             Min = Vector3.ComponentMin(Min, vertex);
             Max = Vector3.ComponentMax(Max, vertex);
         }
-        public void AddVertices(IList<OVFSliceViewerBusinessLayer.Classes.Vertex> vertices)
+        public void AddVertices(IList<OVFSliceViewerCore.Classes.Vertex> vertices)
         {
             foreach (var vertex in vertices)
             {

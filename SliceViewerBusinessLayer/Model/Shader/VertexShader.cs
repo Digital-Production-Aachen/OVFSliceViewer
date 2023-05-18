@@ -1,10 +1,23 @@
-﻿#version 330 core
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SliceViewerBusinessLayer.Model.Shader
+{
+    public class VertexShader: AbstrShader
+    {
+        protected VertexShader() {
+            Shader =
+            @"
+#version 330 core
 uniform mat4 Mvp; 
 uniform int colorIndex;
 
 layout(location = 0) in vec3 position;
 layout(location = 1) in float powerCoefficient;
-out vec4 fragcolor; 
+out vec4 fragcolor;
 
 float colormap_red(float x) {
     if (x < 0.7) {
@@ -42,43 +55,23 @@ void main()
 {
 	vec4 colorOut = vec4(1,0,0,0);
 	vec4 colorMinPower = vec4(0,1,0,0);
-    //float colorIndex = 0;
 
-    if (powerCoefficient == 1.0)
-    {
-        colorOut = vec4(1, 0, 0, 0);
-    }
-    else if (powerCoefficient <= 1)
+    if(powerCoefficient > 0)
     {
         colorOut = colormap(powerCoefficient);
     }
     else
     {
-        if (colorIndex == 0)
-        {
-            colorOut = vec4(1, 0, 0, 0);
-        }
-        else if (colorIndex == 1)
-        {
-            colorOut = vec4(0, 1, 0, 0);
-        }
-        else if (colorIndex == 2)
-        {
-            colorOut = vec4(0, 0, 1, 0);
-        }
-        else if (colorIndex == 3)
-        {
-            colorOut = vec4(0.5, 0.5, 0, 0);
-        }
-        else
-        {
-            colorOut = vec4(1, 0, 0, 0);
-        }
-        
+        colorOut = colormap(colorIndex / 6.0);
     }
-     //colormap(smoothstep(-0.5, 1.5, 1.-colorIndex));
-        //mix(colorOut, colorMinPower, colorIndex);
-	
+  
+    //colorOut = colormap(colorIndex / 6.0);
 	gl_Position = Mvp * vec4(position, 1); 
-	fragcolor = colorOut; 
+    fragcolor = colorOut;
+
+}
+";
+        }
+        private static VertexShader _instance = new VertexShader();
+    }
 }
