@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using AutomatedBuildChain.Proto;
 using Google.Protobuf.Collections;
 using Google.Protobuf;
-using OVFSliceViewerBusinessLayer.Model;
+using OVFSliceViewerCore.Model;
 
 namespace SliceViewerBusinessLayer.Model.STL
 {

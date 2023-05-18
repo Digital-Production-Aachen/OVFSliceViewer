@@ -98,6 +98,10 @@ namespace OVFSliceViewerCore.Model
 
         public void CloseFile()
         {
+            if (Scene == null)
+            {
+                return;
+            }
             Scene.CloseFile();
             Clear();
         }

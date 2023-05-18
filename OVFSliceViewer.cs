@@ -229,6 +229,7 @@ namespace OVFSliceViewer
         }
         private void SetTrackBarText()
         {
+            if (SceneController.Scene == null) return;
             layerNumberLabel.Text = $"Layer: {SceneController.Scene.SceneSettings.CurrentWorkplane + 1} von {SceneController.Scene.OVFFileInfo.NumberOfWorkplanes}";
         }
 
