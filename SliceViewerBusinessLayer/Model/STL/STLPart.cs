@@ -194,7 +194,6 @@ namespace OVFSliceViewerCore.Model
             if (!File.Exists(path))
             {
                 string s = vertices.ToString()+verticesNormals.ToString()+faces.ToString();
-                s = s.Replace(',', '.');
 
                 LabeledGeometryDefinitionFileFormat lgdff = new LabeledGeometryDefinitionFileFormat();
                 lgdff.Obj = ByteString.CopyFrom(Encoding.ASCII.GetBytes(s));
