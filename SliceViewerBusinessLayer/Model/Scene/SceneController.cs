@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenVectorFormat.AbstractReaderWriter;
+using OVFSliceViewerCore.Model.Voxel;
 
 namespace OVFSliceViewerCore.Model
 {
@@ -59,14 +60,16 @@ namespace OVFSliceViewerCore.Model
         public async Task<IScene> LoadFile(string path)
         {
             var fileInfo = new FileInfo(path);
-
             if (Scene != null)
             {
                 CloseFile();
             }
             IScene scene;
-
-            if (FileHasNoParts(fileInfo))
+            if (fileInfo.Extension.ToLower() == ".voxel")
+            {
+                scene = new VoxelScene();
+            }
+            else if (FileHasNoParts(fileInfo))
             {
                 scene = new STLScene(this);
                 await scene.LoadFile(fileInfo);

@@ -41,6 +41,8 @@ namespace OVFSliceViewerCore.Model
 
         protected virtual void CompileShader()
         {
+            //ToDo: compile shader if one is given
+
             ReadShader();
             var VertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(VertexShader, _vertexShaderCode);
