@@ -40,11 +40,17 @@ namespace OVFSliceViewerCore.Model
             var reader = new VoxelReader();
             Dictionary<LABEL, List<int>> labelMap = new Dictionary<LABEL, List<int>>();
 
-            if (fileInfo.Extension.ToLower() == ".voxel")
-                await reader.ReadVoxel(fileInfo.FullName);
+            if (fileInfo.Extension.ToLower() == ".vx")
+            {
+                var voxel = await reader.ReadVoxel(fileInfo.FullName);
+                var part = new VoxelPart(voxel, SceneController, () => SceneSettings.UseColorIndex);
+                PartsInScene.Add(part);
+            }
+                
+                //reader.ReadStaticVocelData();
 
-            var part = new VoxelPart(reader.Voxel, SceneController, () => SceneSettings.UseColorIndex);
-            PartsInScene.Add(part);
+            
+            
         }
 
 

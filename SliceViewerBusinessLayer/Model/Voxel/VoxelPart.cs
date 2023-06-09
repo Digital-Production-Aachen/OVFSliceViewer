@@ -16,6 +16,7 @@ namespace OVFSliceViewerCore.Model.Voxel
         private VoxelRenderDataObject _renderData;
         public VoxelPart(VoxelList voxel, ISceneController scene, Func<bool> useColorIndex) 
         {
+            _renderData = new VoxelRenderDataObject(useColorIndex, scene.Camera);
             CreateRenderData(voxel);
         }
         private void CreateRenderData(VoxelList voxel)
@@ -25,8 +26,8 @@ namespace OVFSliceViewerCore.Model.Voxel
 
             foreach (var v  in voxel.VoxelList_)
             {
-                vertices.Add(new Vertex(new Vector3(v.LowerLeftCorner.X, v.LowerLeftCorner.Y, v.LowerLeftCorner.Z)));
-                vertices.Add(new Vertex(new Vector3(v.Dimension.Height, v.Dimension.Width, v.Dimension.Depth)));
+                vertices.Add(new Vertex(new Vector3(v.LowerLeftCorner.X, v.LowerLeftCorner.Y, v.LowerLeftCorner.Z), v.ClusterID));
+                vertices.Add(new Vertex(new Vector3(v.Dimension.Height, v.Dimension.Width, v.Dimension.Depth), voxel.VoxelList_.Max(x => x.ClusterID)));
 
                 //minX = Math.Min(minX, Min(triangle.VertexA.X, triangle.VertexB.X, triangle.VertexC.X));
                 //maxX = Math.Max(maxX, Max(triangle.VertexA.X, triangle.VertexB.X, triangle.VertexC.X));

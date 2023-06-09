@@ -24,14 +24,14 @@ namespace OVFSliceViewerCore.Model
 
 
         public Vector4 Color { get; set; } = new Vector4(1, 0, 0, 0);
-        protected AbstrGlProgramm(string vertexShader, string fragmentShader)
+        protected AbstrGlProgramm(string vertexShader, string fragmentShader, string geometryShader = "")
         {
             var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
             _vertexShaderCode = vertexShader;
             _fragmentShaderCode = fragmentShader;
 
-            _geometryShaderCode = GeometryShaderCode.Shader;
+            _geometryShaderCode = geometryShader;
 
             CompileShader();
         }
@@ -44,8 +44,25 @@ namespace OVFSliceViewerCore.Model
             //ToDo: compile shader if one is given
 
             ReadShader();
+
+            
+            
+
+
             var VertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(VertexShader, _vertexShaderCode);
+
+            int geometryShader = -1;
+
+            if (!string.IsNullOrWhiteSpace(_geometryShaderCode))
+            {
+                geometryShader = GL.CreateShader(ShaderType.GeometryShader);
+                GL.ShaderSource(geometryShader, _geometryShaderCode);
+                GL.CompileShader(geometryShader);
+                string infoLogGeom = GL.GetShaderInfoLog(geometryShader);
+                if (infoLogGeom != System.String.Empty)
+                    Debug.WriteLine(infoLogGeom);
+            }
 
             var FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(FragmentShader, _fragmentShaderCode);
@@ -53,34 +70,34 @@ namespace OVFSliceViewerCore.Model
             GL.CompileShader(VertexShader);
             string infoLogVert = GL.GetShaderInfoLog(VertexShader);
             if (infoLogVert != System.String.Empty)
-                Debug.WriteLine(infoLogVert);
+                Debug.WriteLine($"Error in vertex-shader compilation in  AbstrGlProgramm: {infoLogVert}");
 
             GL.CompileShader(FragmentShader);
             string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
             if (infoLogFrag != System.String.Empty)
-                Debug.WriteLine(infoLogFrag);
+                Debug.WriteLine($"Error in fragment-shader compilation in  AbstrGlProgramm: {infoLogFrag}");
 
             _handle = GL.CreateProgram();
 
-
-            AttachShader(new List<int>() { VertexShader, FragmentShader });
-
+            if (!string.IsNullOrWhiteSpace(_geometryShaderCode))
+                AttachShader(new List<int>() { VertexShader, geometryShader, FragmentShader });
+            else
+                AttachShader(new List<int>() { VertexShader, FragmentShader });
             //GL.AttachShader(_handle, VertexShader);
             //GL.AttachShader(_handle, FragmentShader);
 
             GL.LinkProgram(_handle);
             GL.ValidateProgram(_handle);
 
-            infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
-
-            if (infoLogFrag != System.String.Empty)
-                Debug.WriteLine(infoLogFrag);
-
+            GL.DetachShader(_handle, geometryShader);
             GL.DetachShader(_handle, VertexShader);
             GL.DetachShader(_handle, FragmentShader);
+            if(!string.IsNullOrWhiteSpace(_geometryShaderCode))
+                GL.DeleteShader(geometryShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
         }
+
         
         protected virtual void AttachShader(List<int> shaderHandles)
         {
@@ -91,10 +108,6 @@ namespace OVFSliceViewerCore.Model
         }
         protected void ReadShader()
         {
-            //_vertexShaderCode = ReadShader(_vertexPath);
-            //_fragmentShaderCode = ReadShader(_fragmentPath);
-            //_geometryShaderCode = ReadShader(_geometryPath);
-
             Debug.WriteLine(GL.GetError());
         }
         protected string ReadShader(string path)

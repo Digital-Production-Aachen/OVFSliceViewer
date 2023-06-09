@@ -36,7 +36,7 @@ namespace OVFSliceViewerCore.Model
 
         protected override void CreateShader(IModelViewProjection mvp)
         {
-            _shader = new GeometryShader(this, mvp, VertexShader.GetInstance.Shader, FragmentShader.Shader);
+            _shader = new GeometryShader(this, mvp, VertexShader.Shader, FragmentShader.Shader);
         }
     }
 }

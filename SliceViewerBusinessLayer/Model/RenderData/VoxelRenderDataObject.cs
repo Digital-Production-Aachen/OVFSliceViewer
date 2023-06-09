@@ -11,13 +11,13 @@ namespace OVFSliceViewerCore.Model.RenderData
     {
         public VoxelRenderDataObject(Func<bool> useColorIndex, IModelViewProjection mvp) : base(useColorIndex, mvp)
         {
-
+            this.PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType.Lines;
         }
 
         protected override void CreateShader(IModelViewProjection mvp)
         {
             //ToDo: this thing
-            _shader = new STLGLProgramm(this, mvp, STLShader.Shader, FragmentShader.Shader);
+            _shader = new VoxelGLProgramm(this, mvp, VoxelShader.Shader, FragmentShader.VoxelShader, VoxelGeometryShader.Shader);
         }
     }
 }

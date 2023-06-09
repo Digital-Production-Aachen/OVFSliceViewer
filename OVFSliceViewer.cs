@@ -151,7 +151,7 @@ namespace OVFSliceViewer
 
         private async void LoadJobButtonClick(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "ovf, ilt and stl files (*.ovf; *.ilt; *.gcode)|*.ovf;*.ilt;*.stl;*.obj;*.lgdff;*.gcode|All files (*.*)|*.*";
+            openFileDialog1.Filter = "ovf, ilt, stl and voxel files (*.ovf; *.ilt; *.gcode; *.vx)|*.ovf;*.ilt;*.stl;*.obj;*.lgdff;*.gcode;*.vx|All files (*.*)|*.*";
             var result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {

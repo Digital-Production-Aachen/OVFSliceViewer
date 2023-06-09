@@ -67,7 +67,8 @@ namespace OVFSliceViewerCore.Model
             IScene scene;
             if (fileInfo.Extension.ToLower() == ".vx")
             {
-                scene = new VoxelScene();
+                scene = new VoxelScene(this);
+                await scene.LoadFile(fileInfo);
             }
             else if (FileHasNoParts(fileInfo))
             {

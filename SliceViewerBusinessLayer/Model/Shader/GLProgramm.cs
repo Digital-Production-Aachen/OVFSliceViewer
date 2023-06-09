@@ -19,7 +19,7 @@ namespace OVFSliceViewerCore.Model
         
         protected int _colorPointer => GL.GetUniformLocation(_handle, "colorIndex");
 
-        public GLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader) : base(vertexShader, fragmentShader)
+        public GLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader, string geometryShader = "") : base(vertexShader, fragmentShader, geometryShader)
         {
             _renderObject = renderObject;
             _mvp = mvp;
@@ -62,7 +62,10 @@ namespace OVFSliceViewerCore.Model
             GL.BindVertexArray(_vertexArray);
             GL.LineWidth(2.5f);
             GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
-            Debug.WriteLine(GL.GetError());
+
+            var error = GL.GetError();
+            if(error != ErrorCode.NoError)
+                Debug.WriteLine(error.ToString());
         }
         protected virtual void RenderWithMultipleDraws()
         {
@@ -100,6 +103,9 @@ namespace OVFSliceViewerCore.Model
             finally
             {
                 handle.Free();
+                var error = GL.GetError();
+                if(error != ErrorCode.NoError)
+                    Debug.WriteLine($"Error in GLProgramm while creating VertexBuffer: {error}");
             }
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
         }

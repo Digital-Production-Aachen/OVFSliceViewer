@@ -31,7 +31,7 @@ namespace OVFSliceViewerCore.Model
 
         protected virtual void CreateShader(IModelViewProjection mvp)
         {
-            _shader = new GLProgramm(this, mvp, VertexShader.GetInstance.Shader, FragmentShader.Shader);
+            _shader = new GLProgramm(this, mvp, VertexShader.Shader, FragmentShader.Shader);
         }
 
         public void AddVertices(IList<Vertex> vertices, int colorIndex)

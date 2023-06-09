@@ -5,31 +5,73 @@
         public static string Shader =
             @"
 #version 330 core
-uniform mat4 Mvp; 
-uniform vec3 cameraPosition;
-layout (triangles) in;
-layout (triangle_strip, max_vertices = 3) out;
-in vec4 outColor[];
-out vec4 fragcolor;
+
+layout (lines) in;
+in float vertexColor[];
+layout (triangle_strip, max_vertices = 36) out;
+out float fragcolor;
+
+uniform mat4 Mvp;
 
 void main()
 {
-    vec4 p1 = gl_in[0].gl_Position;
-    vec4 p2 = gl_in[1].gl_Position;
-    vec4 p3 = gl_in[2].gl_Position;
+    // Berechnung der maximalen Koordinate des Voxels
+    
+mat4 invertedMatrix = inverse(Mvp);
+vec3 voxelMax = (gl_in[0].gl_Position + gl_in[1].gl_Position).xyz;
+vec3 voxelMin = (gl_in[0].gl_Position).xyz;
 
-    vec4 p12 = p2 - p1;
-    vec4 p23 = p3 - p2;
+    // Definition der Eckpunkte des Voxels
+    vec3 cubeVertices[8];
 
-    vec3 triangleDirection = cross(p12.xyz, p23.xyz);
-    float lightingCoefficient = clamp(dot(cameraPosition, -triangleDirection), 0.0, 1.0);
+    cubeVertices[0] = voxelMin;
+    cubeVertices[1] = vec3(voxelMax.x, voxelMin.y, voxelMin.z);
+    cubeVertices[2] = vec3(voxelMin.x, voxelMax.y, voxelMin.z);
+    cubeVertices[3] = vec3(voxelMax.x, voxelMax.y, voxelMin.z);
+    cubeVertices[4] = vec3(voxelMin.x, voxelMin.y, voxelMax.z);
+    cubeVertices[5] = vec3(voxelMax.x, voxelMin.y, voxelMax.z);
+    cubeVertices[6] = voxelMax;
+    cubeVertices[7] = vec3(voxelMin.x, voxelMax.y, voxelMax.z);
+    
 
+    int indices[36] = int[36](
+        //hinten
+        0, 1, 3,
+        0, 3, 2,
 
-    for(int i=0; i<3; i++)
+        //links
+        0, 2, 7,
+        0, 7, 4,
+        
+        //boden
+        0, 1, 5,
+        0, 5, 4,
+        
+        //vorne
+        4, 5, 6,
+        4, 6, 7,
+
+        // oben
+        2, 6, 7,
+        2, 6, 3,
+        
+        //rechts
+        1, 6, 3,
+        1, 5, 6
+    );
+
+    for (int i = 0; i < 36; ++i)
     {
-        fragcolor = outColor[i] * lightingCoefficient;
-	    gl_Position = gl_in[i].gl_Position;
+        int vertexIndex = indices[i];
+        //int colorIndex = i - (i % 6);
+        vec4 position = Mvp * vec4(cubeVertices[vertexIndex], 1.0);
+        gl_Position = position;
+        //float color = 1.0 / 36.0 * colorIndex;
+        fragcolor = vertexColor[0] / vertexColor[1];
         EmitVertex();
+if(i % 3 == 2){
+    EndPrimitive();
+}
     }
 }
 ";

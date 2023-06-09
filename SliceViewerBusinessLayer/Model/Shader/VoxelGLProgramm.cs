@@ -6,7 +6,7 @@ namespace OVFSliceViewerCore.Model
 {
     public class VoxelGLProgramm : GLProgramm
     {
-        public VoxelGLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader, string geometryPath = "\\Classes\\Shader\\shader.geometry") : base(renderObject, mvp, vertexShader, fragmentShader)
+        public VoxelGLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader, string geometryShader) : base(renderObject, mvp, vertexShader, fragmentShader, geometryShader)
         {
             //_geometryPath = geometryPath;
         }
@@ -29,25 +29,25 @@ namespace OVFSliceViewerCore.Model
             GL.EnableVertexAttribArray(1);
 
             //ToDo: test
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 4 * sizeof(float), 4);
-            GL.EnableVertexAttribArray(2);
-            GL.VertexAttribPointer(3, 1, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(3);
+            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 4 * sizeof(float), 20);
+            //GL.EnableVertexAttribArray(2);
+            //GL.VertexAttribPointer(3, 1, VertexAttribPointerType.Float, false, 4 * sizeof(float), 16);
+            //GL.EnableVertexAttribArray(3);
         }
 
-        protected override void AttachShader(List<int> shaderHandles)
-        {
-            var geometryShader = GL.CreateShader(ShaderType.GeometryShader);
-            GL.ShaderSource(geometryShader, _geometryShaderCode);
+        //protected override void AttachShader(List<int> shaderHandles)
+        //{
+        //    var geometryShader = GL.CreateShader(ShaderType.GeometryShader);
+        //    GL.ShaderSource(geometryShader, _geometryShaderCode);
 
-            GL.CompileShader(geometryShader);
-            string infoLogVert = GL.GetShaderInfoLog(geometryShader);
-            if (infoLogVert != System.String.Empty)
-                Debug.WriteLine(infoLogVert);
+        //    GL.CompileShader(geometryShader);
+        //    string infoLogVert = GL.GetShaderInfoLog(geometryShader);
+        //    if (infoLogVert != System.String.Empty)
+        //        Debug.WriteLine(infoLogVert);
 
 
-            shaderHandles.Add(geometryShader);
-            base.AttachShader(shaderHandles);
-        }
+        //    shaderHandles.Add(geometryShader);
+        //    base.AttachShader(shaderHandles);
+        //}
     }
 }
