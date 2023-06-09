@@ -129,12 +129,18 @@ namespace OVFSliceViewer
             try
             {
                 _canvasWrapper.Init();
-                SceneController.Scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
-                SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
-                SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
-                SceneController.Render();
 
-                label2.Text = SceneController.Scene.LastPosition.ToString();
+                foreach (var scene in SceneController.Scenes.Where(x => x is OVFScene).ToList())
+                {
+                    scene.LoadWorkplaneToBuffer(layerTrackBar.Value);
+                    SetTimeTrackBar(scene.GetNumberOfLinesInWorkplane());
+                    scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
+                    SceneController.Render();
+
+                    label2.Text = scene.LastPosition.ToString();
+                }
+
+                
             }
             catch (Exception e)
             {
@@ -186,7 +192,7 @@ namespace OVFSliceViewer
         }
         private void AfterLoadJob(string filename)
         {
-            layerTrackBar.Maximum = Math.Max(SceneController.Scene.OVFFileInfo.NumberOfWorkplanes - 1, 0);
+            layerTrackBar.Maximum = Math.Max(SceneController.Scenes.Sum(x => x.OVFFileInfo.NumberOfWorkplanes) - 1, 0);
             layerTrackBar.Value = 0;
             SetTrackBarText();
 
@@ -229,15 +235,15 @@ namespace OVFSliceViewer
         }
         private void SetTrackBarText()
         {
-            if (SceneController.Scene == null) return;
-            layerNumberLabel.Text = $"Layer: {SceneController.Scene.SceneSettings.CurrentWorkplane + 1} von {SceneController.Scene.OVFFileInfo.NumberOfWorkplanes}";
+            if (SceneController.Scenes.Count == 0) return;
+            layerNumberLabel.Text = $"Layer: {SceneController.Scenes.FirstOrDefault().SceneSettings.CurrentWorkplane + 1} von {SceneController.Scenes.FirstOrDefault().OVFFileInfo.NumberOfWorkplanes}";
         }
 
         private void timeTrackBarScroll(object sender, EventArgs e)
         {
-            SceneController.Scene.ChangeNumberOfLinesToDraw(timeTrackBar.Value);
+            SceneController.Scenes.FirstOrDefault().ChangeNumberOfLinesToDraw(timeTrackBar.Value);
             SceneController.Render();
-            label2.Text = SceneController.Scene.LastPosition.ToString();
+            label2.Text = SceneController.Scenes.FirstOrDefault().LastPosition.ToString();
         }
 
         private void canvasMouseDown(object sender, MouseEventArgs e)
@@ -263,7 +269,7 @@ namespace OVFSliceViewer
 
         private void canvasMouseMove(object sender, MouseEventArgs e)
         {
-            if (_currentPaintFunction != PaintFunction.None && SceneController.Scene is STLScene && e.Button == MouseButtons.Right)
+            if (_currentPaintFunction != PaintFunction.None && SceneController.Scenes.FirstOrDefault() is STLScene && e.Button == MouseButtons.Right)
             {
                 ColorSTLPart(e);
             }
@@ -283,14 +289,14 @@ namespace OVFSliceViewer
         }
         private void layerTrackBarMouseUp(object sender, MouseEventArgs e)
         {
-            if (SceneController.Scene is null)
+            if (SceneController.Scenes.Count is 0)
                 return;
-            SetTimeTrackBar(SceneController.Scene.GetNumberOfLinesInWorkplane());
+            SetTimeTrackBar(SceneController.Scenes.FirstOrDefault().GetNumberOfLinesInWorkplane());
         }
 
         private void canvasMouseClick(object sender, MouseEventArgs e)
         {
-            if (_currentPaintFunction != PaintFunction.None && SceneController.Scene is STLScene)
+            if (_currentPaintFunction != PaintFunction.None && SceneController.Scenes.FirstOrDefault() is STLScene)
             {
                 ColorSTLPart(e);
             }
@@ -302,7 +308,7 @@ namespace OVFSliceViewer
 
         private void highlightCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            SceneController.Scene.SceneSettings.UseColorIndex = !SceneController.Scene.SceneSettings.UseColorIndex;
+            SceneController.Scenes.FirstOrDefault().SceneSettings.UseColorIndex = !SceneController.Scenes.FirstOrDefault().SceneSettings.UseColorIndex;
 
             var c = sender as CheckedListBox;
             if (e.NewValue == CheckState.Checked && c.CheckedItems.Count > 0)
@@ -381,7 +387,7 @@ namespace OVFSliceViewer
 
         private void cBLaserIndexColor_CheckedChanged(object sender, EventArgs e)
         {
-            SceneController.Scene.SceneSettings.UseColorIndex = cBLaserIndexColor.Checked;
+            SceneController.Scenes.FirstOrDefault().SceneSettings.UseColorIndex = cBLaserIndexColor.Checked;
             DrawWorkplane();
         }
 
@@ -405,7 +411,7 @@ namespace OVFSliceViewer
                 {
 
                     Nullable<LABEL> curlabel = (_colorToFunctionDictionary.ContainsKey(_currentPaintFunction)) ? _colorToFunctionDictionary[_currentPaintFunction] : null;
-                    (SceneController.Scene as STLScene).ColorNearestHitTriangles(position, _functionColorDictionary[_currentPaintFunction], paintingRadius, curlabel);
+                    (SceneController.Scenes.FirstOrDefault() as STLScene).ColorNearestHitTriangles(position, _functionColorDictionary[_currentPaintFunction], paintingRadius, curlabel);
                 }
                 SceneController.Render();
             }
@@ -413,7 +419,7 @@ namespace OVFSliceViewer
 
         private void STLKeyActions(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
-            if (SceneController.Scene is STLScene)
+            if (SceneController.Scenes.FirstOrDefault() is STLScene)
             {
                 if (e.KeyChar == 'e')
                 {
@@ -435,9 +441,9 @@ namespace OVFSliceViewer
 
         private void ExportPartsAsObj()
         {
-            if (!(SceneController.Scene is STLScene))
+            if (!(SceneController.Scenes.FirstOrDefault() is STLScene))
                 return;
-            foreach (STLPart part in SceneController.Scene.PartsInScene)
+            foreach (STLPart part in SceneController.Scenes.FirstOrDefault().PartsInScene)
                 ExportAsObj(part);
         }
         private void ExportAsObj(STLPart part)
@@ -458,9 +464,9 @@ namespace OVFSliceViewer
 
         private void ExportPartsAsLgdff()
         {
-            if (!(SceneController.Scene is STLScene))
+            if (!(SceneController.Scenes.FirstOrDefault() is STLScene))
                 return;
-            foreach (STLPart part in SceneController.Scene.PartsInScene)
+            foreach (STLPart part in SceneController.Scenes.FirstOrDefault().PartsInScene)
                 ExportAsLgdff(part);
         }
         private void ExportAsLgdff(STLPart part)
@@ -526,7 +532,7 @@ namespace OVFSliceViewer
 
         private async void btnReload_Click(object sender, EventArgs e)
         {
-            if (SceneController.Scene is OVFScene)
+            if (SceneController.Scenes.FirstOrDefault() is OVFScene)
             {
                 var currentWorkplane = layerTrackBar.Value;
 

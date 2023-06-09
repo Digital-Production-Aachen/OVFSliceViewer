@@ -8,13 +8,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using OpenVectorFormat.AbstractReaderWriter;
 using OVFSliceViewerCore.Model.Voxel;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace OVFSliceViewerCore.Model
 {
     public class SceneController: ISceneController, IDisposable
     {
         public Camera Camera { get; protected set; }
-        public IScene Scene { get; protected set; }
+        public List<IScene> Scenes { get; protected set; } = new List<IScene>();
 
         private ICanvas _canvas;
 
@@ -26,7 +27,7 @@ namespace OVFSliceViewerCore.Model
 
         public void Render()
         {
-            if (Scene == null)
+            if (Scenes.Count() == 0)
             {
                 return;
             }
@@ -39,7 +40,7 @@ namespace OVFSliceViewerCore.Model
 
             try
             {
-                Scene.Render();
+                Scenes.ForEach(x => x.Render());
             }
             catch (Exception e)
             {
@@ -54,16 +55,16 @@ namespace OVFSliceViewerCore.Model
         {
             var scene = new OVFScene(this);
             await scene.LoadFile(file);
-            Scene = scene;
+            Scenes.Add(scene);
             return scene;
         }
         public async Task<IScene> LoadFile(string path)
         {
             var fileInfo = new FileInfo(path);
-            if (Scene != null)
-            {
-                CloseFile();
-            }
+            //if (Scene != null)
+            //{
+            //    CloseFile();
+            //}
             IScene scene;
             if (fileInfo.Extension.ToLower() == ".vx")
             {
@@ -96,22 +97,21 @@ namespace OVFSliceViewerCore.Model
                 //}
             }
 
-            Scene = scene;
+            Scenes.Add(scene);
             return scene;
         }
 
         public void CloseFile()
         {
-            if (Scene == null)
+            foreach (var scene in Scenes)
             {
-                return;
+                scene.CloseFile();
             }
-            Scene.CloseFile();
             Clear();
         }
         private void Clear()
         {
-            if (Scene == null)
+            if (Scenes.Count == 0)
             {
                 return;
             }
@@ -143,11 +143,11 @@ namespace OVFSliceViewerCore.Model
 
         public void CenterView()
         {
-            if (Scene == null)
+            if (Scenes.Count == 0)
             {
                 return;
             }
-            Camera.MoveToPosition2D(Scene.GetCenter());
+            Camera.MoveToPosition2D(Scenes.FirstOrDefault().GetCenter());
         }
 
 
@@ -155,7 +155,7 @@ namespace OVFSliceViewerCore.Model
 
         public List<AbstrPart> GetParts()
         {
-            var temp = Scene.PartsInScene.ToList();
+            var temp = Scenes.Select(x => x.PartsInScene).SelectMany(x => x).ToList();
             return temp.Select(x => (AbstrPart)x).ToList();
         }
         protected virtual void Dispose(bool disposing)
@@ -167,7 +167,12 @@ namespace OVFSliceViewerCore.Model
                     // TODO: dispose managed state (managed objects)
                 }
 
-                Scene?.Dispose();
+                foreach (var scene in Scenes)
+                {
+                    scene.Dispose();
+                }
+
+                
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null

@@ -10,6 +10,7 @@ using System.Diagnostics;
 using OVFSliceViewerCore.Model;
 using OVFSliceViewerCore.Classes;
 using OpenVectorFormat.AbstractReaderWriter;
+using System.Linq;
 
 namespace SliceViewerBusinessLayer
 {
@@ -95,7 +96,7 @@ namespace SliceViewerBusinessLayer
                             }
                         }
 
-                        Scene.Scene.LoadWorkplaneToBuffer(_layernumber);//.LoadWorkplane(workplane.GetAwaiter().GetResult()).GetAwaiter().GetResult();
+                        Scene.Scenes.FirstOrDefault().LoadWorkplaneToBuffer(_layernumber);//.LoadWorkplane(workplane.GetAwaiter().GetResult()).GetAwaiter().GetResult();
                         //Scene.SetNumberOfLines(Scene.MaxNumberOfLines);
                         //Scene.SetHighlightColors(1);
                     }
@@ -106,7 +107,7 @@ namespace SliceViewerBusinessLayer
 
                         //var workplane = Slicer.SliceLayerAsync(_layernumber);
                         _label.SetText("Layer: " + _layernumber);
-                        Scene.Scene.LoadWorkplaneToBuffer(_layernumber);
+                        Scene.Scenes.FirstOrDefault().LoadWorkplaneToBuffer(_layernumber);
 
                         //Scene.LoadWorkplane(workplane.GetAwaiter().GetResult()).GetAwaiter().GetResult();
                         //Scene.SetNumberOfLines(Scene.MaxNumberOfLines);
