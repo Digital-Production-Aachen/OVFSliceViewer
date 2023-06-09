@@ -12,7 +12,7 @@ namespace OVFSliceViewerCore.Model
 
         protected override void CreateShader(IModelViewProjection mvp)
         {
-            _shader = new STLGLProgramm(this, mvp, STLShader.Shader, FragmentShader.Shader);
+            _shader = new STLGLProgramm(this, mvp, STLShader.Shader, FragmentShader.Shader, GeometryShaderCode.Shader);
         }
     }
 }
