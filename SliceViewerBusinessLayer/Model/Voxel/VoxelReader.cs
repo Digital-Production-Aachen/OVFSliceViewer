@@ -13,7 +13,7 @@ namespace OVFSliceViewerCore.Model.Voxel
     public class VoxelReader
     {
         protected string _filePath;
-        public async Task<AutomatedBuildChain.Proto.VoxelList> ReadVoxel(string filePath) 
+        public async Task<VoxelList> ReadVoxel(string filePath) 
         {
             VoxelList protoFile;
             using (var input = File.OpenRead(filePath))
