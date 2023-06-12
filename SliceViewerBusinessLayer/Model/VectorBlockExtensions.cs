@@ -55,8 +55,8 @@ namespace OVFSliceViewerCore.Model
 
             for (int i = 5; i <= points.Count(); i += 3)
             {
-                var startVertex = new Vertex(new Vector3(points[i - 5], points[i - 4], height), points[i - 3]);
-                var endVertex = new Vertex(new Vector3(points[i - 2], points[i - 1], height), points[i]);
+                var startVertex = new Vertex(new Vector3(points[i - 5], points[i - 4], height), ((points[i - 3] - 250f) / 100f));
+                var endVertex = new Vertex(new Vector3(points[i - 2], points[i - 1], height), ((points[i] - 250f) / 100f));
 
                 vertices.Add(startVertex);
                 vertices.Add(endVertex);

@@ -115,6 +115,8 @@ namespace OVFSliceViewerCore.Model
             {
                 return;
             }
+            Scenes.Clear();
+
             _canvas.MakeCurrent();
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);

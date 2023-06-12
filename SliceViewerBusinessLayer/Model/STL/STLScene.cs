@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
+using OpenTK.Graphics.OpenGL;
 
 namespace OVFSliceViewerCore.Model
 {

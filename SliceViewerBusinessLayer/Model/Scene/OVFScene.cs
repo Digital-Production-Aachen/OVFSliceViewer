@@ -95,7 +95,6 @@ namespace OVFSliceViewerCore.Model
         public Vector3 LastPosition { get; set; }
         public void Render()
         {
-            
             GL.LineWidth(5f);
 
             if (_stateChanged)

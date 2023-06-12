@@ -140,7 +140,7 @@ namespace OVFSliceViewer
                     label2.Text = scene.LastPosition.ToString();
                 }
 
-                
+
             }
             catch (Exception e)
             {
@@ -204,10 +204,16 @@ namespace OVFSliceViewer
             exportButton.Enabled = hasNoParts;
             if (!hasNoParts)
             {
-                ((ListBox)this.partsCheckedListBox).DataSource = parts;
+                try
+                {
+                    ((ListBox)this.partsCheckedListBox).Items.Clear();
+                    ((ListBox)this.partsCheckedListBox).DataSource = parts;
+                }
+                catch (Exception) { }
+
             }
 
-                ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
+            ((ListBox)this.partsCheckedListBox).DisplayMember = "Name";
             ((ListBox)this.partsCheckedListBox).ValueMember = "IsActive";
 
             for (int i = 0; i < partsCheckedListBox.Items.Count; i++)
