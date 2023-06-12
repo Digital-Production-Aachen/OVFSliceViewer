@@ -4,6 +4,8 @@
     {
         public static string Shader =
             @"
+#version 330 core
+
 uniform mat4 Mvp; 
 uniform int colorIndex;
 layout (location = 0) in vec3 position;
