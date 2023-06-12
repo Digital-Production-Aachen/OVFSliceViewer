@@ -20,6 +20,7 @@ namespace OVFSliceViewerCore.Model.Shader
         public int _currentShaderHandle = -1;
         public int _ovfShaderHandle = -1;
         public int _stlShaderHandle = -1;
+        public int _voxelShaderHandle = -1;
 
         public int OVFColorPointer => GL.GetUniformLocation(_currentShaderHandle, "colorIndex");
         public int MvpPointer => GL.GetUniformLocation(_currentShaderHandle, "Mvp");
@@ -137,6 +138,37 @@ namespace OVFSliceViewerCore.Model.Shader
             }
         }
 
-        
+        public void UseVoxelShader(Vector3 cameraDirection)
+        {
+            var error = GL.GetError();
+            if (error != ErrorCode.NoError)
+                Debug.WriteLine($"{error} before using voxel shader");
+
+            if (_currentShaderHandle != _voxelShaderHandle || _voxelShaderHandle == -1)
+            {
+                if (_voxelShaderHandle == -1)
+                {
+                    _voxelShaderHandle = CompileShader(VoxelShader.Shader, VoxelGeometryShader.Shader, FragmentShader.VoxelShader);
+                    _cameraPositionPointer = GL.GetUniformLocation(_voxelShaderHandle, "cameraPosition");
+
+                    error = GL.GetError();
+                    if (error != ErrorCode.NoError)
+                        Debug.WriteLine($"{error} After compiling and getting uniform location of stl shader \"cameraPosition\"");
+                }
+
+                GL.UseProgram(_voxelShaderHandle);
+
+                error = GL.GetError();
+                if (error != ErrorCode.NoError)
+                    Debug.WriteLine($"{error} after GL.UseProgram");
+
+                _currentShaderHandle = _voxelShaderHandle;
+
+
+
+            }
+
+            GL.Uniform3(_cameraPositionPointer, cameraDirection);
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace OVFSliceViewerCore.Model
 
             try
             {
-                Scenes.OrderBy(x => x.GetType()).ToList().ForEach(x => x.Render());
+                Scenes.OrderBy(x => x.GetType().ToString()).ToList().ForEach(x => x.Render());
             }
             catch (Exception e)
             {
