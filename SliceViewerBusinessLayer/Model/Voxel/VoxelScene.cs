@@ -10,6 +10,7 @@ using System.Diagnostics;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
 using OVFSliceViewerCore.Model.Voxel;
+using OpenTK.Graphics.OpenGL;
 
 namespace OVFSliceViewerCore.Model
 {
@@ -43,14 +44,13 @@ namespace OVFSliceViewerCore.Model
             if (fileInfo.Extension.ToLower() == ".vx")
             {
                 var voxel = await reader.ReadVoxel(fileInfo.FullName);
-                var part = new VoxelPart(voxel, SceneController, () => SceneSettings.UseColorIndex);
+                var part = new VoxelPart(voxel.VoxelList_.Where(x=>x.ClusterID == -1).ToList(), SceneController, () => SceneSettings.UseColorIndex);
+                part.Name = "part";
+                var cluster = new VoxelPart(voxel.VoxelList_.Where(x => x.ClusterID != -1).ToList(), SceneController, () => SceneSettings.UseColorIndex);
+                cluster.Name = "clusters";
                 PartsInScene.Add(part);
-            }
-                
-                //reader.ReadStaticVocelData();
-
-            
-            
+                PartsInScene.Add(cluster);
+            }                
         }
 
 
@@ -91,7 +91,11 @@ namespace OVFSliceViewerCore.Model
 
         void IScene.Render()
         {
-            PartsInScene.ForEach(x => x.Render());
+            foreach(var part in PartsInScene)
+            {
+                if (part.IsActive)
+                    part.Render();
+            }
         }
 
         Vector2 IScene.GetCenter()

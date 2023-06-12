@@ -63,10 +63,8 @@ vec3 voxelMin = (gl_in[0].gl_Position).xyz;
     for (int i = 0; i < 36; ++i)
     {
         int vertexIndex = indices[i];
-        //int colorIndex = i - (i % 6);
         vec4 position = Mvp * vec4(cubeVertices[vertexIndex], 1.0);
         gl_Position = position;
-        //float color = 1.0 / 36.0 * colorIndex;
         fragcolor = vertexColor[0] / vertexColor[1];
         EmitVertex();
 if(i % 3 == 2){

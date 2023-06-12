@@ -15,7 +15,7 @@ namespace OVFSliceViewerCore.Model
         public bool IsActive { get;
             set; } = true;
 
-        public string Name { get; protected set; } = "No name";
+        public string Name { get; set; } = "No name";
         private bool disposedValue;
 
         public abstract void Render();

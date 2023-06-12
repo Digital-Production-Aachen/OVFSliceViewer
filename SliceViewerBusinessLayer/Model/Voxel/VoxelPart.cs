@@ -14,27 +14,20 @@ namespace OVFSliceViewerCore.Model.Voxel
     public class VoxelPart : AbstrPart
     {
         private VoxelRenderDataObject _renderData;
-        public VoxelPart(VoxelList voxel, ISceneController scene, Func<bool> useColorIndex) 
+        public VoxelPart(IList<AutomatedBuildChain.Proto.Voxel> voxel, ISceneController scene, Func<bool> useColorIndex) 
         {
             _renderData = new VoxelRenderDataObject(useColorIndex, scene.Camera);
             CreateRenderData(voxel);
         }
-        private void CreateRenderData(VoxelList voxel)
+        private void CreateRenderData(IList<AutomatedBuildChain.Proto.Voxel> voxel)
         {
             List<Vertex> vertices = new List<Vertex>();
             //float minX = 0, maxX = 0, minY = 0, maxY = 0, minZ = 0, maxZ = 0;
-
-            foreach (var v  in voxel.VoxelList_)
+            var max = voxel.Max(x => x.ClusterID) + 1;
+            foreach (var v  in voxel)
             {
-                vertices.Add(new Vertex(new Vector3(v.LowerLeftCorner.X, v.LowerLeftCorner.Y, v.LowerLeftCorner.Z), v.ClusterID));
-                vertices.Add(new Vertex(new Vector3(v.Dimension.Height, v.Dimension.Width, v.Dimension.Depth), voxel.VoxelList_.Max(x => x.ClusterID)));
-
-                //minX = Math.Min(minX, Min(triangle.VertexA.X, triangle.VertexB.X, triangle.VertexC.X));
-                //maxX = Math.Max(maxX, Max(triangle.VertexA.X, triangle.VertexB.X, triangle.VertexC.X));
-                //minY = Math.Min(minY, Min(triangle.VertexA.Y, triangle.VertexB.Y, triangle.VertexC.Y));
-                //maxY = Math.Max(maxY, Max(triangle.VertexA.Y, triangle.VertexB.Y, triangle.VertexC.Y));
-                //minZ = Math.Min(minZ, Min(triangle.VertexA.Z, triangle.VertexB.Z, triangle.VertexC.Z));
-                //maxZ = Math.Max(maxZ, Max(triangle.VertexA.Z, triangle.VertexB.Z, triangle.VertexC.Z));
+                vertices.Add(new Vertex(new Vector3(v.LowerLeftCorner.X, v.LowerLeftCorner.Y, v.LowerLeftCorner.Z), v.ClusterID+1));
+                vertices.Add(new Vertex(new Vector3(v.Dimension.Height, v.Dimension.Width, v.Dimension.Depth), max));
             }
 
             _renderData.AddVertices(vertices, 0);
