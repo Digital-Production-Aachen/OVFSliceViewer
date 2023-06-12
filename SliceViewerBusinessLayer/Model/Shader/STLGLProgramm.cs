@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using OVFSliceViewerCore.Model.Shader;
 using SliceViewerBusinessLayer.Model.Shader;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,12 +14,14 @@ namespace OVFSliceViewerCore.Model
             //_geometryPath = geometryPath;
         }
 
-        protected int _cameraPositionPointer => GL.GetUniformLocation(_handle, "cameraPosition");
+        //protected int _cameraPositionPointer => GL.GetUniformLocation(_handle, "cameraPosition");
 
         public override void Use()
         {
-            base.Use();
-            GL.Uniform3(_cameraPositionPointer, _mvp.CameraDirection);
+            
+            ShaderController.GetInstance.UseSTLShader(_mvp.CameraDirection);
+
+            
         }
         protected override void CreateVertexArray()
         {

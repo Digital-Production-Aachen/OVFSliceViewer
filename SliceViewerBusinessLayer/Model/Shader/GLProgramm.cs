@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using OVFSliceViewerCore.Model.Shader;
 //using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ namespace OVFSliceViewerCore.Model
         protected readonly IRenderData _renderObject;
         protected IModelViewProjection _mvp;
         
-        protected int _colorPointer => GL.GetUniformLocation(_handle, "colorIndex");
 
         public GLProgramm(IRenderData renderObject, IModelViewProjection mvp, string vertexShader, string fragmentShader, string geometryShader = "") : base(vertexShader, fragmentShader, geometryShader)
         {
@@ -58,7 +58,7 @@ namespace OVFSliceViewerCore.Model
             var mvp = _mvp.ModelViewProjection;
             GL.UniformMatrix4(_mvpPointer, false, ref mvp);
 
-            GL.Uniform1(_colorPointer, colorIndex);
+            GL.Uniform1(ShaderController.GetInstance.OVFColorPointer, colorIndex);
             GL.BindVertexArray(_vertexArray);
             GL.LineWidth(2.5f);
             GL.DrawArrays(_renderObject.PrimitiveType, _renderObject.Start, _renderObject.End);
@@ -78,7 +78,7 @@ namespace OVFSliceViewerCore.Model
             {
                 if (lastColorIndex != item.ColorIndex)
                 {
-                    GL.Uniform1(_colorPointer, item.ColorIndex);
+                    GL.Uniform1(ShaderController.GetInstance.OVFColorPointer, item.ColorIndex);
                     lastColorIndex = item.ColorIndex;
                 }
                 
@@ -128,6 +128,11 @@ namespace OVFSliceViewerCore.Model
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(1, 1, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
             GL.EnableVertexAttribArray(1);
+        }
+
+        public override void Use()
+        {
+            ShaderController.GetInstance.UseOVFShader();
         }
     }
 }
