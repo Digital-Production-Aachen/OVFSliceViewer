@@ -35,23 +35,6 @@
     <Protobuf Include=".\Protobuf\LabeledGeometryDefinitionFileFormat.proto" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Classes\Shader\shader - Copy.geometry">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Classes\Shader\shaderSTL.vert">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Classes\Shader\shader.frag">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Classes\Shader\shader.geometry">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Classes\Shader\shader.vert">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Geometry3SharpLight\Geometry3SharpSliceViewer.csproj" />
   </ItemGroup>
   <ItemGroup>

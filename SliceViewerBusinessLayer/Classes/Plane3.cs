@@ -1,4 +1,4 @@
-﻿// Irrlich Enginge
+﻿// Irrlicht Enginge
 // Intersection methods are from Irrlicht Engine and have been modified
 
 using System;
