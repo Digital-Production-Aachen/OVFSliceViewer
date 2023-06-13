@@ -118,13 +118,6 @@
     <PackageReference Include="OpenVectorFormat" Version="1.4.2" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Classes\Camera.cs" />
-    <Compile Remove="Classes\ColorDictionary.cs" />
-    <Compile Remove="Classes\FileHandlerProgress.cs" />
-    <Compile Remove="Classes\Grid.cs" />
-    <Compile Remove="Classes\JobViewer.cs" />
-    <Compile Remove="Classes\MotionTracker.cs" />
-    <Compile Remove="Classes\Vertex.cs" />
     <Compile Remove="Interfaces\IRotateable.cs" />
     <Compile Remove="Interfaces\IZoomable.cs" />
     <Compile Remove="Model\AbstrPart.cs" />
@@ -148,7 +141,6 @@
     <Compile Remove="Model\TriangleShader.cs" />
     <Compile Remove="Model\VectorblockDisplayData.cs" />
     <Compile Remove="Model\VectorBlockExtensions.cs" />
-    <Compile Remove="Classes\Shader\Shader.cs" />
     <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
     <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.6.AssemblyAttributes.cs" />
     <Compile Remove="obj\x64\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
