@@ -23,3 +23,6 @@
 *.manifest
 /RWTH Colors.pdf
 
+/test.vx
+/vox_export.vx
+/vox_export_new.vx
