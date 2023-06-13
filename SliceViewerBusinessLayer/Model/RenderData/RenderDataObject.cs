@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
-using OVFSliceViewerCore.Classes;
+using OVFSliceViewerCore.Model.RenderData;
+using OVFSliceViewerCore.Model.Scene;
 using SliceViewerBusinessLayer.Model.Shader;
 using System;
 using System.Collections.Generic;

@@ -2,13 +2,14 @@
 using OpenTK;
 using OpenTK.Mathematics;
 using OpenVectorFormat;
+using OVFSliceViewerCore.Model.RenderData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using static OpenVectorFormat.VectorBlock.Types;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.Part
 {
     public class OVFPart : AbstrPart
     {
@@ -79,13 +80,13 @@ namespace OVFSliceViewerCore.Model
             OVFRenderObject target = volumeTarget;
             switch (vectorBlock.LpbfMetadata?.PartArea)
             {
-                case VectorBlock.Types.PartArea.Volume:
+                case PartArea.Volume:
                     target = volumeTarget;
                     break;
-                case VectorBlock.Types.PartArea.Contour:
+                case PartArea.Contour:
                     target = contourTarget;
                     break;
-                case VectorBlock.Types.PartArea.TransitionContour:
+                case PartArea.TransitionContour:
                     target = contourTarget;
                     break;
                 default:
@@ -100,13 +101,13 @@ namespace OVFSliceViewerCore.Model
         }
 
         private int _vectorblockNumber = 0;
-        public OpenTK.Mathematics.Vector3 IncreaseNumberOfLinesToDraw(int numberOfLines)
+        public Vector3 IncreaseNumberOfLinesToDraw(int numberOfLines)
         {
             var renderObject = VectorBlockRenderObjectMap[_vectorblockNumber];
             renderObject.End = Math.Min(renderObject.End + numberOfLines, renderObject.Vertices.Length);
             _vectorblockNumber++;
 
-            if(renderObject.Vertices.Length > 0)
+            if (renderObject.Vertices.Length > 0)
                 return new Vector3(renderObject.Vertices[renderObject.End - 1].Position.X, renderObject.Vertices[renderObject.End - 1].Position.Y, renderObject.Vertices[renderObject.End - 1].ColorIndex);
             else
                 return new Vector3();

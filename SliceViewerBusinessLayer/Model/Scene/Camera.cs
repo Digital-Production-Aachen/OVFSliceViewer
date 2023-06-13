@@ -1,16 +1,16 @@
 ﻿using OpenTK;
 using System;
 using OVFSliceViewerCore.Model;
-using SliceViewerBusinessLayer.Classes;
 using System.Diagnostics;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
+using OVFSliceViewerCore.Model.Scene.IrrlichtEngine;
 
-namespace OVFSliceViewerCore.Classes
+namespace OVFSliceViewerCore.Model.Scene
 {
     // Todo: seperate Matrix for movement and rotation
 
-    public class Camera : IZoomable, IRotateable, OVFSliceViewerCore.Model.IModelViewProjection
+    public class Camera : IModelViewProjection
     {
         Vector3 _position;
         Vector3 _cameraTarget;
@@ -22,7 +22,7 @@ namespace OVFSliceViewerCore.Classes
         protected float _canvasWidth;
         protected float _canvasHeight;
         protected float _zoomfactor = 1f;
-        
+
         float _yaw = 0;
         float _pitch = 0;
 
@@ -61,7 +61,7 @@ namespace OVFSliceViewerCore.Classes
             _scene = scene;
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
-            _fieldOfView = ((float)Math.PI / 180) * 80;
+            _fieldOfView = (float)Math.PI / 180 * 80;
 
             _aspectRatio = Convert.ToSingle(_canvasWidth) / Convert.ToSingle(_canvasHeight);
             _position = new Vector3(0, 0, 50f);
@@ -103,7 +103,7 @@ namespace OVFSliceViewerCore.Classes
             var delta3 = new Vector3(-delta);
             delta3 = ConvertToCanvasCoordinates(delta3);
 
-            var temp = (RotationMatrixYaw * new Vector4(delta3));
+            var temp = RotationMatrixYaw * new Vector4(delta3);
             temp = temp * delta3.Xy.Length / temp.Length;
 
             _translation += temp.Xyz;
@@ -116,8 +116,8 @@ namespace OVFSliceViewerCore.Classes
 
         protected Vector3 ConvertToCanvasCoordinates(Vector3 delta)
         {
-            delta.X = -Convert.ToSingle((2f * delta.X / _canvasWidth) * Math.Tan(_fieldOfView / 2f) * (_position.Z - ObjectHeight) * _aspectRatio);
-            delta.Y = Convert.ToSingle((2f * delta.Y / _canvasHeight) * Math.Tan(_fieldOfView / 2f) * (_position.Z - ObjectHeight));
+            delta.X = -Convert.ToSingle(2f * delta.X / _canvasWidth * Math.Tan(_fieldOfView / 2f) * (_position.Z - ObjectHeight) * _aspectRatio);
+            delta.Y = Convert.ToSingle(2f * delta.Y / _canvasHeight * Math.Tan(_fieldOfView / 2f) * (_position.Z - ObjectHeight));
             return delta;
         }
 

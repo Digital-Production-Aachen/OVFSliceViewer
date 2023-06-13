@@ -4,6 +4,8 @@
 /*.user
 /SliceViewerBusinessLayer/obj
 /SliceViewerBusinessLayer/bin
+/OVFSliceViewerGUI/obj
+/OVFSliceViewerGUI/bin
 /OVFSliceViewerBusinessLayer/bin
 /OVFSliceViewerBusinessLayer/obj
 /Geometry3SharpLight/obj

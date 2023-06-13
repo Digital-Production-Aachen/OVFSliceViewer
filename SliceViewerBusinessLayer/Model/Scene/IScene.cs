@@ -1,5 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Mathematics;
+using OVFSliceViewerCore.Model.Part;
+using OVFSliceViewerCore.Model.RenderData;
 using System;
 using System.Collections.Generic;
 using System.IO;

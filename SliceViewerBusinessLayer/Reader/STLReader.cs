@@ -15,7 +15,7 @@ using Google.Protobuf.Collections;
 using Google.Protobuf;
 using OVFSliceViewerCore.Model;
 
-namespace SliceViewerBusinessLayer.Model.STL
+namespace OVFSliceViewerCore.Reader
 {
     //public class Triangle
     //{

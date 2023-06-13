@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.RenderData
 {
     public class OVFFileInfo
     {
@@ -23,7 +23,7 @@ namespace OVFSliceViewerCore.Model
         {
             ContourVectorblocksInWorkplaneLUT[0] = new List<int>() { 0 };
         }
-        public async Task ReadData(FileReader ovfFileReader, int endWorkplaneIndex=1, int startWorkplaneIndex = 0)
+        public async Task ReadData(FileReader ovfFileReader, int endWorkplaneIndex = 1, int startWorkplaneIndex = 0)
         {
             var partsMap = ovfFileReader.JobShell.PartsMap;
             PartKeys = partsMap.Keys.ToList();
@@ -43,7 +43,7 @@ namespace OVFSliceViewerCore.Model
         }
         public async Task ReadWorkplane(int workplaneNumber)
         {
-            VectorblockDisplayData = await ReadVectorblockDisplayData(workplaneNumber+1, workplaneNumber);
+            VectorblockDisplayData = await ReadVectorblockDisplayData(workplaneNumber + 1, workplaneNumber);
             SetNumberOfVerticesInWorkplane();
         }
 
@@ -119,7 +119,7 @@ namespace OVFSliceViewerCore.Model
             switch (vectorblock.VectorDataCase)
             {
                 case VectorBlock.VectorDataOneofCase.LineSequence:
-                    numberOfLines = (vectorblock.LineSequence.Points.Count / 2) - 1;
+                    numberOfLines = vectorblock.LineSequence.Points.Count / 2 - 1;
                     break;
                 case VectorBlock.VectorDataOneofCase.Hatches:
                     numberOfLines = vectorblock.Hatches.Points.Count / 2 / 2;

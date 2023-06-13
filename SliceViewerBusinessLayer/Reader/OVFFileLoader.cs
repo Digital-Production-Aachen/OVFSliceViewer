@@ -3,6 +3,7 @@ using OpenVectorFormat.AbstractReaderWriter;
 using OpenVectorFormat.FileReaderWriterFactory;
 using OpenVectorFormat.ILTFileReaderAdapter;
 using OpenVectorFormat.OVFReaderWriter;
+using OVFSliceViewerCore.Model.RenderData;
 using SliceViewerBusinessLayer.Model;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Reader
 {
     public class OVFFileLoader
     {

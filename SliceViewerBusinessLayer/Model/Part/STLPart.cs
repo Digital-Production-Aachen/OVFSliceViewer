@@ -1,6 +1,4 @@
-﻿using OVFSliceViewerCore.Classes;
-using SliceViewerBusinessLayer.Model.STL;
-//using System.Windows.Forms;
+﻿//using System.Windows.Forms;
 using System;
 using System.Text;
 using System.IO;
@@ -8,13 +6,13 @@ using System.Collections.Generic;
 using OpenTK;
 using Geometry3SharpLight;
 using System.Diagnostics;
-using SliceViewerBusinessLayer.Classes;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
 using Google.Protobuf;
 using System.Linq;
+using OVFSliceViewerCore.Model.RenderData;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.Part
 {
 
     public class STLPart : AbstrPart
@@ -26,7 +24,7 @@ namespace OVFSliceViewerCore.Model
         {
             {LABEL.NoSupport, new List<int>()},
             {LABEL.Accessibility, new List<int>()},
-            {LABEL.FunctionalArea, new List<int>() } 
+            {LABEL.FunctionalArea, new List<int>() }
         };
 
         // essentially the length of the longest edges from a bounding box
@@ -85,7 +83,7 @@ namespace OVFSliceViewerCore.Model
             return Math.Max(a, Math.Max(b, c));
         }
 
-        public void SetLabelForTriangle(int triID, Nullable<LABEL> label)
+        public void SetLabelForTriangle(int triID, LABEL? label)
         {
             if (label == null) return;
             FunctionalTriangleIDs[(LABEL)label].Add(triID);
@@ -140,8 +138,8 @@ namespace OVFSliceViewerCore.Model
                 verticesNormals.Write("vn {0} {1} {2}\n", n.X, n.Y, n.Z);
 
                 // write face/triangle
-                faces.Write("f {0}//{1} {2}//{3} {4}//{5}\n", (triId * 3 + 1), (triId + 1), (triId * 3 + 2),
-                                                              (triId + 1), (triId * 3 + 3), (triId + 1));
+                faces.Write("f {0}//{1} {2}//{3} {4}//{5}\n", triId * 3 + 1, triId + 1, triId * 3 + 2,
+                                                              triId + 1, triId * 3 + 3, triId + 1);
             }
 
             if (!File.Exists(path))
@@ -186,20 +184,20 @@ namespace OVFSliceViewerCore.Model
                 verticesNormals.Write("vn {0} {1} {2}\n", n.X, n.Y, n.Z);
 
                 // write face/triangle
-                faces.Write("f {0}//{1} {2}//{3} {4}//{5}\n", (triId * 3 + 1), (triId + 1), (triId * 3 + 2),
-                                                              (triId + 1), (triId * 3 + 3), (triId + 1));
+                faces.Write("f {0}//{1} {2}//{3} {4}//{5}\n", triId * 3 + 1, triId + 1, triId * 3 + 2,
+                                                              triId + 1, triId * 3 + 3, triId + 1);
             }
 
 
             if (!File.Exists(path))
             {
-                string s = vertices.ToString()+verticesNormals.ToString()+faces.ToString();
+                string s = vertices.ToString() + verticesNormals.ToString() + faces.ToString();
 
                 LabeledGeometryDefinitionFileFormat lgdff = new LabeledGeometryDefinitionFileFormat();
                 lgdff.Obj = ByteString.CopyFrom(Encoding.ASCII.GetBytes(s));
                 List<LabelMap> labels = new List<LabelMap>();
 
-                foreach(var label in FunctionalTriangleIDs.Keys)
+                foreach (var label in FunctionalTriangleIDs.Keys)
                 {
                     LabelMap lm = new LabelMap();
                     lm.Label = label;

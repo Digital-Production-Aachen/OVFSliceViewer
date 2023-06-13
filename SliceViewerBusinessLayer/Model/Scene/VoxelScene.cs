@@ -1,6 +1,4 @@
 ﻿using OpenTK;
-using SliceViewerBusinessLayer.Classes;
-using SliceViewerBusinessLayer.Model.STL;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,10 +7,12 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
-using OVFSliceViewerCore.Model.Voxel;
 using OpenTK.Graphics.OpenGL;
+using OVFSliceViewerCore.Model.Part;
+using OVFSliceViewerCore.Reader;
+using OVFSliceViewerCore.Model.RenderData;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.Scene
 {
     public class VoxelScene : IScene, IDisposable
     {
@@ -44,13 +44,13 @@ namespace OVFSliceViewerCore.Model
             if (fileInfo.Extension.ToLower() == ".vx")
             {
                 var voxel = await reader.ReadVoxel(fileInfo.FullName);
-                var part = new VoxelPart(voxel.VoxelList_.Where(x=>x.ClusterID == -1).ToList(), SceneController, () => SceneSettings.UseColorIndex);
+                var part = new VoxelPart(voxel.VoxelList_.Where(x => x.ClusterID == -1).ToList(), SceneController, () => SceneSettings.UseColorIndex);
                 part.Name = "part";
                 var cluster = new VoxelPart(voxel.VoxelList_.Where(x => x.ClusterID != -1).ToList(), SceneController, () => SceneSettings.UseColorIndex);
                 cluster.Name = "clusters";
                 PartsInScene.Add(part);
                 PartsInScene.Add(cluster);
-            }                
+            }
         }
 
 
@@ -91,7 +91,7 @@ namespace OVFSliceViewerCore.Model
 
         void IScene.Render()
         {
-            foreach(var part in PartsInScene)
+            foreach (var part in PartsInScene)
             {
                 if (part.IsActive)
                     part.Render();

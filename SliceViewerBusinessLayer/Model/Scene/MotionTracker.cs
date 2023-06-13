@@ -2,7 +2,7 @@
 using OpenTK.Mathematics;
 using System;
 
-namespace OVFSliceViewerCore.Classes
+namespace OVFSliceViewerCore.Model.Scene
 {
     public class MotionTracker
     {

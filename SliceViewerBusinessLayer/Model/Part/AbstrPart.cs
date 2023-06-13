@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OVFSliceViewerCore.Model.Scene;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.Part
 {
-    public abstract class AbstrPart: IDisposable
+    public abstract class AbstrPart : IDisposable
     {
         public AbstrPart()
         {
@@ -12,8 +13,11 @@ namespace OVFSliceViewerCore.Model
             RenderObjects = new List<RenderDataObject>();
         }
         public BoundingBox BoundingBox { get; protected set; }
-        public bool IsActive { get;
-            set; } = true;
+        public bool IsActive
+        {
+            get;
+            set;
+        } = true;
 
         public string Name { get; set; } = "No name";
         private bool disposedValue;

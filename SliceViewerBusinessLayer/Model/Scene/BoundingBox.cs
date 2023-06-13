@@ -1,8 +1,9 @@
 ﻿using OpenTK;
 using OpenTK.Mathematics;
+using OVFSliceViewerCore.Model.RenderData;
 using System.Collections.Generic;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.Scene
 {
     public class BoundingBox
     {
@@ -24,7 +25,7 @@ namespace OVFSliceViewerCore.Model
             Min = Vector3.ComponentMin(Min, vertex);
             Max = Vector3.ComponentMax(Max, vertex);
         }
-        public void AddVertices(IList<OVFSliceViewerCore.Classes.Vertex> vertices)
+        public void AddVertices(IList<Vertex> vertices)
         {
             foreach (var vertex in vertices)
             {

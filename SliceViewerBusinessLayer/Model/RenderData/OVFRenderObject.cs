@@ -4,11 +4,11 @@ using OpenTK.Mathematics;
 using SliceViewerBusinessLayer.Model.Shader;
 using System;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.RenderData
 {
     public class OVFRenderObject : RenderDataObject
     {
-        public enum ViewerPartArea 
+        public enum ViewerPartArea
         {
             Contour,
             Volume,
@@ -16,7 +16,7 @@ namespace OVFSliceViewerCore.Model
             SupportVolume
         }
         public readonly ViewerPartArea Type;
-        public OVFRenderObject(Func<bool> useColorIndex, IModelViewProjection mvp, ViewerPartArea viewerPartArea, Vector4 color ) : base(useColorIndex, mvp) 
+        public OVFRenderObject(Func<bool> useColorIndex, IModelViewProjection mvp, ViewerPartArea viewerPartArea, Vector4 color) : base(useColorIndex, mvp)
         {
             Type = viewerPartArea;
             SetColor(color);
@@ -27,7 +27,7 @@ namespace OVFSliceViewerCore.Model
         }
     }
 
-    public class ThreeDimensionalLinesRenderObject: OVFRenderObject
+    public class ThreeDimensionalLinesRenderObject : OVFRenderObject
     {
         public ThreeDimensionalLinesRenderObject(Func<bool> useColorIndex, IModelViewProjection mvp, ViewerPartArea viewerPartArea, Vector4 color) : base(useColorIndex, mvp, viewerPartArea, color)
         {

@@ -8,9 +8,9 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Diagnostics;
 using OVFSliceViewerCore.Model;
-using OVFSliceViewerCore.Classes;
 using OpenVectorFormat.AbstractReaderWriter;
 using System.Linq;
+using OVFSliceViewerCore.Model.Scene;
 
 namespace SliceViewerBusinessLayer
 {

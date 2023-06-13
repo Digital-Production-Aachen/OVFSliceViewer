@@ -6,10 +6,11 @@ using System;
 using OpenTK.WinForms;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using OVFSliceViewerCore.Model.Scene;
 
 namespace OVFSliceViewer
 {
-    public class CanvasWrapper : OVFSliceViewerCore.Model.ICanvas
+    public class CanvasWrapper : ICanvas
     {
         GLControl _canvas;
         public GLControl Canvas => _canvas;

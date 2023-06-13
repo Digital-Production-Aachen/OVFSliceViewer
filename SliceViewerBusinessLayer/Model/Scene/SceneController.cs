@@ -1,5 +1,4 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using OVFSliceViewerCore.Classes;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -7,8 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenVectorFormat.AbstractReaderWriter;
-using OVFSliceViewerCore.Model.Voxel;
 using static System.Formats.Asn1.AsnWriter;
+using OVFSliceViewerCore.Model.Scene;
+using OVFSliceViewerCore.Model.Part;
 
 namespace OVFSliceViewerCore.Model
 {
@@ -122,22 +122,6 @@ namespace OVFSliceViewerCore.Model
             GL.Clear(ClearBufferMask.DepthBufferBit);
             _canvas.SwapBuffers();
         }
-        //public STLScene LoadFile(string path)
-        //{
-        //    var fileInfo = new FileInfo(path);
-
-        //    var scene = new STLScene(this);
-
-
-        //    if (fileInfo.Extension.ToLower() == ".stl")
-        //    {
-        //        scene.LoadSTL(fileInfo);
-        //    }
-
-        //    Scene = scene;
-        //    return scene;
-        //}
-
         public List<string> GetPartNames()
         {
             return new List<string>() { "test" };

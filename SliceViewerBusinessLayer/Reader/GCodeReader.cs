@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Diagnostics;
 using OpenTK.Mathematics;
 
-namespace SliceViewerBusinessLayer.Model
+namespace OVFSliceViewerCore.Reader
 {
     public class GCodeReader : FileReader
     {
@@ -100,11 +100,11 @@ namespace SliceViewerBusinessLayer.Model
                     var newYString = matchMove.Groups["Y"];
                     var newZString = matchMove.Groups["Z"];
 
-                    var newX = !String.IsNullOrWhiteSpace(newXString.Value) ? Convert.ToSingle(newXString.Value, CultureInfo.InvariantCulture) : position.X;
-                    var newY = !String.IsNullOrWhiteSpace(newYString.Value) ? Convert.ToSingle(newYString.Value, CultureInfo.InvariantCulture) : position.Y;
-                    var newZ = !String.IsNullOrWhiteSpace(newZString.Value) ? Convert.ToSingle(newZString.Value, CultureInfo.InvariantCulture) : position.Z;
+                    var newX = !string.IsNullOrWhiteSpace(newXString.Value) ? Convert.ToSingle(newXString.Value, CultureInfo.InvariantCulture) : position.X;
+                    var newY = !string.IsNullOrWhiteSpace(newYString.Value) ? Convert.ToSingle(newYString.Value, CultureInfo.InvariantCulture) : position.Y;
+                    var newZ = !string.IsNullOrWhiteSpace(newZString.Value) ? Convert.ToSingle(newZString.Value, CultureInfo.InvariantCulture) : position.Z;
 
-                    if (String.IsNullOrWhiteSpace(newExtruderPosition.Value))
+                    if (string.IsNullOrWhiteSpace(newExtruderPosition.Value))
                     {
                         position.X = newX;
                         position.Y = newY;
@@ -199,11 +199,11 @@ namespace SliceViewerBusinessLayer.Model
                 lineSequenceParaAdapt.PointsWithParas.Add(start.Y);
 
                 //var extruderValue = (float)(((start.W * conversionFactor) % (Math.PI * 2)) / (Math.PI * 2));
-                var extruderValue = (float)((start.W * inverseConversionFactor) % 1);
+                var extruderValue = (float)(start.W * inverseConversionFactor % 1);
                 extruderValue = extruderValue >= 0.5f ? 1f - extruderValue : extruderValue;
                 lineSequenceParaAdapt.PointsWithParas.Add(extruderValue);
 
-                var distanceToFirstExtremePoint = conversionFactor * 0.5f - (start.W % conversionFactor);
+                var distanceToFirstExtremePoint = conversionFactor * 0.5f - start.W % conversionFactor;
                 var newPosition = start.W + distanceToFirstExtremePoint;
                 while (newPosition < end.W)
                 {
@@ -211,7 +211,7 @@ namespace SliceViewerBusinessLayer.Model
                     if (lerpValue > 0 && lerpValue < 1)
                     {
                         var intermediatePosition = Vector4.Lerp(start, end, lerpValue);
-                        var periodicValue = (intermediatePosition.W * inverseConversionFactor % 1);
+                        var periodicValue = intermediatePosition.W * inverseConversionFactor % 1;
                         periodicValue = periodicValue > 0.5f ? 1f - periodicValue : periodicValue;
 
                         lineSequenceParaAdapt.PointsWithParas.Add(intermediatePosition.X);
@@ -226,7 +226,7 @@ namespace SliceViewerBusinessLayer.Model
                 lineSequenceParaAdapt.PointsWithParas.Add(end.Y);
 
                 //extruderValue = (float)(((end.W * conversionFactor) % (Math.PI * 2)) / (Math.PI * 2));
-                extruderValue = (float)(((end.W * inverseConversionFactor) % 1f));
+                extruderValue = (float)(end.W * inverseConversionFactor % 1f);
                 extruderValue = extruderValue >= 0.5f ? 1f - extruderValue : extruderValue;
                 lineSequenceParaAdapt.PointsWithParas.Add(extruderValue);
 
@@ -278,13 +278,13 @@ namespace SliceViewerBusinessLayer.Model
 
                 //prevWorkplane.VectorBlocks[0].HatchParaAdapt.HatchAsLinesequence[0].PointsWithParas[2];
                 var thisWpPerimeterExtrusionStart = linesInWorkplane[workplane.ZPosInMm]/*.Where(x => x.Type == "External perimeter")*/.Last().ExtrusionEnd;
-                
-                var extrusionDelta = conversionFactor - ((thisWpPerimeterExtrusionStart + lastDelta) % conversionFactor);
+
+                var extrusionDelta = conversionFactor - (thisWpPerimeterExtrusionStart + lastDelta) % conversionFactor;
                 lastDelta = extrusionDelta;
 
                 lastWpExtrusion = lastWpExtrusion + thisWpPerimeterExtrusionStart;
                 Debug.WriteLine($"{i} {lastWpExtrusion} ");
-                
+
                 //string test123 = $"<range min_z=\"{prevWorkplane.ZPosInMm.ToString(CultureInfo.InvariantCulture)}\" max_z=\"{workplane.ZPosInMm.ToString(CultureInfo.InvariantCulture)}\"><option opt_key=\"extruder\">0</option><option opt_key=\"fill_density\">{Math.Min(100f,(layerInfill*100f)).ToString(CultureInfo.InvariantCulture)}%</option><option opt_key=\"fill_pattern\">rectilinear</option><option opt_key=\"layer_height\">0.12</option></range>";
                 //Debug.WriteLine(test123);
             }

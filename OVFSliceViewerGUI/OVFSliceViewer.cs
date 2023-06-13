@@ -9,13 +9,14 @@ using System.Diagnostics;
 using OpenTK.Graphics.OpenGL;
 using OVFSliceViewerCore.Model;
 using System.Linq;
-using OVFSliceViewerCore.Classes;
 using System.Collections.Generic;
 using System.Drawing.Text;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Mathematics;
 using System.Threading.Tasks;
 using AutomatedBuildChain.Proto;
+using OVFSliceViewerCore.Model.Scene;
+using OVFSliceViewerCore.Model.Part;
 
 namespace OVFSliceViewer
 {
@@ -144,7 +145,7 @@ namespace OVFSliceViewer
             }
             catch (Exception e)
             {
-
+                MessageBox.Show("Fehler beim Anzeigen der Daten", "Fehler beim Darstellen", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }

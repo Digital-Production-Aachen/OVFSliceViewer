@@ -1,6 +1,4 @@
 ﻿using OpenTK;
-using SliceViewerBusinessLayer.Classes;
-using SliceViewerBusinessLayer.Model.STL;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +8,12 @@ using System.Diagnostics;
 using OpenTK.Mathematics;
 using AutomatedBuildChain.Proto;
 using OpenTK.Graphics.OpenGL;
+using OVFSliceViewerCore.Model.Scene.IrrlichtEngine;
+using OVFSliceViewerCore.Model.Part;
+using OVFSliceViewerCore.Model.RenderData;
+using OVFSliceViewerCore.Reader;
 
-namespace OVFSliceViewerCore.Model
+namespace OVFSliceViewerCore.Model.Scene
 {
     public class STLScene : IScene, IDisposable
     {
@@ -24,7 +26,7 @@ namespace OVFSliceViewerCore.Model
 
         Vector3 IScene.LastPosition => Vector3.Zero;
 
-        public OVFFileInfo OVFFileInfo { get; set; } = new OVFFileInfo() { NumberOfWorkplanes = 1 }; 
+        public OVFFileInfo OVFFileInfo { get; set; } = new OVFFileInfo() { NumberOfWorkplanes = 1 };
 
         public STLScene(ISceneController sceneController)
         {
@@ -47,7 +49,7 @@ namespace OVFSliceViewerCore.Model
             else if (fileInfo.Extension.ToLower() == ".obj")
                 await reader.ReadObj(fileInfo.FullName);
 
-            else if(isLgdff)
+            else if (isLgdff)
             {
                 await reader.ReadLgdff(fileInfo.FullName, labelMap);
             }
@@ -93,7 +95,7 @@ namespace OVFSliceViewerCore.Model
 
         void IScene.CloseFile()
         {
-            
+
         }
 
         void IScene.Render()
@@ -106,22 +108,22 @@ namespace OVFSliceViewerCore.Model
             return Vector2.Zero;
         }
 
-        Task IScene.LoadWorkplaneToBuffer(int index){ return Task.CompletedTask; }
+        Task IScene.LoadWorkplaneToBuffer(int index) { return Task.CompletedTask; }
 
-        int IScene.GetNumberOfLinesInWorkplane(){ return 1; }
+        int IScene.GetNumberOfLinesInWorkplane() { return 1; }
 
-        void IScene.ChangeNumberOfLinesToDraw(int numberOfLinesToDraw){}
+        void IScene.ChangeNumberOfLinesToDraw(int numberOfLinesToDraw) { }
 
-        public void ColorNearestHitTriangles(Vector2 position, float colorIndex, int radius, Nullable<LABEL> label = null)
+        public void ColorNearestHitTriangles(Vector2 position, float colorIndex, int radius, LABEL? label = null)
         {
             var ray = SceneCollisionManager.GetRayFromScreenCoordinates(position, SceneController.Camera, radius);
-            
+
             foreach (var part in PartsInScene)
             {
-                for (int i = 0; i < ray.Length-1; i++) // for every ray direction
+                for (int i = 0; i < ray.Length - 1; i++) // for every ray direction
                 {
                     // ray[0] is starting point
-                    var triangle = part.FindNearestHitTriangle(ray[0], ray[i+1]);
+                    var triangle = part.FindNearestHitTriangle(ray[0], ray[i + 1]);
                     if (triangle != -1) // -1 is invalid triangle id
                     {
                         part.ColorTriangle(triangle, colorIndex);
@@ -133,6 +135,6 @@ namespace OVFSliceViewerCore.Model
             }
         }
 
-        
+
     }
 }

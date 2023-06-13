@@ -1,7 +1,7 @@
 ﻿using OpenTK.Mathematics;
 using System.Runtime.InteropServices;
 
-namespace OVFSliceViewerCore.Classes
+namespace OVFSliceViewerCore.Model.RenderData
 {
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Vertex
