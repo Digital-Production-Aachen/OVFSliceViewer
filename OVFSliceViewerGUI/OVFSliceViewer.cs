@@ -543,6 +543,9 @@ namespace OVFSliceViewer
             {
                 var currentWorkplane = layerTrackBar.Value;
 
+                if (_currentFile == null)
+                    return;
+
                 await LoadJob(_currentFile);
                 layerTrackBar.Value = currentWorkplane;
                 DrawWorkplane();
