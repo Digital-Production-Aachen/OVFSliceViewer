@@ -7,10 +7,6 @@
 	<Platforms>AnyCPU;x64</Platforms>
 	  <PackageId>DAP.OVFSliceViewer.$(AssemblyName)</PackageId>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-    <AssemblyTitle>SliceViewerBusinessLayer</AssemblyTitle>
-    <Company>Microsoft</Company>
-    <Product>SliceViewerBusinessLayer</Product>
-    <Copyright>Copyright © Microsoft 2021</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

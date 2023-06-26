@@ -25,17 +25,10 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <AssemblyTitle>LayerViewer</AssemblyTitle>
-    <Company>Microsoft</Company>
-    <Product>LayerViewer</Product>
-    <Copyright>Copyright © Microsoft 2020</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>73F0CF75F9BC4BEBED7E84792A7C70ED9CCB66F2</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>OVFSliceViewer_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
