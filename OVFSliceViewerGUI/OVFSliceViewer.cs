@@ -80,20 +80,8 @@ namespace OVFSliceViewer
 
         public OVFSliceViewer(string filename) : this()
         {
-            InitializeComponent();
-            this.DoubleBuffered = true;
-            this.glCanvas.MouseWheel += new MouseEventHandler(this.MouseWheelZoom);
-            _motionTracker = new MotionTracker();
-
-            _canvasWrapper = new CanvasWrapper(glCanvas);
-
-            SceneController = new SceneController(_canvasWrapper);
-
             _firstLoadFileName = filename;
             this.Shown += OVFSliceViewer_Shown;
-
-            //_canvasWrapper.Canvas.DisableNativeInput();
-            //LoadJob(filename);
         }
 
         string _firstLoadFileName = "";
