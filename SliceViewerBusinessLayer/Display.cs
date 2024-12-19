@@ -216,6 +216,7 @@ namespace SliceViewerBusinessLayer
             SwapBuffers();
             base.OnRenderFrame(args);
         }
+
         protected override void OnResize(ResizeEventArgs e)
         {
             //Scene.Painter.CanvasResize(e.Width, e.Height); // maybe this adjusts the camera
@@ -286,7 +287,6 @@ namespace SliceViewerBusinessLayer
             Scene.Camera.Resize(width, height);
             _displaySettings.Resize(width, height);
             GL.Viewport(0, 0, width, height);
-
             //throw new NotImplementedException();
         }
 

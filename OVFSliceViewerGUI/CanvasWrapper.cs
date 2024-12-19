@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 using System.Drawing;
 using System;
-using OpenTK.WinForms;
+using OpenTK.GLControl;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using OVFSliceViewerCore.Model.Scene;
