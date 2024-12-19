@@ -37,8 +37,8 @@ namespace SliceViewerBusinessLayer
             //Slicer = slicer;
             _sliceReader = sliceReader;
 
-            this.Title = "Slic Three R";
-            this._displaySettings = new DisplaySettings(nativeWindowSetting.Size.X, nativeWindowSetting.Size.Y);
+            this.Title = "OVF Slice Viewer";            
+            this._displaySettings = new DisplaySettings(nativeWindowSetting.ClientSize.X, nativeWindowSetting.ClientSize.Y);
 
             Scene = new SceneController(this);
             Debug.WriteLine(GL.GetError());
@@ -243,8 +243,8 @@ namespace SliceViewerBusinessLayer
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
-            CursorVisible = false;
-            CursorGrabbed = true;
+            CursorState = CursorState.Grabbed;
+            //CursorVisible = false;
             var position = new Vector2(MouseState.X, MouseState.Y);
 
             if (e.Button == MouseButton.Button3 || e.Button == MouseButton.Button1)
@@ -259,8 +259,7 @@ namespace SliceViewerBusinessLayer
         }
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
-            CursorVisible = true;
-            CursorGrabbed = false;
+            CursorState = CursorState.Normal;
 
             _cameraMotion.Stop();
 

@@ -21,7 +21,7 @@ namespace OVFSliceViewerCore.Reader
         private Job _job;
         public override Job JobShell => _job;
 
-        public override async Task<Job> CacheJobToMemoryAsync()
+        public override Job CacheJobToMemory()
         {
             return _job;
         }
@@ -31,12 +31,12 @@ namespace OVFSliceViewerCore.Reader
             _job = null;
         }
 
-        public override async Task<VectorBlock> GetVectorBlockAsync(int i_workPlane, int i_vectorblock)
+        public override VectorBlock GetVectorBlock(int i_workPlane, int i_vectorblock)
         {
             return _job.WorkPlanes[i_workPlane].VectorBlocks[i_vectorblock];
         }
 
-        public override async Task<WorkPlane> GetWorkPlaneAsync(int i_workPlane)
+        public override WorkPlane GetWorkPlane(int i_workPlane)
         {
             return _job.WorkPlanes[i_workPlane];
         }
@@ -47,7 +47,7 @@ namespace OVFSliceViewerCore.Reader
         }
 
         private bool _extrusionIsAbsolute = true;
-        public override async Task OpenJobAsync(string filename, IFileReaderWriterProgress progress)
+        public override void OpenJob(string filename, IFileReaderWriterProgress progress)
         {
             var gcodeFile = File.ReadAllLines(filename);
             var job = new Job();
